@@ -1,23 +1,31 @@
 jetpacker:
   boxes:
     - tag: ubuntu
-      images:
-        - ubuntu/trusty32
-        - ubuntu/trusty64
-      defaultImage: ubuntu/trusty64
       tab:
         index: 0
         label: Ubuntu
+      releases:
+        defaultVersion: ubuntu/trusty64
+        versions:
+          - ubuntu/trusty32
+          - ubuntu/trusty64
       description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
 
-  openjdks: [ 7, 8 ]
-
   kits:
+    - tag: openjdk
+      releases:
+        defaultVersion: 8
+        versions: [ 7, 8 ]
+      tab:
+        index: 0
+        label: Java
+      description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
+
     - tag: node
       namespace: nodejs
       endpoint: GitHub
       tab:
-        index: 1
+        index: 2
         label: Node.js
       dependency:
         tag: nvm
@@ -29,7 +37,7 @@ jetpacker:
       namespace: guard
       endpoint: None
       tab:
-        index: 2
+        index: 3
         label: Guard
       dependency:
         tag: ruby
