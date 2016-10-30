@@ -39,14 +39,15 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy'
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
 
     compile 'org.springframework.boot:spring-boot-starter-aop'
 	compile 'org.springframework.boot:spring-boot-devtools'
 	compile 'org.springframework.boot:spring-boot-starter-validation'
 	compile 'org.springframework.boot:spring-boot-starter-web'
 
-    compile 'io.projectreactor:reactor-core:3.0.2.RELEASE'
+    compile 'io.projectreactor:reactor-core:3.0.3.RELEASE'
+	compile 'com.github.zafarkhaja:java-semver:0.9.0'
 
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 	testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
