@@ -11,6 +11,7 @@ import groovy.transform.ToString
 class Metadata {
     String tag
     Tab tab
+    Releases releases
 
     String description
 }
