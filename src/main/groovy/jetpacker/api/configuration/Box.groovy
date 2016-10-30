@@ -8,7 +8,4 @@ import groovy.transform.ToString
  */
 @ToString(includeNames = true, includeSuper = true)
 @CompileStatic
-class Box extends Metadata {
-    List<String> images
-    String defaultImage
-}
+class Box extends Metadata {}
