@@ -1,6 +1,5 @@
 package jetpacker.api.service
 
-import com.github.zafarkhaja.semver.Version
 import groovy.transform.CompileStatic
 import jetpacker.api.configuration.Endpoint
 import jetpacker.api.configuration.JetpackerProperties
@@ -43,7 +42,7 @@ class TaskService {
 
         candidates.body.split(",").collect { String candidate ->
             ResponseEntity<String> versions = asyncRestTemplate.getForEntity("${Endpoint.SdkMan.url}/${candidate}", String.class).get()
-            new Kit(tag: candidate, releases: new Releases())
+            new Kit(name: candidate, releases: new Releases())
         }
     }
 }
