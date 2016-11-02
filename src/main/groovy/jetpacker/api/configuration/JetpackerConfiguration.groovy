@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.client.AsyncRestTemplate
 
 /**
- * Created by wolf on 30/10/16.
+ * Created by donny on 30/10/16.
  */
 @Configuration
 @EnableConfigurationProperties(JetpackerProperties.class)
