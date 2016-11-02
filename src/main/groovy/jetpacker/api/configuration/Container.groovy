@@ -9,5 +9,8 @@ import groovy.transform.ToString
 @ToString(includeNames = true, includeSuper = true)
 @CompileStatic
 class Container extends Application {
-    Map<String, String> properties
+    List<Volume> volumes
+    List<Port> publishedPorts
+    Map<String, String> environmentVariables
+    List<Property> properties
 }
