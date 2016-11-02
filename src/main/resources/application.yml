@@ -53,14 +53,20 @@ jetpacker:
         index: 0
         label: MySQL
       volumes:
-        /etc/mysql/conf.d: &mysql_configuration_home
-        /var/lib/mysql: &mysql_data_home
-      published_ports:
-        - host: &mysql_port
+        - host: '{{ configuration_home }}/mysql'
+          container: /etc/mysql/conf.d
+        - host: '{{ data_home }}/mysql'
+          container: /var/lib/mysql
+      publishedPorts:
+        - host: :mysql_port
           container: 3306
-      environment_variables:
-        MYSQL_ROOT_PASSWORD: &mysql_root_password
-        MYSQL_DATABASE: &mysql_database
+      environmentVariables:
+        MYSQL_ROOT_PASSWORD: :mysql_root_password
+        MYSQL_DATABASE: :mysql_database
+      properties:
+        - { name: mysql_root_password, label: Root Password, value: root }
+        - { name: mysql_database, label: Database, value: null }
+        - { name: mysql_port, label: Port, value: 3306 }
 
     - name: mariadb
       description: MariaDB is an enhanced, drop-in replacement for MySQL.
@@ -69,14 +75,20 @@ jetpacker:
         index: 1
         label: MariaDB
       volumes:
-        /etc/mysql/conf.d: &mariadb_configuration_home
-        /var/lib/mysql: &mariadb_data_home
-      published_ports:
-        - host: &mariadb_port
+        - host: '{{ configuration_home }}/mariadb'
+          container: /etc/mysql/conf.d
+        - host: '{{ data_home }}/mariadb'
+          container: /var/lib/mariadb
+      publishedPorts:
+        - host: :mariadb_port
           container: 3306
-      environment_variables:
-        MYSQL_ROOT_PASSWORD: &mariadb_root_password
-        MYSQL_DATABASE: &mariadb_database
+      environmentVariables:
+        MYSQL_ROOT_PASSWORD: :mariadb_root_password
+        MYSQL_DATABASE: :mariadb_database
+      properties:
+        - { name: mariadb_root_password, label: Root Password, value: root }
+        - { name: mariadb_database, label: Database, value: null }
+        - { name: mariadb_port, label: Port, value: 3306 }
 
     - name: postgres
       description: PostgreSQL is a powerful, open source object-relational database system.
@@ -85,15 +97,21 @@ jetpacker:
         index: 2
         label: PostgreSQL
       volumes:
-        /var/lib/postgresql/data/pgdata: &postgres_data_home
-      published_ports:
-        - host: &postgres_port
+        - host: '{{ data_home }}/postgres'
+          container: /var/lib/postgresql/data/pgdata
+      publishedPorts:
+        - host: :postgres_port
           container: 5432
-      environment_variables:
-        POSTGRES_USER: &postgres_user
-        POSTGRES_PASSWORD: &postgres_password
-        POSTGRES_DB: &postgres_database
+      environmentVariables:
+        POSTGRES_USER: :postgres_user
+        POSTGRES_PASSWORD: :postgres_password
+        POSTGRES_DB: :postgres_database
         PGDATA : /var/lib/postgresql/data/pgdata
+      properties:
+        - { name: postgres_user, label: User, value: root }
+        - { name: postgres_password, label: Password, value: root }
+        - { name: postgres_database, label: Database, value: null }
+        - { name: postgres_port, label: Port, value: 5432 }
 
     - name: mongo
       description: MongoDB is an open-source, document database designed for ease of development and scaling.
@@ -102,10 +120,13 @@ jetpacker:
         index: 3
         label: MongoDB
       volumes:
-        /data/db: &mongo_data_home
-      published_ports:
-        - host: &mongo_port
+        - host: '{{ data_home }}/mongo'
+          container: /data/db
+      publishedPorts:
+        - host: :mongo_port
           container: 27017
+      properties:
+        - { name: mongo_port, label: Port, value: 27017 }
 
     - name: redis
       description: Redis is an open source (BSD licensed), in-memory data structure store, used as database, cache and message broker.
@@ -115,39 +136,43 @@ jetpacker:
         label: Redis
       command: redis-server --appendonly yes
       volumes:
-        /usr/local/etc/redis: &redis_configuration_home
-        /data: &redis_data_home
-      published_ports:
-        - host: &redis_port
+        - host: '{{ configuration_home }}/redis'
+          container: /usr/local/etc/redis
+        - host: '{{ data_home }}/redis'
+          container: /data
+      publishedPorts:
+        - host: :redis_port
           container: 6379
+      properties:
+        - { name: redis_port, label: Port, value: 6379 }
 
   messageQueues:
     - name: rabbitmq
       description: RabbitMQ is a lightweight, reliable, scalable and portable message broker.
       endpoint: DockerHub
-      properties:
-        - { name: rabbitmq_user, label: User, value: rabbitmq }
-        - { name: rabbitmq_password, label: Password, value: rabbitmq }
-        - { name: rabbitmq_node_name, label: Node name, value: rabbitmq }
-        - { name: rabbitmq_cookie, label: Cookie, value: rabbitmq }
-        - { name: rabbitmq_data_home, label: Data directory, value: rabbitmq, prefix: '{{ data_home }}/' }
-        - { name: rabbitmq_port, label: Port, value: 5672 }
-        - { name: rabbitmq_management_port, label: Management Port, value: 15672 }
       tab:
         index: 0
         label: RabbitMQ
       volumes:
-        /var/lib/rabbitmq: &rabbitmq_data_home
-      published_ports:
-        - host: &rabbitmq_port
+        - host: '{{ data_home }}/rabbitmq'
+          container: /var/lib/rabbitmq
+      publishedPorts:
+        - host: :rabbitmq_port
           container: 5672
-        - host: &rabbitmq_management_port
+        - host: :rabbitmq_management_port
           container: 15672
-      environment_variables:
-        RABBITMQ_DEFAULT_USER: &rabbitmq_user
-        RABBITMQ_DEFAULT_PASS: &rabbitmq_password
-        RABBITMQ_NODE_NAME: &rabbitmq_node_name
-        RABBITMQ_ERLANG_COOKIE: &rabbitmq_cookie
+      environmentVariables:
+        RABBITMQ_DEFAULT_USER: :rabbitmq_user
+        RABBITMQ_DEFAULT_PASS: :rabbitmq_password
+        RABBITMQ_NODE_NAME: :rabbitmq_node_name
+        RABBITMQ_ERLANG_COOKIE: :rabbitmq_cookie
+      properties:
+        - { name: rabbitmq_user, label: User, value: rabbitmq }
+        - { name: rabbitmq_password, label: Password, value: rabbitmq }
+        - { name: rabbitmq_node_name, label: Node Name, value: node@rabbitmq }
+        - { name: rabbitmq_cookie, label: Cookie, value: rabbitmq_cookie }
+        - { name: rabbitmq_port, label: Port, value: 5672 }
+        - { name: rabbitmq_management_port, label: Management Port, value: 15672 }
 
   searchEngines:
     - name: elasticsearch
