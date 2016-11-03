@@ -1,15 +1,13 @@
 package jetpacker.api.configuration
 
 import groovy.transform.CompileStatic
-import groovy.transform.ToString
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 /**
  * Created by donny on 24/10/2016.
  */
-@ToString(includeNames = true)
-@ConfigurationProperties(prefix = "jetpacker")
 @CompileStatic
+@ConfigurationProperties(prefix = "jetpacker")
 class JetpackerProperties {
     List<Box> boxes
     List<Kit> kits

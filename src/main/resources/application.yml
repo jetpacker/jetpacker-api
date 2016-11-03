@@ -6,6 +6,8 @@ jetpacker:
         index: 0
         label: Ubuntu
       releases:
+        label: Image
+        selectedVersion: :ubuntu_image
         defaultVersion: ubuntu/trusty64
         versions:
           - ubuntu/trusty32
@@ -15,6 +17,7 @@ jetpacker:
     - name: openjdk
       description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
       releases:
+        selectedVersion: :java_version
         defaultVersion: 8
         versions: [ 7, 8 ]
       tab:
@@ -28,6 +31,8 @@ jetpacker:
       tab:
         index: 2
         label: Node.js
+      releases:
+        selectedVersion: :node_version
       dependency:
         name: nvm
         namespace: creationix
@@ -52,6 +57,8 @@ jetpacker:
       tab:
         index: 0
         label: MySQL
+      releases:
+        selectedVersion: :mysql_version
       volumes:
         - host: '{{ configuration_home }}/mysql'
           container: /etc/mysql/conf.d
@@ -65,7 +72,7 @@ jetpacker:
         MYSQL_DATABASE: :mysql_database
       properties:
         - { name: mysql_root_password, label: Root Password, value: root }
-        - { name: mysql_database, label: Database, value: null }
+        - { name: mysql_database, label: Database }
         - { name: mysql_port, label: Port, value: 3306 }
 
     - name: mariadb
@@ -74,6 +81,8 @@ jetpacker:
       tab:
         index: 1
         label: MariaDB
+      releases:
+        selectedVersion: :mariadb_version
       volumes:
         - host: '{{ configuration_home }}/mariadb'
           container: /etc/mysql/conf.d
@@ -87,7 +96,7 @@ jetpacker:
         MYSQL_DATABASE: :mariadb_database
       properties:
         - { name: mariadb_root_password, label: Root Password, value: root }
-        - { name: mariadb_database, label: Database, value: null }
+        - { name: mariadb_database, label: Database }
         - { name: mariadb_port, label: Port, value: 3306 }
 
     - name: postgres
@@ -96,6 +105,8 @@ jetpacker:
       tab:
         index: 2
         label: PostgreSQL
+      releases:
+        selectedVersion: :postgres_version
       volumes:
         - host: '{{ data_home }}/postgres'
           container: /var/lib/postgresql/data/pgdata
@@ -110,7 +121,7 @@ jetpacker:
       properties:
         - { name: postgres_user, label: User, value: root }
         - { name: postgres_password, label: Password, value: root }
-        - { name: postgres_database, label: Database, value: null }
+        - { name: postgres_database, label: Database }
         - { name: postgres_port, label: Port, value: 5432 }
 
     - name: mongo
@@ -119,6 +130,8 @@ jetpacker:
       tab:
         index: 3
         label: MongoDB
+      releases:
+        selectedVersion: :mongo_version
       volumes:
         - host: '{{ data_home }}/mongo'
           container: /data/db
@@ -134,6 +147,8 @@ jetpacker:
       tab:
         index: 4
         label: Redis
+      releases:
+        selectedVersion: :redis_version
       command: redis-server --appendonly yes
       volumes:
         - host: '{{ configuration_home }}/redis'
@@ -153,6 +168,8 @@ jetpacker:
       tab:
         index: 0
         label: RabbitMQ
+      releases:
+        selectedVersion: :rabbitmq_version
       volumes:
         - host: '{{ data_home }}/rabbitmq'
           container: /var/lib/rabbitmq
@@ -181,6 +198,8 @@ jetpacker:
       tab:
         index: 0
         label: Elasticsearch
+      releases:
+        selectedVersion: :elasticsearch_version
 
     - name: solr
       description: Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene.
@@ -188,3 +207,5 @@ jetpacker:
       tab:
         index: 1
         label: Solr
+      releases:
+        selectedVersion: :solr_version

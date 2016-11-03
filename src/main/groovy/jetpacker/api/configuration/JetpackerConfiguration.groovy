@@ -11,9 +11,9 @@ import org.springframework.web.client.AsyncRestTemplate
 /**
  * Created by donny on 30/10/16.
  */
+@CompileStatic
 @Configuration
 @EnableConfigurationProperties(JetpackerProperties.class)
-@CompileStatic
 class JetpackerConfiguration {
     @Bean
     AsyncRestTemplate asyncRestTemplate() {
