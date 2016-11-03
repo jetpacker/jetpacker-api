@@ -9,6 +9,6 @@ import groovy.transform.ToString
 @ToString(includeNames = true)
 @CompileStatic
 class Port {
-    Integer host
-    Integer container
+    String host
+    String container
 }
