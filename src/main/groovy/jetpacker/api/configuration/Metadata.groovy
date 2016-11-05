@@ -9,9 +9,8 @@ import groovy.transform.ToString
 @CompileStatic
 class Metadata {
     String name
+    String label
     String description
-    Tab tab
-    Releases releases
 
-    List<Property> properties
+    Releases releases
 }
