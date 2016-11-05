@@ -13,4 +13,5 @@ class Container extends Application {
     List<Volume> volumes
     List<Port> publishedPorts
     Map<String, String> environmentVariables
+    List<Property> properties
 }
