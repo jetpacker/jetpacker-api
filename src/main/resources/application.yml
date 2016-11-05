@@ -1,64 +1,57 @@
 jetpacker:
-  boxes:
-    - name: ubuntu
-      description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
-      tab:
-        index: 0
-        label: Ubuntu
-      releases:
-        label: Image
-        selectedVersion: :ubuntu_image
-        defaultVersion: ubuntu/trusty64
-        versions:
-          - ubuntu/trusty32
-          - ubuntu/trusty64
+  ubuntu:
+    name: ubuntu
+    label: Ubuntu
+    description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
+    releases:
+      defaultVersion: ubuntu/trusty64
+      versions:
+        - ubuntu/trusty32
+        - ubuntu/trusty64
+      property: { name: ubuntu_image, label: Image }
 
-  kits:
-    - name: openjdk
-      description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
-      releases:
-        selectedVersion: :java_version
-        defaultVersion: 8
-        versions: [ 7, 8 ]
-      tab:
-        index: 0
-        label: Java
+  openjdk:
+    name: openjdk
+    label: OpenJDK
+    description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
+    releases:
+      defaultVersion: 8
+      versions: [ 7, 8 ]
+      property: { name: openjdk_version, label: Version }
 
-    - name: node
-      description: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
-      namespace: nodejs
+  node:
+    name: node
+    label: Node.js
+    description: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
+    namespace: nodejs
+    endpoint: GitHub
+    releases:
+      property: { name: node_version, label: Version }
+    dependency:
+      name: nvm
+      namespace: creationix
       endpoint: GitHub
-      tab:
-        index: 2
-        label: Node.js
       releases:
-        selectedVersion: :node_version
-      dependency:
-        name: nvm
-        namespace: creationix
-        endpoint: GitHub
+        property: { name: nvm_version, label: Version }
 
-    - name: guard
-      description: Guard is a command line tool to easily handle events on file system modifications.
-      namespace: guard
-      endpoint: None
-      tab:
-        index: 3
-        label: Guard
-      dependency:
-        name: ruby
-        namespace: ruby
-        endpoint: GitHub
+  guard:
+    name: guard
+    label: Guard
+    description: Guard is a command line tool to easily handle events on file system modifications.
+    dependency:
+      name: ruby
+      namespace: ruby
+      endpoint: GitHub
+      releases:
+        property: { name: ruby_version, label: Version }
 
   databases:
     - name: mysql
+      label: MySQL
       description: MySQL is the most popular Open Source SQL database management system.
       endpoint: DockerHub
-      tab:
-        index: 0
-        label: MySQL
       releases:
-        selectedVersion: :mysql_version
+        property: { name: mysql_version, label: Version }
       volumes:
         - host: '{{ configuration_home }}/mysql'
           container: /etc/mysql/conf.d
@@ -76,13 +69,11 @@ jetpacker:
         - { name: mysql_port, label: Port, value: 3306 }
 
     - name: mariadb
+      label: MariaDB
       description: MariaDB is an enhanced, drop-in replacement for MySQL.
       endpoint: DockerHub
-      tab:
-        index: 1
-        label: MariaDB
       releases:
-        selectedVersion: :mariadb_version
+        property: { name: mariadb_version, label: Version }
       volumes:
         - host: '{{ configuration_home }}/mariadb'
           container: /etc/mysql/conf.d
@@ -100,13 +91,11 @@ jetpacker:
         - { name: mariadb_port, label: Port, value: 3306 }
 
     - name: postgres
+      label: PostgreSQL
       description: PostgreSQL is a powerful, open source object-relational database system.
       endpoint: DockerHub
-      tab:
-        index: 2
-        label: PostgreSQL
       releases:
-        selectedVersion: :postgres_version
+        property: { name: postgres_version, label: Version }
       volumes:
         - host: '{{ data_home }}/postgres'
           container: /var/lib/postgresql/data/pgdata
@@ -125,13 +114,11 @@ jetpacker:
         - { name: postgres_port, label: Port, value: 5432 }
 
     - name: mongo
+      label: MongoDB
       description: MongoDB is an open-source, document database designed for ease of development and scaling.
       endpoint: DockerHub
-      tab:
-        index: 3
-        label: MongoDB
       releases:
-        selectedVersion: :mongo_version
+        property: { name: mongo_version, label: Version }
       volumes:
         - host: '{{ data_home }}/mongo'
           container: /data/db
@@ -142,13 +129,11 @@ jetpacker:
         - { name: mongo_port, label: Port, value: 27017 }
 
     - name: redis
+      label: Redis
       description: Redis is an open source (BSD licensed), in-memory data structure store, used as database, cache and message broker.
       endpoint: DockerHub
-      tab:
-        index: 4
-        label: Redis
       releases:
-        selectedVersion: :redis_version
+        property: { name: redis_version, label: Version }
       command: redis-server --appendonly yes
       volumes:
         - host: '{{ configuration_home }}/redis'
@@ -163,13 +148,11 @@ jetpacker:
 
   messageQueues:
     - name: rabbitmq
+      label: RabbitMQ
       description: RabbitMQ is a lightweight, reliable, scalable and portable message broker.
       endpoint: DockerHub
-      tab:
-        index: 0
-        label: RabbitMQ
       releases:
-        selectedVersion: :rabbitmq_version
+        property: { name: rabbitmq_version, label: Version }
       volumes:
         - host: '{{ data_home }}/rabbitmq'
           container: /var/lib/rabbitmq
@@ -193,19 +176,15 @@ jetpacker:
 
   searchEngines:
     - name: elasticsearch
+      label: ElasticSearch
       description: Elasticsearch is a distributed, open source search and analytics engine, designed for horizontal scalability, reliability, and easy management.
       endpoint: DockerHub
-      tab:
-        index: 0
-        label: Elasticsearch
       releases:
-        selectedVersion: :elasticsearch_version
+        property: { name: elasticsearch_version, label: Version }
 
     - name: solr
+      label: Solr
       description: Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene.
       endpoint: DockerHub
-      tab:
-        index: 1
-        label: Solr
       releases:
-        selectedVersion: :solr_version
+        property: { name: solr_version, label: Version }
