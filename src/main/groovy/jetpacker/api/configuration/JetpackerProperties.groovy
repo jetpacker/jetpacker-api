@@ -9,8 +9,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @CompileStatic
 @ConfigurationProperties(prefix = "jetpacker")
 class JetpackerProperties {
-    List<Box> boxes
-    List<Kit> kits
+    Box ubuntu
+
+    Kit openjdk
+    Kit node
+    Kit guard
+
     List<Container> databases
     List<Container> messageQueues
     List<Container> searchEngines
