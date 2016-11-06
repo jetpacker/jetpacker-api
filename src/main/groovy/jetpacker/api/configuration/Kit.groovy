@@ -1,13 +1,17 @@
 package jetpacker.api.configuration
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import groovy.transform.AutoClone
 import groovy.transform.CompileStatic
-import groovy.transform.ToString
 
 /**
  * Created by donny on 25/10/16.
  */
+@AutoClone
 @CompileStatic
 class Kit extends Application {
     List<String> plugins
+
+    @JsonIgnore
     Kit dependency
 }
