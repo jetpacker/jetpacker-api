@@ -1,8 +1,9 @@
 package jetpacker.api.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import jetpacker.api.cache.Bucket
+import jetpacker.api.cache.Jetpacker
 import jetpacker.api.configuration.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -19,6 +20,8 @@ import java.util.concurrent.ExecutionException
 @Slf4j
 @Service
 class CacheService {
+    private final Jetpacker jetpacker = new Jetpacker()
+
     private final JetpackerProperties jetpackerProperties
     private final AsyncRestTemplate asyncRestTemplate
 
@@ -26,24 +29,57 @@ class CacheService {
     CacheService(JetpackerProperties jetpackerProperties, AsyncRestTemplate asyncRestTemplate) {
         this.jetpackerProperties = jetpackerProperties
         this.asyncRestTemplate = asyncRestTemplate
+
+        initCache()
     }
 
-    @Scheduled(fixedRate = 360000L)
-    void updateCache() {
+    Jetpacker items() {
+        jetpacker
+    }
+
+    private void initCache() {
         try {
-            getSdkManCandidates()
-            // TODO: clone the jetpacker properties items and assigned to cache.
+            jetpacker.clear()
+
+            Box ubuntu = jetpackerProperties.ubuntu.clone()
+            Kit openjdk = jetpackerProperties.openjdk.clone()
+            Kit node = jetpackerProperties.node.clone()
+            Kit guard = jetpackerProperties.guard.clone()
+
+            jetpacker.boxes << new Bucket<Box>(ubuntu.label, ubuntu)
+
+            jetpacker.kits << new Bucket<Kit>(openjdk.label, openjdk)
+            jetpacker.kits << new Bucket<Kit>(Endpoint.SdkMan.name, getSdkManCandidates())
+            jetpacker.kits << new Bucket<Kit>(node.label, node)
+            jetpacker.kits << new Bucket<Kit>(guard.label, guard)
+
+            jetpackerProperties.databases.each { Container container ->
+                jetpacker.databases << new Bucket<Container>(container.label, container)
+            }
+
+            jetpackerProperties.messageQueues.each { Container container ->
+                jetpacker.messageQueues << new Bucket<Container>(container.label, container)
+            }
+
+            jetpackerProperties.searchEngines.each { Container container ->
+                jetpacker.searchEngines << new Bucket<Container>(container.label, container)
+            }
         } catch (InterruptedException | ExecutionException e) {}
     }
 
-    List<Kit> getSdkManCandidates() {
+    @Scheduled(fixedRate = 30000L)
+    private void updateCache() {
+        // TODO: Update only the release versions
+    }
+
+    private List<Kit> getSdkManCandidates() {
         ResponseEntity<String> rawCandidates = asyncRestTemplate.getForEntity(Endpoint.SdkMan.url, String.class).get()
 
-        List<Kit> kits = rawCandidates.body.split(",").collect { String candidate ->
+        rawCandidates.body.split(",").collect { String candidate ->
             ResponseEntity<String> rawVersions = asyncRestTemplate.getForEntity("${Endpoint.SdkMan.url}/${candidate}", String.class).get()
             List<String> versions = Arrays.asList(rawVersions.body.split(",")).reverse()
             new Kit(name: candidate,
-                    label: "SDKMAN!",
+                    label: candidate,
                     releases: new Releases(
                             defaultVersion: versions[0],
                             versions: versions,
