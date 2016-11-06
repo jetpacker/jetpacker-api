@@ -58,11 +58,11 @@ jetpacker:
         - host: '{{ data_home }}/mysql'
           container: /var/lib/mysql
       publishedPorts:
-        - host: :mysql_port
+        - host: '{{ mysql_port }}'
           container: 3306
       environmentVariables:
-        MYSQL_ROOT_PASSWORD: :mysql_root_password
-        MYSQL_DATABASE: :mysql_database
+        MYSQL_ROOT_PASSWORD: '{{ mysql_root_password }}'
+        MYSQL_DATABASE: '{{ mysql_database }}'
       properties:
         - { name: mysql_root_password, label: Root Password, value: root }
         - { name: mysql_database, label: Database }
@@ -80,11 +80,11 @@ jetpacker:
         - host: '{{ data_home }}/mariadb'
           container: /var/lib/mariadb
       publishedPorts:
-        - host: :mariadb_port
+        - host: '{{ mariadb_port }}'
           container: 3306
       environmentVariables:
-        MYSQL_ROOT_PASSWORD: :mariadb_root_password
-        MYSQL_DATABASE: :mariadb_database
+        MYSQL_ROOT_PASSWORD: '{{ mariadb_root_password }}'
+        MYSQL_DATABASE: '{{ mariadb_database }}'
       properties:
         - { name: mariadb_root_password, label: Root Password, value: root }
         - { name: mariadb_database, label: Database }
@@ -100,12 +100,12 @@ jetpacker:
         - host: '{{ data_home }}/postgres'
           container: /var/lib/postgresql/data/pgdata
       publishedPorts:
-        - host: :postgres_port
+        - host: '{{ postgres_port }}'
           container: 5432
       environmentVariables:
-        POSTGRES_USER: :postgres_user
-        POSTGRES_PASSWORD: :postgres_password
-        POSTGRES_DB: :postgres_database
+        POSTGRES_USER: '{{ postgres_user }}'
+        POSTGRES_PASSWORD: '{{ postgres_password }}'
+        POSTGRES_DB: '{{ postgres_database }}'
         PGDATA : /var/lib/postgresql/data/pgdata
       properties:
         - { name: postgres_user, label: User, value: root }
@@ -123,7 +123,7 @@ jetpacker:
         - host: '{{ data_home }}/mongo'
           container: /data/db
       publishedPorts:
-        - host: :mongo_port
+        - host: '{{ mongo_port }}'
           container: 27017
       properties:
         - { name: mongo_port, label: Port, value: 27017 }
@@ -141,7 +141,7 @@ jetpacker:
         - host: '{{ data_home }}/redis'
           container: /data
       publishedPorts:
-        - host: :redis_port
+        - host: '{{ redis_port }}'
           container: 6379
       properties:
         - { name: redis_port, label: Port, value: 6379 }
@@ -157,15 +157,15 @@ jetpacker:
         - host: '{{ data_home }}/rabbitmq'
           container: /var/lib/rabbitmq
       publishedPorts:
-        - host: :rabbitmq_port
+        - host: '{{ rabbitmq_port }}'
           container: 5672
-        - host: :rabbitmq_management_port
+        - host: '{{ rabbitmq_management_port }}'
           container: 15672
       environmentVariables:
-        RABBITMQ_DEFAULT_USER: :rabbitmq_user
-        RABBITMQ_DEFAULT_PASS: :rabbitmq_password
-        RABBITMQ_NODE_NAME: :rabbitmq_node_name
-        RABBITMQ_ERLANG_COOKIE: :rabbitmq_cookie
+        RABBITMQ_DEFAULT_USER: '{{ rabbitmq_user }}'
+        RABBITMQ_DEFAULT_PASS: '{{ rabbitmq_password }}'
+        RABBITMQ_NODE_NAME: '{{ rabbitmq_node_name }}'
+        RABBITMQ_ERLANG_COOKIE: '{{ rabbitmq_cookie }}'
       properties:
         - { name: rabbitmq_user, label: User, value: rabbitmq }
         - { name: rabbitmq_password, label: Password, value: rabbitmq }
