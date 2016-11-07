@@ -10,7 +10,7 @@ import groovy.transform.CompileStatic
 @AutoClone
 @CompileStatic
 class Kit extends Application {
-    List<String> plugins
+    List<Kit> extensions
 
     @JsonIgnore
     Kit dependency

@@ -1,7 +1,6 @@
 package jetpacker.api.controller
 
-import jetpacker.api.cache.Jetpacker
-import jetpacker.api.service.CacheService
+import jetpacker.api.configuration.JetpackerProperties
 import jetpacker.api.service.GeneratorService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,17 +11,17 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class GeneratorController {
-    private final CacheService cacheService
     private final GeneratorService generatorService
+    private final JetpackerProperties jetpackerProperties
 
     @Autowired
-    GeneratorController(CacheService cacheService, GeneratorService generatorService) {
-        this.cacheService = cacheService
+    GeneratorController(GeneratorService generatorService, JetpackerProperties jetpackerProperties) {
         this.generatorService = generatorService
+        this.jetpackerProperties = jetpackerProperties
     }
 
-    @GetMapping("/items")
-    Jetpacker items() {
-        cacheService.items()
+    @GetMapping("/load")
+    JetpackerProperties load() {
+        jetpackerProperties
     }
 }

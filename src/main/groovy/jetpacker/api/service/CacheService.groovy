@@ -2,8 +2,6 @@ package jetpacker.api.service
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import jetpacker.api.cache.Bucket
-import jetpacker.api.cache.Jetpacker
 import jetpacker.api.configuration.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -20,7 +18,6 @@ import java.util.concurrent.ExecutionException
 @Slf4j
 @Service
 class CacheService {
-    private final Jetpacker jetpacker = new Jetpacker()
 
     private final JetpackerProperties jetpackerProperties
     private final AsyncRestTemplate asyncRestTemplate
@@ -33,37 +30,13 @@ class CacheService {
         initCache()
     }
 
-    Jetpacker items() {
-        jetpacker
+    JetpackerProperties load() {
+        jetpackerProperties
     }
 
     private void initCache() {
         try {
-            jetpacker.clear()
-
-            Box ubuntu = jetpackerProperties.ubuntu.clone()
-            Kit openjdk = jetpackerProperties.openjdk.clone()
-            Kit node = jetpackerProperties.node.clone()
-            Kit guard = jetpackerProperties.guard.clone()
-
-            jetpacker.boxes << new Bucket<Box>(ubuntu.label, ubuntu)
-
-            jetpacker.kits << new Bucket<Kit>(openjdk.label, openjdk)
-            jetpacker.kits << new Bucket<Kit>(Endpoint.SdkMan.name, getSdkManCandidates())
-            jetpacker.kits << new Bucket<Kit>(node.label, node)
-            jetpacker.kits << new Bucket<Kit>(guard.label, guard)
-
-            jetpackerProperties.databases.each { Container container ->
-                jetpacker.databases << new Bucket<Container>(container.label, container)
-            }
-
-            jetpackerProperties.messageQueues.each { Container container ->
-                jetpacker.messageQueues << new Bucket<Container>(container.label, container)
-            }
-
-            jetpackerProperties.searchEngines.each { Container container ->
-                jetpacker.searchEngines << new Bucket<Container>(container.label, container)
-            }
+            jetpackerProperties.openjdk.extensions = getSdkManCandidates()
         } catch (InterruptedException | ExecutionException e) {}
     }
 
@@ -72,7 +45,7 @@ class CacheService {
         // TODO: Update only the release versions
     }
 
-    private List<Kit> getSdkManCandidates() {
+    private List<Kit> getSdkManCandidates() throws ExecutionException, InterruptedException {
         ResponseEntity<String> rawCandidates = asyncRestTemplate.getForEntity(Endpoint.SdkMan.url, String.class).get()
 
         rawCandidates.body.split(",").collect { String candidate ->
