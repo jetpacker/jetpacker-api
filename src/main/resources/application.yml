@@ -14,6 +14,7 @@ jetpacker:
     name: openjdk
     label: OpenJDK
     description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
+    endpoint: SdkMan
     releases:
       defaultVersion: 8
       versions: [ 8, 7 ]
