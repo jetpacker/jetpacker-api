@@ -7,16 +7,14 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 enum Endpoint {
-    SdkMan("SDKMAN!", "http://api.sdkman.io/candidates"),
-    GitHub("GitHub", "https://api.github.com/repos/{namespace}/{name}/tags"),
-    DockerHub("DockerHub", "https://registry.hub.docker.com/v2/repositories/library/{name}/tags"),
-    None("None", "http://127.0.0.1")
+    SdkMan("http://api.sdkman.io/candidates"),
+    GitHub("https://api.github.com/repos/{namespace}/{name}/tags"),
+    DockerHub("https://registry.hub.docker.com/v2/repositories/library/{name}/tags"),
+    None("http://127.0.0.1")
 
-    String name
     String url
 
-    Endpoint(String name, String url) {
-        this.name = name
+    Endpoint(String url) {
         this.url = url
     }
 }
