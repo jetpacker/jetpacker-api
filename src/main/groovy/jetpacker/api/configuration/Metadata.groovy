@@ -11,6 +11,7 @@ import groovy.transform.CompileStatic
 class Metadata {
     String name
     String label
+    String suffix
     String description
 
     Releases releases
