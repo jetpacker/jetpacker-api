@@ -150,6 +150,7 @@ jetpacker:
   messageQueues:
     - name: rabbitmq
       label: RabbitMQ
+      suffix: -management
       description: RabbitMQ is a lightweight, reliable, scalable and portable message broker.
       endpoint: DockerHub
       releases:
