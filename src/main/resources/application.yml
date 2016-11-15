@@ -46,7 +46,7 @@ jetpacker:
       releases:
         property: { name: ruby_version, label: Version }
 
-  databases:
+  databaseEngines:
     - name: mysql
       label: MySQL
       description: MySQL is the most popular Open Source SQL database management system.
@@ -147,7 +147,7 @@ jetpacker:
       properties:
         - { name: redis_port, label: Port, value: 6379 }
 
-  messageQueues:
+  queueEngines:
     - name: rabbitmq
       label: RabbitMQ
       suffix: -management
