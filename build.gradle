@@ -48,6 +48,9 @@ dependencies {
 
     compile 'io.projectreactor:reactor-core:3.0.3.RELEASE'
 
+	compile 'org.apache.maven:maven-artifact:3.3.9'
+
+
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 	testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
