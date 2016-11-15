@@ -8,4 +8,6 @@ import groovy.transform.CompileStatic
  */
 @AutoClone
 @CompileStatic
-class Box extends Metadata {}
+class Machine extends Metadata {
+    Timezone timezone
+}
