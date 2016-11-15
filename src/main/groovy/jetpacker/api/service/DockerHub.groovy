@@ -5,7 +5,7 @@ import jetpacker.api.configuration.Metadata
 /**
  * Created by wolf on 13/11/16.
  */
-class Docker {
+class DockerHub {
     String next
     String previous
     List<Metadata> results
