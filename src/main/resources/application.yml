@@ -6,9 +6,11 @@ jetpacker:
     releases:
       defaultVersion: ubuntu/trusty64
       versions:
-        - ubuntu/trusty32
         - ubuntu/trusty64
-      property: { name: ubuntu_image, label: Image }
+        - ubuntu/trusty32
+      property: { name: ubuntu_box, label: Box }
+    timezone:
+      property: { name: ubuntu_timezone, label: Timezone }
 
   openjdk:
     name: openjdk
