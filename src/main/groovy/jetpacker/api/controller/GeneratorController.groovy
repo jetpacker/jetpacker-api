@@ -48,7 +48,11 @@ class GeneratorController {
     @PostConstruct
     private void setUp() {
         try {
-            jetpackerProperties.openjdk.extensions = getSdkManCandidates()
+            jetpackerProperties.ubuntu.timezone.availableIds = TimeZone.availableIDs.collect { String id ->
+                TimeZone.getTimeZone(id).ID
+            }
+
+            jetpackerProperties.openjdk.extensions = retrieveSdkManCandidates()
 
             [ jetpackerProperties.node, jetpackerProperties.guard ].each { Kit kit ->
                 updateReleases(kit)
@@ -68,7 +72,7 @@ class GeneratorController {
         } catch (InterruptedException|ExecutionException e) {}
     }
 
-    private List<Kit> getSdkManCandidates() throws ExecutionException, InterruptedException {
+    private List<Kit> retrieveSdkManCandidates() throws ExecutionException, InterruptedException {
         ResponseEntity<String> response = asyncRestTemplate.getForEntity(Endpoint.SdkMan.url, String.class).get()
 
         response.body.split(",").collect { String candidate ->
