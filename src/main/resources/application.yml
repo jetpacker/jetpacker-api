@@ -1,3 +1,6 @@
+server:
+  port: 5050
+
 jetpacker:
   ubuntu:
     name: ubuntu
@@ -8,9 +11,12 @@ jetpacker:
       versions:
         - ubuntu/trusty64
         - ubuntu/trusty32
-      property: { name: ubuntu_box, label: Box }
+      property: { name: box, label: Box }
     timezone:
-      property: { name: ubuntu_timezone, label: Timezone }
+      property: { name: timezone, label: Timezone }
+    properties:
+      - { name: applicatipn, label: Application Name, value: my_application }
+      - { name: memory, label: Memory, value: 4096 }
 
   openjdk:
     name: openjdk
