@@ -15,4 +15,6 @@ class Metadata {
     String description
 
     Releases releases
+
+    List<Property> properties
 }

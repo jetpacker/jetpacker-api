@@ -21,6 +21,4 @@ class Container extends Application {
 
     @JsonIgnore
     Map<String, String> environmentVariables
-
-    List<Property> properties
 }
