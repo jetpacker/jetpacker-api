@@ -12,6 +12,6 @@ import groovy.transform.CompileStatic
 class Kit extends Application {
     List<Kit> extensions
 
-//    @JsonIgnore
+    @JsonIgnore
     Kit dependency
 }
