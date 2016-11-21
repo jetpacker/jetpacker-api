@@ -12,4 +12,6 @@ class Application extends Metadata {
     
     @JsonIgnore
     Endpoint endpoint = Endpoint.None
+
+    Property install
 }

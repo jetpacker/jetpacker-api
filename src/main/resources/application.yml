@@ -25,6 +25,7 @@ jetpacker:
     releases:
       versions: [ 8, 7 ]
       property: { name: openjdk_version, label: Version }
+    install: { name: openjdk_install, label: Install OpenJDK, value: true }
 
   node:
     name: node
@@ -34,6 +35,7 @@ jetpacker:
     endpoint: GitHub
     releases:
       property: { name: node_version, label: Version }
+    install: { name: node_install, label: Install Node, value: true }
     dependency:
       name: nvm
       namespace: creationix
@@ -45,6 +47,7 @@ jetpacker:
     name: guard
     label: Guard
     description: Guard is a command line tool to easily handle events on file system modifications.
+    install: { name: guard_install, label: Install Guard, value: true }
     dependency:
       name: ruby
       namespace: ruby
@@ -59,6 +62,7 @@ jetpacker:
       endpoint: DockerHub
       releases:
         property: { name: mysql_version, label: Version }
+      install: { name: mysql_install, label: Install MySQL, value: true }
       volumes:
         - host: '{{ configuration_home }}/mysql'
           container: /etc/mysql/conf.d
@@ -81,6 +85,7 @@ jetpacker:
       endpoint: DockerHub
       releases:
         property: { name: mariadb_version, label: Version }
+      install: { name: mariadb_install, label: Install MariaDB, value: false }
       volumes:
         - host: '{{ configuration_home }}/mariadb'
           container: /etc/mysql/conf.d
@@ -103,6 +108,7 @@ jetpacker:
       endpoint: DockerHub
       releases:
         property: { name: postgres_version, label: Version }
+      install: { name: postgres_install, label: Install PostgreSQL, value: false }
       volumes:
         - host: '{{ data_home }}/postgres'
           container: /var/lib/postgresql/data/pgdata
@@ -126,6 +132,7 @@ jetpacker:
       endpoint: DockerHub
       releases:
         property: { name: mongo_version, label: Version }
+      install: { name: mongodb_install, label: Install MongoDB, value: false }
       volumes:
         - host: '{{ data_home }}/mongo'
           container: /data/db
@@ -141,6 +148,7 @@ jetpacker:
       endpoint: DockerHub
       releases:
         property: { name: redis_version, label: Version }
+      install: { name: redis_install, label: Install Redis, value: false }
       command: redis-server --appendonly yes
       volumes:
         - host: '{{ configuration_home }}/redis'
@@ -161,6 +169,7 @@ jetpacker:
       endpoint: DockerHub
       releases:
         property: { name: rabbitmq_version, label: Version }
+      install: { name: rabbitmq_install, label: Install RabbitMQ, value: false }
       volumes:
         - host: '{{ data_home }}/rabbitmq'
           container: /var/lib/rabbitmq
@@ -189,6 +198,7 @@ jetpacker:
       endpoint: DockerHub
       releases:
         property: { name: elasticsearch_version, label: Version }
+      install: { name: redis_install, label: Install ElasticSearch, value: false }
 
     - name: solr
       label: Solr
@@ -196,3 +206,4 @@ jetpacker:
       endpoint: DockerHub
       releases:
         property: { name: solr_version, label: Version }
+      install: { name: solr_install, label: Install Solr, value: false }
