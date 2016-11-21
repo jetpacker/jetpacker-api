@@ -49,8 +49,11 @@ class GeneratorController {
     private void setUp() {
         try {
             jetpackerProperties.ubuntu.timezone.availableIds = TimeZone.availableIDs.collect { String id ->
-                TimeZone.getTimeZone(id).ID
+                if (!id.startsWith("SystemV"))
+                    return id
             }
+
+            jetpackerProperties.ubuntu.timezone.availableIds.removeAll([ null ])
 
             jetpackerProperties.openjdk.extensions = retrieveSdkManCandidates()
 
