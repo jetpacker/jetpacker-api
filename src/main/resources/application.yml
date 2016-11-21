@@ -7,7 +7,6 @@ jetpacker:
     label: Ubuntu
     description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
     releases:
-      defaultVersion: ubuntu/trusty64
       versions:
         - ubuntu/trusty64
         - ubuntu/trusty32
@@ -24,7 +23,6 @@ jetpacker:
     description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
     endpoint: SdkMan
     releases:
-      defaultVersion: 8
       versions: [ 8, 7 ]
       property: { name: openjdk_version, label: Version }
 

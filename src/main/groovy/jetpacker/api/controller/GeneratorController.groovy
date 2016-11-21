@@ -83,7 +83,6 @@ class GeneratorController {
             new Kit(name: candidate,
                     label: candidate,
                     releases: new Releases(
-                            defaultVersion: versions[0],
                             versions: versions,
                             property: new Property(
                                     name: "${candidate}_version",
@@ -146,8 +145,6 @@ class GeneratorController {
 
                 if (!dependency)
                     application.releases.versions = versions
-
-                application.releases.defaultVersion = versions[0]
             }
         }
     }

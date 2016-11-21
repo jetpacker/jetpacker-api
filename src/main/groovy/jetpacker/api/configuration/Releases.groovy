@@ -7,7 +7,6 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class Releases {
-    String defaultVersion
-    List<String> versions
     Property property
+    List<String> versions
 }
