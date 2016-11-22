@@ -2,7 +2,7 @@ package jetpacker.api.controller
 
 import jetpacker.api.configuration.Application
 import jetpacker.api.configuration.Container
-import jetpacker.api.configuration.Endpoint
+import jetpacker.api.configuration.Repository
 import jetpacker.api.configuration.JetpackerProperties
 import jetpacker.api.configuration.Kit
 import jetpacker.api.configuration.Metadata
@@ -76,10 +76,10 @@ class GeneratorController {
     }
 
     private List<Kit> retrieveSdkManCandidates() throws ExecutionException, InterruptedException {
-        ResponseEntity<String> response = asyncRestTemplate.getForEntity(Endpoint.SdkMan.url, String.class).get()
+        ResponseEntity<String> response = asyncRestTemplate.getForEntity(Repository.SdkMan.url, String.class).get()
 
         response.body.split(",").collect { String candidate ->
-            ResponseEntity<String> rawVersions = asyncRestTemplate.getForEntity("${Endpoint.SdkMan.url}/${candidate}", String.class).get()
+            ResponseEntity<String> rawVersions = asyncRestTemplate.getForEntity("${Repository.SdkMan.url}/${candidate}", String.class).get()
             List<String> versions = Arrays.asList(rawVersions.body.split(",")).reverse()
             versions.sort versionComparator
 
@@ -104,9 +104,9 @@ class GeneratorController {
                 updateReleases(kit.dependency, true)
         }
 
-        Endpoint endpoint = application.endpoint
+        Repository endpoint = application.repository
 
-        if (endpoint && endpoint != Endpoint.SdkMan) {
+        if (endpoint && endpoint != Repository.SdkMan) {
             String url = endpoint.url.replace("{name}", application.name)
 
             if (application.namespace)
@@ -114,13 +114,13 @@ class GeneratorController {
 
             List<Metadata> metadataList = null
 
-            if (endpoint == Endpoint.GitHub) {
+            if (endpoint == Repository.GitHub) {
                 ResponseEntity<List<Metadata>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<Metadata>>() {}).get()
                 metadataList = response.body
             }
 
-            if (endpoint == Endpoint.DockerHub) {
+            if (endpoint == Repository.DockerHub) {
                 ResponseEntity<DockerHub> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
                         new ParameterizedTypeReference<DockerHub>() {}).get()
                 DockerHub dockerHub = response.body

@@ -11,7 +11,7 @@ class Application extends Metadata {
     String namespace
     
     @JsonIgnore
-    Endpoint endpoint = Endpoint.None
+    Repository repository = Repository.None
 
     Property install
 }

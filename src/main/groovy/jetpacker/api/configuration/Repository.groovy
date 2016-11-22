@@ -6,7 +6,7 @@ import groovy.transform.CompileStatic
  * Created by donny on 24/10/2016.
  */
 @CompileStatic
-enum Endpoint {
+enum Repository {
     SdkMan("http://api.sdkman.io/candidates"),
     GitHub("https://api.github.com/repos/{namespace}/{name}/tags"),
     DockerHub("https://registry.hub.docker.com/v2/repositories/library/{name}/tags"),
@@ -14,7 +14,7 @@ enum Endpoint {
 
     String url
 
-    Endpoint(String url) {
+    Repository(String url) {
         this.url = url
     }
 }
