@@ -13,5 +13,5 @@ class Application extends Metadata {
     @JsonIgnore
     Repository repository = Repository.None
 
-    Property install
+    Parameter install
 }

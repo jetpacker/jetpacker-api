@@ -16,5 +16,5 @@ class Metadata {
 
     Version version
 
-    List<Property> properties
+    List<Parameter> parameters
 }
