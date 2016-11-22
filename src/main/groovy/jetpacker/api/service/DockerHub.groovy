@@ -7,6 +7,5 @@ import jetpacker.api.configuration.Metadata
  */
 class DockerHub {
     String next
-    String previous
     List<Metadata> results
 }
