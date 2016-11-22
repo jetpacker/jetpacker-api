@@ -7,14 +7,12 @@ jetpacker:
     label: Ubuntu
     description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
     version:
-      releases:
-        - ubuntu/trusty64
-        - ubuntu/trusty32
-      property: { name: box, label: Box }
-    timezone:
-      property: { name: timezone, label: Timezone }
-    properties:
-      - { name: applicatipn, label: Application Name, value: my_application }
+      name: box
+      label: Box
+      releases: [ ubuntu/trusty64, ubuntu/trusty32 ]
+    timezone: { name: timezone, label: Timezone }
+    parameters:
+      - { name: application, label: Application Name, value: my_application }
       - { name: memory, label: Memory, value: 4096 }
 
   openjdk:
@@ -23,8 +21,9 @@ jetpacker:
     description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
     repository: SdkMan
     version:
+      name: openjdk_version
+      label: Version
       releases: [ 8, 7 ]
-      property: { name: openjdk_version, label: Version }
     install: { name: openjdk_install, label: Install OpenJDK, value: true }
 
   node:
@@ -33,15 +32,13 @@ jetpacker:
     description: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
     namespace: nodejs
     repository: GitHub
-    version:
-      property: { name: node_version, label: Version }
+    version: { name: node_version, label: Version }
     install: { name: node_install, label: Install Node, value: true }
     dependency:
       name: nvm
       namespace: creationix
       repository: GitHub
-      version:
-        property: { name: nvm_version, label: Version }
+      version: { name: nvm_version, label: Version }
 
   guard:
     name: guard
@@ -52,16 +49,14 @@ jetpacker:
       name: ruby
       namespace: ruby
       repository: GitHub
-      version:
-        property: { name: ruby_version, label: Version }
+      version: { name: ruby_version, label: Version }
 
   databaseEngines:
     - name: mysql
       label: MySQL
       description: MySQL is the most popular Open Source SQL database management system.
       repository: DockerHub
-      version:
-        property: { name: mysql_version, label: Version }
+      version: { name: mysql_version, label: Version }
       install: { name: mysql_install, label: Install MySQL, value: true }
       volumes:
         - host: '{{ configuration_home }}/mysql'
@@ -74,7 +69,7 @@ jetpacker:
       environmentVariables:
         MYSQL_ROOT_PASSWORD: '{{ mysql_root_password }}'
         MYSQL_DATABASE: '{{ mysql_database }}'
-      properties:
+      parameters:
         - { name: mysql_root_password, label: Root Password, value: root }
         - { name: mysql_database, label: Database }
         - { name: mysql_port, label: Port, value: 3306 }
@@ -83,8 +78,7 @@ jetpacker:
       label: MariaDB
       description: MariaDB is an enhanced, drop-in replacement for MySQL.
       repository: DockerHub
-      version:
-        property: { name: mariadb_version, label: Version }
+      version: { name: mariadb_version, label: Version }
       install: { name: mariadb_install, label: Install MariaDB, value: false }
       volumes:
         - host: '{{ configuration_home }}/mariadb'
@@ -97,7 +91,7 @@ jetpacker:
       environmentVariables:
         MYSQL_ROOT_PASSWORD: '{{ mariadb_root_password }}'
         MYSQL_DATABASE: '{{ mariadb_database }}'
-      properties:
+      parameters:
         - { name: mariadb_root_password, label: Root Password, value: root }
         - { name: mariadb_database, label: Database }
         - { name: mariadb_port, label: Port, value: 3306 }
@@ -106,8 +100,7 @@ jetpacker:
       label: PostgreSQL
       description: PostgreSQL is a powerful, open source object-relational database system.
       repository: DockerHub
-      version:
-        property: { name: postgres_version, label: Version }
+      version: { name: postgres_version, label: Version }
       install: { name: postgres_install, label: Install PostgreSQL, value: false }
       volumes:
         - host: '{{ data_home }}/postgres'
@@ -120,7 +113,7 @@ jetpacker:
         POSTGRES_PASSWORD: '{{ postgres_password }}'
         POSTGRES_DB: '{{ postgres_database }}'
         PGDATA : /var/lib/postgresql/data/pgdata
-      properties:
+      parameters:
         - { name: postgres_user, label: User, value: root }
         - { name: postgres_password, label: Password, value: root }
         - { name: postgres_database, label: Database }
@@ -130,8 +123,7 @@ jetpacker:
       label: MongoDB
       description: MongoDB is an open-source, document database designed for ease of development and scaling.
       repository: DockerHub
-      version:
-        property: { name: mongo_version, label: Version }
+      version: { name: mongo_version, label: Version }
       install: { name: mongodb_install, label: Install MongoDB, value: false }
       volumes:
         - host: '{{ data_home }}/mongo'
@@ -139,15 +131,14 @@ jetpacker:
       publishedPorts:
         - host: '{{ mongo_port }}'
           container: 27017
-      properties:
+      parameters:
         - { name: mongo_port, label: Port, value: 27017 }
 
     - name: redis
       label: Redis
       description: Redis is an open source (BSD licensed), in-memory data structure store, used as database, cache and message broker.
       repository: DockerHub
-      version:
-        property: { name: redis_version, label: Version }
+      version: { name: redis_version, label: Version }
       install: { name: redis_install, label: Install Redis, value: false }
       command: redis-server --appendonly yes
       volumes:
@@ -158,7 +149,7 @@ jetpacker:
       publishedPorts:
         - host: '{{ redis_port }}'
           container: 6379
-      properties:
+      parameters:
         - { name: redis_port, label: Port, value: 6379 }
 
   queueEngines:
@@ -167,8 +158,7 @@ jetpacker:
       suffix: -management
       description: RabbitMQ is a lightweight, reliable, scalable and portable message broker.
       repository: DockerHub
-      version:
-        property: { name: rabbitmq_version, label: Version }
+      version: { name: rabbitmq_version, label: Version }
       install: { name: rabbitmq_install, label: Install RabbitMQ, value: false }
       volumes:
         - host: '{{ data_home }}/rabbitmq'
@@ -183,7 +173,7 @@ jetpacker:
         RABBITMQ_DEFAULT_PASS: '{{ rabbitmq_password }}'
         RABBITMQ_NODE_NAME: '{{ rabbitmq_node_name }}'
         RABBITMQ_ERLANG_COOKIE: '{{ rabbitmq_cookie }}'
-      properties:
+      parameters:
         - { name: rabbitmq_user, label: User, value: rabbitmq }
         - { name: rabbitmq_password, label: Password, value: rabbitmq }
         - { name: rabbitmq_node_name, label: Node Name, value: node@rabbitmq }
@@ -196,14 +186,12 @@ jetpacker:
       label: ElasticSearch
       description: Elasticsearch is a distributed, open source search and analytics engine, designed for horizontal scalability, reliability, and easy management.
       repository: DockerHub
-      version:
-        property: { name: elasticsearch_version, label: Version }
+      version: { name: elasticsearch_version, label: Version }
       install: { name: redis_install, label: Install ElasticSearch, value: false }
 
     - name: solr
       label: Solr
       description: Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene.
       repository: DockerHub
-      version:
-        property: { name: solr_version, label: Version }
+      version: { name: solr_version, label: Version }
       install: { name: solr_install, label: Install Solr, value: false }
