@@ -7,7 +7,6 @@ import groovy.transform.CompileStatic
 /**
  * Created by donny on 25/10/16.
  */
-@AutoClone
 @CompileStatic
 class Kit extends Application {
     List<Kit> extensions
