@@ -1,9 +1,11 @@
 package jetpacker.api.configuration
 
+import groovy.transform.CompileStatic
+
 /**
- * Created by wolf on 15/11/16.
+ * Created by donny on 15/11/16.
  */
-class Timezone {
-    Property property
+@CompileStatic
+class Timezone extends Parameter {
     List<String> availableIds
 }

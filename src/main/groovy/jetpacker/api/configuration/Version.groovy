@@ -6,7 +6,6 @@ import groovy.transform.CompileStatic
  * Created by donny on 30/10/16.
  */
 @CompileStatic
-class Version {
-    Property property
+class Version extends Parameter {
     List<String> releases
 }
