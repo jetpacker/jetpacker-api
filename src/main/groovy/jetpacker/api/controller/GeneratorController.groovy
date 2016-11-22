@@ -7,7 +7,7 @@ import jetpacker.api.configuration.JetpackerProperties
 import jetpacker.api.configuration.Kit
 import jetpacker.api.configuration.Metadata
 import jetpacker.api.configuration.Property
-import jetpacker.api.configuration.Releases
+import jetpacker.api.configuration.Version
 import jetpacker.api.service.DockerHub
 import jetpacker.api.service.GeneratorService
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion
@@ -85,8 +85,8 @@ class GeneratorController {
 
             new Kit(name: candidate,
                     label: candidate,
-                    releases: new Releases(
-                            versions: versions,
+                    version: new Version(
+                            releases: versions,
                             property: new Property(
                                     name: "${candidate}_version",
                                     label: "Version"
@@ -147,7 +147,7 @@ class GeneratorController {
                 versions.sort versionComparator
 
                 if (!dependency)
-                    application.releases.versions = versions
+                    application.version.releases = versions
             }
         }
     }

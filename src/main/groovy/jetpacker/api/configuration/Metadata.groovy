@@ -14,7 +14,7 @@ class Metadata {
     String suffix
     String description
 
-    Releases releases
+    Version version
 
     List<Property> properties
 }

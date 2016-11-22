@@ -6,8 +6,8 @@ jetpacker:
     name: ubuntu
     label: Ubuntu
     description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
-    releases:
-      versions:
+    version:
+      releases:
         - ubuntu/trusty64
         - ubuntu/trusty32
       property: { name: box, label: Box }
@@ -22,8 +22,8 @@ jetpacker:
     label: OpenJDK
     description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
     endpoint: SdkMan
-    releases:
-      versions: [ 8, 7 ]
+    version:
+      releases: [ 8, 7 ]
       property: { name: openjdk_version, label: Version }
     install: { name: openjdk_install, label: Install OpenJDK, value: true }
 
@@ -33,14 +33,14 @@ jetpacker:
     description: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
     namespace: nodejs
     endpoint: GitHub
-    releases:
+    version:
       property: { name: node_version, label: Version }
     install: { name: node_install, label: Install Node, value: true }
     dependency:
       name: nvm
       namespace: creationix
       endpoint: GitHub
-      releases:
+      version:
         property: { name: nvm_version, label: Version }
 
   guard:
@@ -52,7 +52,7 @@ jetpacker:
       name: ruby
       namespace: ruby
       endpoint: GitHub
-      releases:
+      version:
         property: { name: ruby_version, label: Version }
 
   databaseEngines:
@@ -60,7 +60,7 @@ jetpacker:
       label: MySQL
       description: MySQL is the most popular Open Source SQL database management system.
       endpoint: DockerHub
-      releases:
+      version:
         property: { name: mysql_version, label: Version }
       install: { name: mysql_install, label: Install MySQL, value: true }
       volumes:
@@ -83,7 +83,7 @@ jetpacker:
       label: MariaDB
       description: MariaDB is an enhanced, drop-in replacement for MySQL.
       endpoint: DockerHub
-      releases:
+      version:
         property: { name: mariadb_version, label: Version }
       install: { name: mariadb_install, label: Install MariaDB, value: false }
       volumes:
@@ -106,7 +106,7 @@ jetpacker:
       label: PostgreSQL
       description: PostgreSQL is a powerful, open source object-relational database system.
       endpoint: DockerHub
-      releases:
+      version:
         property: { name: postgres_version, label: Version }
       install: { name: postgres_install, label: Install PostgreSQL, value: false }
       volumes:
@@ -130,7 +130,7 @@ jetpacker:
       label: MongoDB
       description: MongoDB is an open-source, document database designed for ease of development and scaling.
       endpoint: DockerHub
-      releases:
+      version:
         property: { name: mongo_version, label: Version }
       install: { name: mongodb_install, label: Install MongoDB, value: false }
       volumes:
@@ -146,7 +146,7 @@ jetpacker:
       label: Redis
       description: Redis is an open source (BSD licensed), in-memory data structure store, used as database, cache and message broker.
       endpoint: DockerHub
-      releases:
+      version:
         property: { name: redis_version, label: Version }
       install: { name: redis_install, label: Install Redis, value: false }
       command: redis-server --appendonly yes
@@ -167,7 +167,7 @@ jetpacker:
       suffix: -management
       description: RabbitMQ is a lightweight, reliable, scalable and portable message broker.
       endpoint: DockerHub
-      releases:
+      version:
         property: { name: rabbitmq_version, label: Version }
       install: { name: rabbitmq_install, label: Install RabbitMQ, value: false }
       volumes:
@@ -196,7 +196,7 @@ jetpacker:
       label: ElasticSearch
       description: Elasticsearch is a distributed, open source search and analytics engine, designed for horizontal scalability, reliability, and easy management.
       endpoint: DockerHub
-      releases:
+      version:
         property: { name: elasticsearch_version, label: Version }
       install: { name: redis_install, label: Install ElasticSearch, value: false }
 
@@ -204,6 +204,6 @@ jetpacker:
       label: Solr
       description: Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene.
       endpoint: DockerHub
-      releases:
+      version:
         property: { name: solr_version, label: Version }
       install: { name: solr_install, label: Install Solr, value: false }
