@@ -7,7 +7,7 @@ import groovy.transform.ToString
  * Created by donny on 2/11/2016.
  */
 @CompileStatic
-class Property {
+class Parameter {
     String name
     String label
     String value
