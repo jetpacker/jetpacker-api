@@ -8,8 +8,10 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Metadata {
+class Summary {
     String name
+    String namespace
+
     String label
     String suffix
     String description

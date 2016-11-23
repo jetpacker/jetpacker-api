@@ -7,9 +7,7 @@ import groovy.transform.CompileStatic
  * Created by donny on 24/10/2016.
  */
 @CompileStatic
-class Application extends Metadata {
-    String namespace
-    
+class Application extends Summary {
     @JsonIgnore
     Repository repository = Repository.None
 
