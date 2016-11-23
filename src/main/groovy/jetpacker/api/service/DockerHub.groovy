@@ -1,11 +1,11 @@
 package jetpacker.api.service
 
-import jetpacker.api.configuration.Metadata
+import jetpacker.api.configuration.Summary
 
 /**
- * Created by wolf on 13/11/16.
+ * Created by donny on 13/11/16.
  */
 class DockerHub {
     String next
-    List<Metadata> results
+    List<Summary> results
 }
