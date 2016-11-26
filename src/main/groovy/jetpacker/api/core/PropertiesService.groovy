@@ -1,4 +1,4 @@
-package jetpacker.api.service
+package jetpacker.api.core
 
 import jetpacker.api.configuration.Container
 import jetpacker.api.configuration.JetpackerProperties

@@ -1,4 +1,4 @@
-package jetpacker.api.service
+package jetpacker.api.core
 
 import groovy.transform.CompileStatic
 import org.springframework.stereotype.Service

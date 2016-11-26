@@ -1,4 +1,4 @@
-package jetpacker.api.service
+package jetpacker.api.core
 
 import jetpacker.api.common.VersionComparator
 import jetpacker.api.configuration.*

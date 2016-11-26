@@ -1,8 +1,8 @@
-package jetpacker.api.controller
+package jetpacker.api.web
 
 import jetpacker.api.configuration.JetpackerProperties
-import jetpacker.api.service.GeneratorService
-import jetpacker.api.service.PropertiesService
+import jetpacker.api.core.GeneratorService
+import jetpacker.api.core.PropertiesService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
