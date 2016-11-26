@@ -13,20 +13,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "docker"
 
-  config.vm.provision 'ansible', run: "always", type: 'ansible_local' do |ansible|
+  config.vm.provision 'ansible', run: 'always', type: 'ansible_local' do |ansible|
     ansible.sudo = true
     ansible.verbose = true
     ansible.playbook = './playbook.yml'
-    ansible.extra_vars = {
-      application: '${application}',
-      timezone: '${timezone}',
-
-      workspace_root: '/vagrant/workspace',
-      sdk_root: '/vagrant/.sdk',
-
-      workspace_home: "/home/vagrant/workspace",
-      configuration_home: "/home/vagrant/configuration",
-      data_home: "/home/vagrant/data"
-    }
+    ansible.extra_vars = 'properties.yml'
   end
 end
