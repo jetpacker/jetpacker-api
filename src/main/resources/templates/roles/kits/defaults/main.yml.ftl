@@ -1,10 +1,13 @@
 ---
-### sdkman ###
-gradle_version: 3.1
-
-### nvm ###
-nvm_version: 0.32.0
-node_version: 6.7.0
+### node ###
+nvm: v0.32.0
+node: v6.7.0
 
 ### rvm ###
-ruby_version: 2.3.1
+ruby: 2.3.1
+
+### sdkman ###
+sdkman_candidates:
+  activator: 1.3.10
+  gradle: 3.1
+  grails: 2.2.2
