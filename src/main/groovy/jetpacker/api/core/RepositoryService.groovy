@@ -122,7 +122,7 @@ class RepositoryService {
                     label: candidate,
                     version: new Version(
                             releases: versions,
-                            name: "${candidate}_version",
+                            name: "version",
                             label: "Version"
                     )
             )
