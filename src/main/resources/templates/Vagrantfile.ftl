@@ -17,6 +17,6 @@ Vagrant.configure("2") do |config|
     ansible.sudo = true
     ansible.verbose = true
     ansible.playbook = './playbook.yml'
-    ansible.extra_vars = 'properties.yml'
+    ansible.extra_vars = './properties.yml'
   end
 end
