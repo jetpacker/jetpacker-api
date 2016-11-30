@@ -13,7 +13,7 @@ import org.springframework.web.client.AsyncRestTemplate
  */
 @CompileStatic
 @Configuration
-@EnableConfigurationProperties(JetpackerProperties.class)
+@EnableConfigurationProperties(Jetpacker.class)
 class JetpackerConfiguration {
     @Bean
     AsyncRestTemplate asyncRestTemplate() {

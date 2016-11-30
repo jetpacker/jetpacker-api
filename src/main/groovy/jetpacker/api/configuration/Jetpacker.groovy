@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  */
 @CompileStatic
 @ConfigurationProperties(prefix = "jetpacker")
-class JetpackerProperties {
+class Jetpacker {
     Machine ubuntu
 
     Kit openjdk
