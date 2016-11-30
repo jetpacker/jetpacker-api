@@ -7,7 +7,7 @@ import groovy.transform.CompileStatic
  * Created by donny on 24/10/2016.
  */
 @CompileStatic
-class Application extends Summary {
+class Software extends Platform {
     @JsonIgnore
     Repository repository = Repository.None
 

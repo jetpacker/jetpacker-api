@@ -25,22 +25,22 @@ class RepositoryService {
         this.asyncRestTemplate = asyncRestTemplate
     }
 
-    public void updateReleases(Application application) {
-        if (application instanceof Kit) {
-            Kit kit = (Kit) application
+    public void updateReleases(Software software) {
+        if (software instanceof Kit) {
+            Kit kit = (Kit) software
 
             if (kit.dependency)
                 updateReleases(kit.dependency)
         }
 
-        Repository repository = application.repository
-        Summary summary = (Summary) application
+        Repository repository = software.repository
+        Platform platform = (Platform) software
 
         if (repository == Repository.GitHub)
-            application.version.releases = loadReleasesFromGitHub(repository, summary)
+            software.version.releases = loadReleasesFromGitHub(repository, platform)
 
         if (repository == Repository.DockerHub)
-            application.version.releases = loadReleasesFromDockerHub(repository, summary)
+            software.version.releases = loadReleasesFromDockerHub(repository, platform)
 
     }
 
@@ -60,12 +60,12 @@ class RepositoryService {
         releases
     }
 
-    public String loadUrlFromRepository(Repository repository, Summary summary) {
+    public String loadUrlFromRepository(Repository repository, Platform platform) {
         String url = repository.url
 
         if (repository && repository != Repository.SdkMan) {
-            String name = summary.name
-            String namespace = summary.namespace
+            String name = platform.name
+            String namespace = platform.namespace
 
             url = url.replace("{name}", name)
 
@@ -76,36 +76,36 @@ class RepositoryService {
         url
     }
 
-    public List<String> loadReleasesFromGitHub(Repository repository, Summary summary) {
-        String url = loadUrlFromRepository(repository, summary)
+    public List<String> loadReleasesFromGitHub(Repository repository, Platform platform) {
+        String url = loadUrlFromRepository(repository, platform)
 
-        ResponseEntity<List<Summary>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Summary>>() {}).get()
+        ResponseEntity<List<Platform>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Platform>>() {}).get()
 
-        List<Summary> summaries = response.body
-        List<String> releases = filterReleases(summaries*.name, summary.suffix)
+        List<Platform> platforms = response.body
+        List<String> releases = filterReleases(platforms*.name, platform.suffix)
 
         releases
     }
 
-    public List<String> loadReleasesFromDockerHub(Repository repository, Summary summary) {
-        String url = loadUrlFromRepository(repository, summary)
+    public List<String> loadReleasesFromDockerHub(Repository repository, Platform platform) {
+        String url = loadUrlFromRepository(repository, platform)
 
         ResponseEntity<DockerHub> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
                 new ParameterizedTypeReference<DockerHub>() {}).get()
 
         DockerHub dockerHub = response.body
-        List<Summary> summaries = dockerHub.results
+        List<Platform> platforms = dockerHub.results
 
         while (dockerHub.next) {
             response =  asyncRestTemplate.exchange(dockerHub.next, HttpMethod.GET, null,
                     new ParameterizedTypeReference<DockerHub>() {}).get()
 
             dockerHub = response.body
-            summaries += dockerHub.results
+            platforms += dockerHub.results
         }
 
-        List<String> releases = filterReleases(summaries*.name, summary.suffix)
+        List<String> releases = filterReleases(platforms*.name, platform.suffix)
 
         releases
     }

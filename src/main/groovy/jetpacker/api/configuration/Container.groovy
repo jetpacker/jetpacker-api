@@ -9,7 +9,7 @@ import groovy.transform.CompileStatic
  */
 @AutoClone
 @CompileStatic
-class Container extends Application {
+class Container extends Software {
     @JsonIgnore
     String command
 

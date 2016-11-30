@@ -8,7 +8,7 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Summary {
+class Platform {
     String name
     String namespace
 
