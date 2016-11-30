@@ -177,7 +177,7 @@ jetpacker:
         - { name: user, label: User, value: rabbitmq }
         - { name: password, label: Password, value: rabbitmq }
         - { name: node_name, label: Node Name, value: node@rabbitmq }
-        - { name: cookie, label: Cookie, value: rabbitmq_cookie }
+        - { name: erlang_cookie, label: Erlang Cookie, value: rabbitmq_erlang_cookie }
         - { name: port, label: Port, value: 5672 }
         - { name: management_port, label: Management Port, value: 15672 }
 

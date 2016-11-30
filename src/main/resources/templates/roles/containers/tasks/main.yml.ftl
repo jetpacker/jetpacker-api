@@ -14,8 +14,8 @@
       - "{{ mysql.configuration }}:/etc/mysql/conf.d"
       - "{{ mysql.data }}:/var/lib/mysql"
 
-      # - "{{ mariadb.configuration }}:/etc/mysql/conf.d"
-      # - "{{ mariadb.data }}:/var/lib/mysql"
+      - "{{ mariadb.configuration }}:/etc/mysql/conf.d"
+      - "{{ mariadb.data }}:/var/lib/mysql"
 
       - "{{ mongodb.data }}:/data/db"
 
@@ -31,7 +31,7 @@
     name: postgresql
     image: postgres:{{ postgres.version }}
     interactive: true
-    published_ports: "{{ postgres.port }}"
+    published_ports: "{{ postgres.ports }}"
     volumes_from: alpine
     state: started
     recreate: true
@@ -42,18 +42,18 @@
       PGDATA : /var/lib/postgresql/data/pgdata
 
 ### mysql ###
-# - name: run mysql:{{ mysql.version }}
-#   docker_container:
-#     name: mysql
-#     image: mysql:{{ mysql.version }}
-#     interactive: true
-#     published_ports: "{{ mysql.port }}"
-#     volumes_from: alpine
-#     state: started
-#     recreate: true
-#     env:
-#       MYSQL_ROOT_PASSWORD: "{{ mysql.root_password }}"
-#       MYSQL_DATABASE: "{{ mysql.database }}"
+- name: run mysql:{{ mysql.version }}
+  docker_container:
+    name: mysql
+    image: mysql:{{ mysql.version }}
+    interactive: true
+    published_ports: "{{ mysql.ports }}"
+    volumes_from: alpine
+    state: started
+    recreate: true
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ mysql.root_password }}"
+      MYSQL_DATABASE: "{{ mysql.database }}"
 
 ### mariadb ###
 - name: run mariadb:{{ mariadb.version }}
@@ -61,7 +61,7 @@
     name: mariadb
     image: mariadb:{{ mariadb.version }}
     interactive: true
-    published_ports: "{{ mariadb.port }}"
+    published_ports: "{{ mariadb.ports }}"
     volumes_from: alpine
     state: started
     recreate: true
@@ -75,7 +75,7 @@
     name: mongodb
     image: mongo:{{ mongodb.version }}
     interactive: true
-    published_ports: "{{ mongodb.port }}"
+    published_ports: "{{ mongodb.ports }}"
     volumes_from: alpine
     state: started
     recreate: true
@@ -87,7 +87,7 @@
     image: redis:{{ redis.version }}
     command: redis-server --appendonly yes
     interactive: true
-    published_ports: "{{ redis.port }}"
+    published_ports: "{{ redis.ports }}"
     volumes_from: alpine
     state: started
     recreate: true
@@ -106,4 +106,4 @@
       RABBITMQ_DEFAULT_USER: "{{ rabbitmq.user }}"
       RABBITMQ_DEFAULT_PASS: "{{ rabbitmq.password }}"
       RABBITMQ_NODE_NAME: "{{ rabbitmq.node_name }}"
-      RABBITMQ_ERLANG_COOKIE: "{{ rabbitmq.cookie }}"
+      RABBITMQ_ERLANG_COOKIE: "{{ rabbitmq.erlang_cookie }}"

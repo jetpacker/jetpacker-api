@@ -38,7 +38,8 @@ postgres:
   user: root
   password: root
   database: "{{ application }}"
-  port: 5432:5432
+  ports:
+    - 5432:5432
   data: "{{ container.data }}/postgresql"
 
 ### mysql ###
@@ -46,7 +47,8 @@ mysql:
   version: 5.6
   root_password: root
   database: "{{ application }}"
-  port: 3306:3306
+  ports:
+    - 3306:3306
   configuration: "{{ container.configuration }}/mysql"
   data: "{{ container.data }}/mysql"
 
@@ -55,20 +57,23 @@ mariadb:
   version: 10.1.18
   root_password: root
   database: "{{ application }}"
-  port: 3306:3306
+  ports:
+    - 3306:3306
   configuration: "{{ container.configuration }}/mariadb"
   data: "{{ container.data }}/mariadb"
 
 ### mongodb ###
 mongodb:
   version: 3.3
-  port: 27017:27017
+  ports:
+    - 27017:27017
   data: "{{ container.data }}/mongodb"
 
 ### redis ###
 redis:
   version: 3.2.4
-  port: 6379:6379
+  ports:
+    - 6379:6379
   configuration: "{{ container.configuration }}/redis"
   data: "{{ container.data }}/redis"
 
@@ -78,7 +83,7 @@ rabbitmq:
   user: root
   password: root
   node_name:  "{{ application }}@rabbit"
-  cookie:  "{{ application }}_rabbit_cookie"
+  erlang_cookie:  "{{ application }}_rabbit_cookie"
   ports:
     - 5672:5672
     - 15672:15672
