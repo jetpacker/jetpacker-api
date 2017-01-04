@@ -1,5 +1,6 @@
 package jetpacker.api.configuration
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.CompileStatic
 
@@ -13,6 +14,7 @@ class Platform {
     String namespace
 
     String label
+    @JsonIgnore
     String suffix
     String description
 
