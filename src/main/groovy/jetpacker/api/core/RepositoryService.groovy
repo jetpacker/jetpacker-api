@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.AsyncRestTemplate
+import org.springframework.web.util.UriComponentsBuilder
 
 import java.util.concurrent.ExecutionException
 
@@ -25,7 +26,7 @@ class RepositoryService {
         this.asyncRestTemplate = asyncRestTemplate
     }
 
-    public void updateReleases(Software software) {
+    void updateReleases(Software software) {
         if (software instanceof Kit) {
             Kit kit = (Kit) software
 
@@ -44,7 +45,7 @@ class RepositoryService {
 
     }
 
-    public List<Version> filterReleases(List<String> releases, String suffix) {
+    List<Version> filterReleases(List<String> releases, String suffix) {
         if (releases) {
             releases = releases.collect { String release ->
                 String pattern = "^v?[0-9]+([\\._][0-9]+)*(${suffix})?\$"
@@ -60,23 +61,22 @@ class RepositoryService {
         releases
     }
 
-    public String loadUrlFromRepository(Repository repository, Platform platform) {
-        String url = repository.url
+    String loadUrlFromRepository(Repository repository, Platform platform) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(repository.url)
+        Map<String, String> parameters = [:]
 
-        if (repository && repository != Repository.SdkMan) {
-            String name = platform.name
-            String namespace = platform.namespace
+        if (repository != Repository.SdkMan) {
+            if (platform.name)
+                parameters['name'] = platform.name
 
-            url = url.replace("{name}", name)
-
-            if (namespace)
-                url = url.replace("{namespace}", namespace)
+            if (platform.namespace)
+                parameters['namespace'] = platform.namespace
         }
 
-        url
+        builder.buildAndExpand(parameters).toUriString()
     }
 
-    public List<String> loadReleasesFromGitHub(Repository repository, Platform platform) {
+    List<String> loadReleasesFromGitHub(Repository repository, Platform platform) {
         String url = loadUrlFromRepository(repository, platform)
 
         ResponseEntity<List<Platform>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
@@ -88,7 +88,7 @@ class RepositoryService {
         releases
     }
 
-    public List<String> loadReleasesFromDockerHub(Repository repository, Platform platform) {
+    List<String> loadReleasesFromDockerHub(Repository repository, Platform platform) {
         String url = loadUrlFromRepository(repository, platform)
 
         ResponseEntity<DockerHub> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
@@ -110,7 +110,7 @@ class RepositoryService {
         releases
     }
 
-    public List<Kit> loadCandidatesFromSdkMan() throws ExecutionException, InterruptedException {
+    List<Kit> loadCandidatesFromSdkMan() throws ExecutionException, InterruptedException {
         ResponseEntity<String> response = asyncRestTemplate.getForEntity(Repository.SdkMan.url, String.class).get()
 
         response.body.split(",").collect { String candidate ->
