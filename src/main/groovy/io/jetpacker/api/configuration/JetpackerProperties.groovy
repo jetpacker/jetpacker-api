@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  * Created by donny on 24/10/2016.
  */
 @CompileStatic
-@ConfigurationProperties(prefix = "jetpackerProperties")
+@ConfigurationProperties(prefix = "jetpacker")
 class JetpackerProperties {
     Machine ubuntu
 
