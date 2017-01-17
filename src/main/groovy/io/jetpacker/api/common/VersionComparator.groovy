@@ -8,7 +8,6 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion
 class VersionComparator implements Comparator<String> {
     @Override
     int compare(String version1, String version2) {
-        return new DefaultArtifactVersion(version2)
-                   .compareTo(new DefaultArtifactVersion(version1))
+        return new DefaultArtifactVersion(version2) <=> new DefaultArtifactVersion(version1)
     }
 }
