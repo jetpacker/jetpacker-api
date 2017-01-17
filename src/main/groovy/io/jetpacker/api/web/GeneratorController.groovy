@@ -3,13 +3,17 @@ package io.jetpacker.api.web
 import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.core.GeneratorService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
  * Created by donny on 30/10/16.
  */
+@CrossOrigin
 @RestController
+@RequestMapping("/generator")
 class GeneratorController {
     private final GeneratorService generatorService
 
