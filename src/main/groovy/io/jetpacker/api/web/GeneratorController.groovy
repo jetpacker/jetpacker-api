@@ -1,6 +1,6 @@
 package io.jetpacker.api.web
 
-import io.jetpacker.api.configuration.Jetpacker
+import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.core.GeneratorService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,8 +18,8 @@ class GeneratorController {
         this.generatorService = generatorService
     }
 
-    @GetMapping("/load")
-    Jetpacker load() {
+    @GetMapping
+    JetpackerProperties load() {
         generatorService.load()
     }
 }

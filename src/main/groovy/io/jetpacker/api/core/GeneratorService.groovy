@@ -2,7 +2,7 @@ package io.jetpacker.api.core
 
 import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.Container
-import io.jetpacker.api.configuration.Jetpacker
+import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.configuration.Kit
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -16,46 +16,48 @@ import java.util.concurrent.ExecutionException
 @Slf4j
 @Service
 class GeneratorService {
-    private final Jetpacker jetpacker
+    private final JetpackerProperties jetpackerProperties
     private final RepositoryService repositoryService
 
     @Autowired
     GeneratorService(RepositoryService repositoryService,
-                     Jetpacker jetpacker) {
+                     JetpackerProperties jetpackerProperties) {
         this.repositoryService = repositoryService
-        this.jetpacker = jetpacker
+        this.jetpackerProperties = jetpackerProperties
     }
 
     @PostConstruct
-    public void setUp() {
+    void setUp() {
         try {
+            // TODO: TimeZone can be refactored for better testability
             log.info "Loading timezones"
-            jetpacker.ubuntu.timezone.availableIds = TimeZone.availableIDs.collect { String id ->
+            jetpackerProperties.ubuntu.timezone.availableIds = TimeZone.availableIDs.collect { String id ->
                 if (!id.startsWith("SystemV"))
                     return id
             }
 
-            jetpacker.ubuntu.timezone.availableIds.removeAll([null ])
+            jetpackerProperties.ubuntu.timezone.availableIds.removeAll([null ])
+
 
             log.info "Loading candidates from SDKMAN!"
-            jetpacker.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
+            jetpackerProperties.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
 
-            [ jetpacker.node,
-              jetpacker.guard ].each { Kit kit ->
+            [jetpackerProperties.node,
+             jetpackerProperties.guard ].each { Kit kit ->
                 log.info "Updating releases for ${kit.label}"
                 repositoryService.updateReleases(kit)
             }
 
-            [ jetpacker.databaseEngines,
-              jetpacker.queueEngines,
-              jetpacker.searchEngines ].flatten().each { Container container ->
+            [jetpackerProperties.databaseEngines,
+             jetpackerProperties.queueEngines,
+             jetpackerProperties.searchEngines ].flatten().each { Container container ->
                 log.info "Updating releases for ${container.label}"
                 repositoryService.updateReleases(container)
             }
         } catch (InterruptedException|ExecutionException e) {}
     }
 
-    public Jetpacker load() {
-        jetpacker
+    JetpackerProperties load() {
+        jetpackerProperties
     }
 }
