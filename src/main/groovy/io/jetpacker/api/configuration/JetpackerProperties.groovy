@@ -15,7 +15,7 @@ class JetpackerProperties {
     Kit node
     Kit guard
 
-    List<Container> databaseEngines
-    List<Container> queueEngines
+    List<Container> databaseServers
+    List<Container> messageBrokers
     List<Container> searchEngines
 }

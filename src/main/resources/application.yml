@@ -51,7 +51,7 @@ jetpacker:
       repository: GitHub
       version: { name: version, label: Version }
 
-  databaseEngines:
+  databaseServers:
     - name: mysql
       label: MySQL
       description: MySQL is the most popular Open Source SQL database management system.
@@ -152,7 +152,7 @@ jetpacker:
       parameters:
         - { name: port, label: Port, value: 6379 }
 
-  queueEngines:
+  messageBrokers:
     - name: rabbitmq
       label: RabbitMQ
       suffix: -management

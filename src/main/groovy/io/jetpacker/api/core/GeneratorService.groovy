@@ -48,8 +48,8 @@ class GeneratorService {
                 repositoryService.updateReleases(kit)
             }
 
-            [jetpackerProperties.databaseEngines,
-             jetpackerProperties.queueEngines,
+            [jetpackerProperties.databaseServers,
+             jetpackerProperties.messageBrokers,
              jetpackerProperties.searchEngines ].flatten().each { Container container ->
                 log.info "Updating releases for ${container.label}"
                 repositoryService.updateReleases(container)
