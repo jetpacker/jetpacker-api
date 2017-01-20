@@ -4,6 +4,7 @@ import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.Container
 import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.configuration.Kit
+import io.jetpacker.api.configuration.Machine
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -29,32 +30,44 @@ class GeneratorService {
     @PostConstruct
     void setUp() {
         try {
+            Machine ubuntu = jetpackerProperties.ubuntu
+
+            Kit openjdk = jetpackerProperties.openjdk
+            Kit node = jetpackerProperties.node
+            Kit guard = jetpackerProperties.guard
+
+            List<Kit> nonJavaKits = [ node, node.dependency, node.extensions, guard, guard.dependency ].flatten()
+
+            List<Container> databaseServers = jetpackerProperties.databaseServers
+            List<Container> messageBrokers = jetpackerProperties.messageBrokers
+            List<Container> searchEngines = jetpackerProperties.searchEngines
+
+            List<Kit> containers = [ databaseServers, messageBrokers, searchEngines ].flatten()
+
             // TODO: TimeZone can be refactored for better testability
             log.info "Loading timezones"
-            jetpackerProperties.ubuntu.timezone.availableIds = TimeZone.availableIDs.collect { String id ->
+            ubuntu.timezone.availableIds = TimeZone.availableIDs.collect { String id ->
                 if (!id.startsWith("SystemV"))
                     return id
             }
 
-            jetpackerProperties.ubuntu.timezone.availableIds.removeAll([null ])
-
+            ubuntu.timezone.availableIds.removeAll([ null ])
 
             log.info "Loading candidates from SDKMAN!"
-            jetpackerProperties.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
+            openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
 
-            [jetpackerProperties.node,
-             jetpackerProperties.guard ].each { Kit kit ->
+            nonJavaKits.each { Kit kit ->
                 log.info "Updating releases for ${kit.label}"
                 repositoryService.updateReleases(kit)
             }
 
-            [jetpackerProperties.databaseServers,
-             jetpackerProperties.messageBrokers,
-             jetpackerProperties.searchEngines ].flatten().each { Container container ->
+            containers.each { Container container ->
                 log.info "Updating releases for ${container.label}"
                 repositoryService.updateReleases(container)
             }
-        } catch (InterruptedException|ExecutionException e) {}
+        } catch (InterruptedException|ExecutionException e) {
+            e.printStackTrace()
+        }
     }
 
     JetpackerProperties load() {
