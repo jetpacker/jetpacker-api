@@ -8,6 +8,8 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class Kit extends Software {
+    String alias
+
     List<Kit> extensions
 
     @JsonIgnore
