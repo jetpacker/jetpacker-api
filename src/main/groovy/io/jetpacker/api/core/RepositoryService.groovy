@@ -32,13 +32,6 @@ class RepositoryService {
     }
 
     void updateReleases(Software software) {
-        if (software instanceof Kit) {
-            Kit kit = (Kit) software
-
-            if (kit.dependency)
-                updateReleases(kit.dependency)
-        }
-
         Repository repository = software.repository
         Platform platform = (Platform) software
 
@@ -47,7 +40,6 @@ class RepositoryService {
 
         if (repository == Repository.DockerHub)
             software.version.releases = loadReleasesFromDockerHub(repository, platform)
-
     }
 
     List<Version> filterReleases(List<String> releases, String suffix) {
