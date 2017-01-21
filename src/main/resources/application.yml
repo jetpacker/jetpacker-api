@@ -37,7 +37,7 @@ jetpacker:
     dependency:
       name: nvm
       namespace: creationix
-      label: Node.js Version Manager
+      label: Node Version Manager
       repository: GitHub
       version: { name: version, label: Version }
     extensions:
