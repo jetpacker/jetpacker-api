@@ -1,12 +1,7 @@
 package io.jetpacker.api.core
 
-import io.jetpacker.api.configuration.Kit
-import io.jetpacker.api.configuration.Platform
-import io.jetpacker.api.configuration.Repository
-import io.jetpacker.api.configuration.Software
 import io.jetpacker.api.common.VersionComparator
-import io.jetpacker.api.configuration.Version
-import jetpacker.api.configuration.*
+import io.jetpacker.api.configuration.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
@@ -108,11 +103,33 @@ class RepositoryService {
     }
 
     List<Kit> loadCandidatesFromSdkMan() throws ExecutionException, InterruptedException {
-        ResponseEntity<String> response = asyncRestTemplate.getForEntity(Repository.SdkMan.url, String.class).get()
+        // TODO: Extract candidates' real names
+//        String sdkmanCandidatesList = "${Repository.SdkMan.url}/list"
+//        String rawCandidatesList = asyncRestTemplate.getForEntity(sdkmanCandidatesList, String.class).get().body
+//        String candidatesListDelimiter = "(?m)^(-)+\$"
+//
+//        List<String> lines = new ArrayList<String>(
+//                Arrays.asList(
+//                        rawCandidatesList.split(candidatesListDelimiter)
+//                )
+//        )
+//
+//        lines.remove(0)
+//        lines.remove(lines.size() - 1)
+//
+//        lines.each { String line ->
+//
+//            String[] tokens = line.split("(?m)^\\s*\$")
+//            println "first: ${tokens[0]}"
+//            println "last: ${tokens[2].trim().replace('$ sdk install ', "")}"
+//
+//        }
+        String rawCandidates = asyncRestTemplate.getForEntity(Repository.SdkMan.url, String.class).get().body
 
-        response.body.split(",").collect { String candidate ->
-            ResponseEntity<String> rawVersions = asyncRestTemplate.getForEntity("${Repository.SdkMan.url}/${candidate}", String.class).get()
-            List<String> versions = Arrays.asList(rawVersions.body.split(",")).reverse()
+        rawCandidates.split(",").collect { String candidate ->
+            String sdkmanCandidateUrl = "${Repository.SdkMan.url}/${candidate}"
+            String rawVersions = asyncRestTemplate.getForEntity(sdkmanCandidateUrl, String.class).get().body
+            List<String> versions = Arrays.asList(rawVersions.split(",")).reverse()
             versions.sort versionComparator
 
             new Kit(name: candidate,
