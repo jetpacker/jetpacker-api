@@ -103,39 +103,39 @@ class RepositoryService {
     }
 
     List<Kit> loadCandidatesFromSdkMan() throws ExecutionException, InterruptedException {
-        // TODO: Extract candidates' real names
-//        String sdkmanCandidatesList = "${Repository.SdkMan.url}/list"
-//        String rawCandidatesList = asyncRestTemplate.getForEntity(sdkmanCandidatesList, String.class).get().body
-//        String candidatesListDelimiter = "(?m)^(-)+\$"
-//
-//        List<String> lines = new ArrayList<String>(
-//                Arrays.asList(
-//                        rawCandidatesList.split(candidatesListDelimiter)
-//                )
-//        )
-//
-//        lines.remove(0)
-//        lines.remove(lines.size() - 1)
-//
-//        lines.each { String line ->
-//
-//            String[] tokens = line.split("(?m)^\\s*\$")
-//            println "first: ${tokens[0]}"
-//            println "last: ${tokens[2].trim().replace('$ sdk install ', "")}"
-//
-//        }
-        String rawCandidates = asyncRestTemplate.getForEntity(Repository.SdkMan.url, String.class).get().body
+        Map<String, String> candidates = [:]
+
+        String candidatesUrl = "${Repository.SdkMan.url}/list"
+        String rawCandidates = asyncRestTemplate.getForEntity(candidatesUrl, String.class).get().body
+
+        rawCandidates.split(/(?m)^(-)+$/).eachWithIndex{ String rawCandidate, int i ->
+            if (i > 0 && i < rawCandidate.size() - 1) {
+                String[] tokens = rawCandidate.split(/(?m)^\s*$/)
+
+                String name = tokens[2].replace('$ sdk install ', "").trim()
+                String label = tokens[0].replaceFirst(/\s+\(.+\)/, "")
+                                        .replaceFirst(/\s+http(s)?:\\/\\/.+$/, "")
+                                        .trim()
+
+                // TODO: To be used in future?
+                // String description = println tokens[1].replaceAll(/\n/, " ").trim()
+
+                candidates[name] = label
+            }
+        }
+
+        rawCandidates = asyncRestTemplate.getForEntity(Repository.SdkMan.url, String.class).get().body
 
         rawCandidates.split(",").collect { String candidate ->
-            String sdkmanCandidateUrl = "${Repository.SdkMan.url}/${candidate}"
-            String rawVersions = asyncRestTemplate.getForEntity(sdkmanCandidateUrl, String.class).get().body
-            List<String> versions = Arrays.asList(rawVersions.split(",")).reverse()
-            versions.sort versionComparator
+            String candidateUrl = "${Repository.SdkMan.url}/${candidate}"
+            String rawReleases = asyncRestTemplate.getForEntity(candidateUrl, String.class).get().body
+            List<String> releases = Arrays.asList(rawReleases.split(","))
+            releases.sort versionComparator
 
             new Kit(name: candidate,
-                    label: candidate,
+                    label: candidates[candidate],
                     version: new Version(
-                            releases: versions,
+                            releases: releases,
                             name: "version",
                             label: "Version"
                     )
