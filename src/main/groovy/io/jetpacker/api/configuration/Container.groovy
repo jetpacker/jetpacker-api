@@ -7,7 +7,6 @@ import groovy.transform.CompileStatic
 /**
  * Created by donny on 30/10/16.
  */
-@AutoClone
 @CompileStatic
 class Container extends Software {
     @JsonIgnore
