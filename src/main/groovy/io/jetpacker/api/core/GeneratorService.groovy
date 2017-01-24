@@ -2,9 +2,11 @@ package io.jetpacker.api.core
 
 import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.Container
+import io.jetpacker.api.configuration.DevelopmentKits
 import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.configuration.Kit
 import io.jetpacker.api.configuration.Machine
+import io.jetpacker.api.configuration.VirtualMachines
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -30,31 +32,30 @@ class GeneratorService {
     @PostConstruct
     void setUp() {
         try {
-            Machine ubuntu = jetpackerProperties.ubuntu
+            VirtualMachines virtualMachines = jetpackerProperties.virtualMachines
+            DevelopmentKits developmentKits = jetpackerProperties.developmentKits
 
-            Kit openjdk = jetpackerProperties.openjdk
-            Kit node = jetpackerProperties.node
-            Kit guard = jetpackerProperties.guard
+            List<Kit> nonJavaKits = [ developmentKits.node,
+                                      developmentKits.node.dependency,
+                                      developmentKits.node.extensions,
+                                      developmentKits.guard,
+                                      developmentKits.guard.dependency ].flatten()
 
-            List<Kit> nonJavaKits = [ node, node.dependency, node.extensions, guard, guard.dependency ].flatten()
-
-            List<Container> databaseServers = jetpackerProperties.databaseServers
-            List<Container> messageBrokers = jetpackerProperties.messageBrokers
-            List<Container> searchEngines = jetpackerProperties.searchEngines
-
-            List<Kit> containers = [ databaseServers, messageBrokers, searchEngines ].flatten()
+            List<Container> containers = [ jetpackerProperties.databaseServers,
+                                           jetpackerProperties.messageBrokers,
+                                           jetpackerProperties.searchEngines ].flatten()
 
             // TODO: TimeZone can be refactored for better testability
             log.info "Loading timezones"
-            ubuntu.timezone.availableIds = TimeZone.availableIDs.collect { String id ->
+            virtualMachines.ubuntu.timezone.availableIds = TimeZone.availableIDs.collect { String id ->
                 if (!id.startsWith("SystemV"))
                     return id
             }
 
-            ubuntu.timezone.availableIds.removeAll([ null ])
+            virtualMachines.ubuntu.timezone.availableIds.removeAll([ null ])
 
             log.info "Loading candidates from SDKMAN!"
-            openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
+            developmentKits.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
 
             nonJavaKits.each { Kit kit ->
                 log.info "Updating releases for ${kit.label}"

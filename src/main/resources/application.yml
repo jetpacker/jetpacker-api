@@ -2,83 +2,85 @@ server:
   port: 5000
 
 jetpacker:
-  ubuntu:
-    name: ubuntu
-    label: Ubuntu
-    description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
-    version:
-      name: box
-      label: Box
-      releases: [ ubuntu/trusty64, ubuntu/trusty32 ]
-    timezone: { name: timezone, label: Timezone }
-    parameters:
-      - { name: application, label: Application Name, value: my_application }
-      - { name: memory, label: Memory, value: 4096 }
+  virtualMachines:
+    ubuntu:
+      name: ubuntu
+      label: Ubuntu
+      description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
+      version:
+        name: box
+        label: Box
+        releases: [ ubuntu/trusty64, ubuntu/trusty32 ]
+      timezone: { name: timezone, label: Timezone }
+      parameters:
+        - { name: application, label: Application Name, value: my_application }
+        - { name: memory, label: Memory, value: 4096 }
 
-  openjdk:
-    name: openjdk
-    label: OpenJDK
-    description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
-    repository: SdkMan
-    version:
-      name: version
-      label: Version
-      releases: [ 8, 7 ]
-    install: { name: install, label: Install OpenJDK, value: true }
+  developmentKits:
+    openjdk:
+      name: openjdk
+      label: OpenJDK
+      description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
+      repository: SdkMan
+      version:
+        name: version
+        label: Version
+        releases: [ 8, 7 ]
+      install: { name: install, label: Install OpenJDK, value: true }
 
-  node:
-    name: node
-    namespace: nodejs
-    label: Node.js
-    description: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
-    repository: GitHub
-    version: { name: version, label: Version }
-    install: { name: install, label: Install Node, value: true }
-    dependency:
-      name: nvm
-      namespace: creationix
-      label: Node Version Manager
+    node:
+      name: node
+      namespace: nodejs
+      label: Node.js
+      description: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
       repository: GitHub
       version: { name: version, label: Version }
-    extensions:
-      - name: vue-cli
-        namespace: vuejs
-        label: Vue.js
+      install: { name: install, label: Install Node, value: true }
+      dependency:
+        name: nvm
+        namespace: creationix
+        label: Node Version Manager
         repository: GitHub
         version: { name: version, label: Version }
-      - name: cli
-        namespace: aurelia
-        label: Aurelia
-        alias: aurelia-cli
-        repository: GitHub
-        version: { name: version, label: Version }
-      - name: ember-cli
-        namespace: ember-cli
-        label: Ember.js
-        repository: GitHub
-        version: { name: version, label: Version }
-      - name: angular-cli
-        namespace: angular
-        label: Angular
-        repository: GitHub
-        version: { name: version, label: Version }
-      - name: create-react-app
-        namespace: facebookincubator
-        label: React
-        repository: GitHub
-        version: { name: version, label: Version }
+      extensions:
+        - name: vue-cli
+          namespace: vuejs
+          label: Vue.js
+          repository: GitHub
+          version: { name: version, label: Version }
+        - name: cli
+          namespace: aurelia
+          label: Aurelia
+          alias: aurelia-cli
+          repository: GitHub
+          version: { name: version, label: Version }
+        - name: ember-cli
+          namespace: ember-cli
+          label: Ember.js
+          repository: GitHub
+          version: { name: version, label: Version }
+        - name: angular-cli
+          namespace: angular
+          label: Angular
+          repository: GitHub
+          version: { name: version, label: Version }
+        - name: create-react-app
+          namespace: facebookincubator
+          label: React
+          repository: GitHub
+          version: { name: version, label: Version }
 
-  guard:
-    name: guard
-    label: Guard
-    description: Guard is a command line tool to easily handle events on file system modifications.
-    install: { name: install, label: Install Guard, value: true }
-    dependency:
-      name: ruby
-      namespace: ruby
-      label: Ruby
-      repository: GitHub
-      version: { name: version, label: Version }
+    guard:
+      name: guard
+      label: Guard
+      description: Guard is a command line tool to easily handle events on file system modifications.
+      install: { name: install, label: Install Guard, value: true }
+      dependency:
+        name: ruby
+        namespace: ruby
+        label: Ruby
+        repository: GitHub
+        version: { name: version, label: Version }
 
   databaseServers:
     - name: mysql
