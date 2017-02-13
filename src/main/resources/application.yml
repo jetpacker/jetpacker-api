@@ -13,8 +13,7 @@ jetpacker:
         releases: [ ubuntu/trusty64, ubuntu/trusty32 ]
       timezone: { name: timezone, label: Timezone }
       parameters:
-        - { name: application, label: Application Name, value: my_application }
-        - { name: memory, label: Memory, value: 4096 }
+        - { name: memory, label: Memory (MB), value: 4096 }
 
   developmentKits:
     openjdk:

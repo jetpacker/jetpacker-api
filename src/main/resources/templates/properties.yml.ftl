@@ -1,5 +1,4 @@
 ### main ###
-application: my_app
 timezone: Asia/Singapore
 
 ### workspace ###
@@ -37,7 +36,7 @@ postgres:
   version: 9.6
   user: root
   password: root
-  database: "{{ application }}"
+  database: my_database
   ports:
     - 5432:5432
   data: "{{ container.data }}/postgresql"
@@ -46,7 +45,7 @@ postgres:
 mysql:
   version: 5.6
   root_password: root
-  database: "{{ application }}"
+  database: my_database
   ports:
     - 3306:3306
   configuration: "{{ container.configuration }}/mysql"
@@ -56,7 +55,7 @@ mysql:
 mariadb:
   version: 10.1.18
   root_password: root
-  database: "{{ application }}"
+  database: my_database
   ports:
     - 3306:3306
   configuration: "{{ container.configuration }}/mariadb"
@@ -82,8 +81,8 @@ rabbitmq:
   version: 3
   user: root
   password: root
-  node_name:  "{{ application }}@rabbit"
-  erlang_cookie:  "{{ application }}_rabbit_cookie"
+  node_name:  my_node@rabbit
+  erlang_cookie:  my_rabbit_cookie
   ports:
     - 5672:5672
     - 15672:15672
