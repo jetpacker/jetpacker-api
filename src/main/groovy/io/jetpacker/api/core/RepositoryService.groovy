@@ -117,10 +117,12 @@ class RepositoryService {
                                         .replaceFirst(/\s+http(s)?:\\/\\/.+$/, "")
                                         .trim()
 
-                // TODO: To be used in future?
-                // String description = println tokens[1].replaceAll(/\n/, " ").trim()
+                String description = tokens[1].replaceAll(/\n/, " ").trim()
 
-                candidates[name] = label
+                candidates[name] = [
+                        label: label,
+                        description: description
+                ]
             }
         }
 
@@ -133,7 +135,8 @@ class RepositoryService {
             releases.sort versionComparator
 
             new Kit(name: candidate,
-                    label: candidates[candidate],
+                    label: candidates[candidate]['label'],
+                    description: candidates[candidate]['description'],
                     version: new Version(
                             releases: releases,
                             name: "version",
