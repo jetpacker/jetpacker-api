@@ -17,8 +17,4 @@ class Platform {
     @JsonIgnore
     String suffix
     String description
-
-    Version version
-
-    List<Parameter> parameters
 }
