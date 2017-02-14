@@ -7,5 +7,7 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class Machine extends Platform {
+    Box box
+    Parameter memory
     Timezone timezone
 }

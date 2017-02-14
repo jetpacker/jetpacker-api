@@ -2,18 +2,18 @@ server:
   port: 5000
 
 jetpacker:
-  virtualMachines:
-    ubuntu:
-      name: ubuntu
-      label: Ubuntu
-      description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
-      version:
-        name: box
-        label: Box
-        releases: [ ubuntu/trusty64, ubuntu/trusty32 ]
-      timezone: { name: timezone, label: Timezone }
-      parameters:
-        - { name: memory, label: Memory (MB), value: 4096 }
+  virtualMachine:
+    name: ubuntu
+    label: Ubuntu
+    description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
+    box:
+      name: box
+      label: Box
+      releases:
+        ubuntu/trusty64: Ubuntu Trusty Tahr 64
+        ubuntu/trusty32: Ubuntu Trusty Tahr 32
+    memory: { name: memory, label: Memory (MB), value: 4096 }
+    timezone: { name: timezone, label: Timezone }
 
   developmentKits:
     openjdk:

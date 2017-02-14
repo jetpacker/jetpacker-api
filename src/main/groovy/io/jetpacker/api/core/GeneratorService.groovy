@@ -1,12 +1,7 @@
 package io.jetpacker.api.core
 
 import groovy.util.logging.Slf4j
-import io.jetpacker.api.configuration.Container
-import io.jetpacker.api.configuration.DevelopmentKits
-import io.jetpacker.api.configuration.JetpackerProperties
-import io.jetpacker.api.configuration.Kit
-import io.jetpacker.api.configuration.Machine
-import io.jetpacker.api.configuration.VirtualMachines
+import io.jetpacker.api.configuration.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -32,7 +27,7 @@ class GeneratorService {
     @PostConstruct
     void setUp() {
         try {
-            VirtualMachines virtualMachines = jetpackerProperties.virtualMachines
+            Machine virtualMachine = jetpackerProperties.virtualMachine
             DevelopmentKits developmentKits = jetpackerProperties.developmentKits
 
             List<Kit> nonJavaKits = [ developmentKits.node,
@@ -47,12 +42,12 @@ class GeneratorService {
 
             // TODO: TimeZone can be refactored for better testability
             log.info "Loading timezones"
-            virtualMachines.ubuntu.timezone.availableIds = TimeZone.availableIDs.collect { String id ->
+            virtualMachine.timezone.ids = TimeZone.availableIDs.collect { String id ->
                 if (!id.startsWith("SystemV"))
                     return id
             }
 
-            virtualMachines.ubuntu.timezone.availableIds.removeAll([ null ])
+            virtualMachine.timezone.ids.removeAll([ null ])
 
             log.info "Loading candidates from SDKMAN!"
             developmentKits.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
