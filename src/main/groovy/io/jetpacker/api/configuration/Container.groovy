@@ -20,4 +20,6 @@ class Container extends Software {
 
     @JsonIgnore
     Map<String, String> environmentVariables
+
+    List<Parameter> parameters
 }
