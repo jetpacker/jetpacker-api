@@ -12,4 +12,6 @@ class Software extends Platform {
     Repository repository = Repository.None
 
     Parameter install
+
+    Version version
 }
