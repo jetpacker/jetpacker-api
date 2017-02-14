@@ -7,5 +7,5 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class Timezone extends Parameter {
-    List<String> availableIds
+    List<String> ids
 }
