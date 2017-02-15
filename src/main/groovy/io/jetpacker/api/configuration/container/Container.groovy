@@ -10,6 +10,8 @@ import io.jetpacker.api.configuration.Software
  */
 @CompileStatic
 class Container extends Software {
+    Type type
+
     @JsonIgnore
     String command
 

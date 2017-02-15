@@ -2,7 +2,7 @@ server:
   port: 5000
 
 jetpacker:
-  virtualMachine:
+  machine:
     name: ubuntu
     label: Ubuntu
     description: Ubuntu is an open source software platform that runs from the cloud, to the smartphone, to all your things.
@@ -15,7 +15,7 @@ jetpacker:
     memory: { name: memory, label: Memory (MB), value: 4096 }
     timezone: { name: timezone, label: Timezone }
 
-  developmentKits:
+  kits:
     openjdk:
       name: openjdk
       label: OpenJDK
@@ -81,10 +81,12 @@ jetpacker:
         repository: GitHub
         version: { name: version, label: Version }
 
-  databaseServers:
+  containers:
+    # data stores
     - name: mysql
       label: MySQL
       description: MySQL is the most popular Open Source SQL database management system.
+      type: DataStore
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install MySQL, value: true }
@@ -107,6 +109,7 @@ jetpacker:
     - name: mariadb
       label: MariaDB
       description: MariaDB is an enhanced, drop-in replacement for MySQL.
+      type: DataStore
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install MariaDB, value: false }
@@ -129,6 +132,7 @@ jetpacker:
     - name: postgres
       label: PostgreSQL
       description: PostgreSQL is a powerful, open source object-relational database system.
+      type: DataStore
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install PostgreSQL, value: false }
@@ -152,6 +156,7 @@ jetpacker:
     - name: mongo
       label: MongoDB
       description: MongoDB is an open-source, document database designed for ease of development and scaling.
+      type: DataStore
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install MongoDB, value: false }
@@ -167,6 +172,7 @@ jetpacker:
     - name: redis
       label: Redis
       description: Redis is an open source (BSD licensed), in-memory data structure store, used as database, cache and message broker.
+      type: DataStore
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install Redis, value: false }
@@ -182,11 +188,12 @@ jetpacker:
       parameters:
         - { name: port, label: Port, value: 6379 }
 
-  messageBrokers:
+    # message brokers
     - name: rabbitmq
       label: RabbitMQ
       suffix: -management
       description: RabbitMQ is a lightweight, reliable, scalable and portable message broker.
+      type: MessageBroker
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install RabbitMQ, value: false }
@@ -211,10 +218,11 @@ jetpacker:
         - { name: port, label: Port, value: 5672 }
         - { name: management_port, label: Management Port, value: 15672 }
 
-  searchEngines:
+    # search engines
     - name: elasticsearch
       label: ElasticSearch
       description: Elasticsearch is a distributed, open source search and analytics engine, designed for horizontal scalability, reliability, and easy management.
+      type: SearchEngine
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install ElasticSearch, value: false }
@@ -222,6 +230,7 @@ jetpacker:
     - name: solr
       label: Solr
       description: Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene.
+      type: SearchEngine
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install Solr, value: false }
