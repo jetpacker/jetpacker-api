@@ -2,6 +2,10 @@ package io.jetpacker.api.core
 
 import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.*
+import io.jetpacker.api.configuration.container.Container
+import io.jetpacker.api.configuration.kit.DevelopmentKits
+import io.jetpacker.api.configuration.kit.Kit
+import io.jetpacker.api.configuration.machine.Machine
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -30,15 +34,15 @@ class GeneratorService {
             Machine virtualMachine = jetpackerProperties.virtualMachine
             DevelopmentKits developmentKits = jetpackerProperties.developmentKits
 
-            List<Kit> nonJavaKits = [ developmentKits.node,
-                                      developmentKits.node.dependency,
-                                      developmentKits.node.extensions,
-                                      developmentKits.guard,
-                                      developmentKits.guard.dependency ].flatten()
+            List<Kit> nonJavaKits = [developmentKits.node,
+                                     developmentKits.node.dependency,
+                                     developmentKits.node.extensions,
+                                     developmentKits.guard,
+                                     developmentKits.guard.dependency ].flatten()
 
-            List<Container> containers = [ jetpackerProperties.databaseServers,
-                                           jetpackerProperties.messageBrokers,
-                                           jetpackerProperties.searchEngines ].flatten()
+            List<Container> containers = [jetpackerProperties.databaseServers,
+                                          jetpackerProperties.messageBrokers,
+                                          jetpackerProperties.searchEngines ].flatten()
 
             // TODO: TimeZone can be refactored for better testability
             log.info "Loading timezones"

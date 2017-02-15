@@ -1,4 +1,4 @@
-package io.jetpacker.api.configuration
+package io.jetpacker.api.configuration.kit
 
 import groovy.transform.CompileStatic
 

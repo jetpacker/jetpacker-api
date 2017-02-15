@@ -2,6 +2,7 @@ package io.jetpacker.api.core
 
 import io.jetpacker.api.common.VersionComparator
 import io.jetpacker.api.configuration.*
+import io.jetpacker.api.configuration.kit.Kit
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod

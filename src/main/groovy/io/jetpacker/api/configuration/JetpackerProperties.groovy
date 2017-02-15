@@ -1,6 +1,9 @@
 package io.jetpacker.api.configuration
 
 import groovy.transform.CompileStatic
+import io.jetpacker.api.configuration.container.Container
+import io.jetpacker.api.configuration.kit.DevelopmentKits
+import io.jetpacker.api.configuration.machine.Machine
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 /**
