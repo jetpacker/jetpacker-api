@@ -3,7 +3,7 @@ package io.jetpacker.api.core
 import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.*
 import io.jetpacker.api.configuration.container.Container
-import io.jetpacker.api.configuration.kit.DevelopmentKits
+import io.jetpacker.api.configuration.kit.Kits
 import io.jetpacker.api.configuration.kit.Kit
 import io.jetpacker.api.configuration.machine.Machine
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,30 +31,28 @@ class GeneratorService {
     @PostConstruct
     void setUp() {
         try {
-            Machine virtualMachine = jetpackerProperties.virtualMachine
-            DevelopmentKits developmentKits = jetpackerProperties.developmentKits
+            Machine machine = jetpackerProperties.machine
+            Kits kits = jetpackerProperties.kits
 
-            List<Kit> nonJavaKits = [developmentKits.node,
-                                     developmentKits.node.dependency,
-                                     developmentKits.node.extensions,
-                                     developmentKits.guard,
-                                     developmentKits.guard.dependency ].flatten()
+            List<Kit> nonJavaKits = [ kits.node,
+                                      kits.node.dependency,
+                                      kits.node.extensions,
+                                      kits.guard,
+                                      kits.guard.dependency ].flatten()
 
-            List<Container> containers = [jetpackerProperties.databaseServers,
-                                          jetpackerProperties.messageBrokers,
-                                          jetpackerProperties.searchEngines ].flatten()
+            List<Container> containers = jetpackerProperties.containers
 
             // TODO: TimeZone can be refactored for better testability
             log.info "Loading timezones"
-            virtualMachine.timezone.ids = TimeZone.availableIDs.collect { String id ->
+            machine.timezone.ids = TimeZone.availableIDs.collect { String id ->
                 if (!id.startsWith("SystemV"))
                     return id
             }
 
-            virtualMachine.timezone.ids.removeAll([ null ])
+            machine.timezone.ids.removeAll([ null ])
 
             log.info "Loading candidates from SDKMAN!"
-            developmentKits.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
+            kits.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
 
             nonJavaKits.each { Kit kit ->
                 log.info "Updating releases for ${kit.label}"
