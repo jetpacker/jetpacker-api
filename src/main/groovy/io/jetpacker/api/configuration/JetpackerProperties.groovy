@@ -14,5 +14,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class JetpackerProperties {
     Machine machine
     Kits kits
-    List<Container> containers
+    Map<String, Container> containers
 }

@@ -42,9 +42,9 @@ jetpacker:
         repository: GitHub
         version: { name: version, label: Version }
       extensions:
-        - name: vue-cli
-          namespace: vuejs
-          label: Vue.js (CLI)
+        - name: angular-cli
+          namespace: angular
+          label: Angular (CLI)
           repository: GitHub
           version: { name: version, label: Version }
         - name: cli
@@ -58,14 +58,14 @@ jetpacker:
           label: Ember.js (CLI)
           repository: GitHub
           version: { name: version, label: Version }
-        - name: angular-cli
-          namespace: angular
-          label: Angular (CLI)
-          repository: GitHub
-          version: { name: version, label: Version }
         - name: create-react-app
           namespace: facebookincubator
           label: React (CLI)
+          repository: GitHub
+          version: { name: version, label: Version }
+        - name: vue-cli
+          namespace: vuejs
+          label: Vue.js (CLI)
           repository: GitHub
           version: { name: version, label: Version }
 
@@ -83,7 +83,8 @@ jetpacker:
 
   containers:
     # data stores
-    - name: mysql
+    mysql:
+      name: mysql
       label: MySQL
       description: MySQL is the most popular Open Source SQL database management system.
       type: DataStore
@@ -106,7 +107,8 @@ jetpacker:
         - { name: database, label: Database }
         - { name: port, label: Port, value: 3306 }
 
-    - name: mariadb
+    mariadb:
+      name: mariadb
       label: MariaDB
       description: MariaDB is an enhanced, drop-in replacement for MySQL.
       type: DataStore
@@ -129,7 +131,8 @@ jetpacker:
         - { name: database, label: Database }
         - { name: port, label: Port, value: 3306 }
 
-    - name: postgres
+    postgres:
+      name: postgres
       label: PostgreSQL
       description: PostgreSQL is a powerful, open source object-relational database system.
       type: DataStore
@@ -153,7 +156,8 @@ jetpacker:
         - { name: database, label: Database }
         - { name: port, label: Port, value: 5432 }
 
-    - name: mongo
+    mongo:
+      name: mongo
       label: MongoDB
       description: MongoDB is an open-source, document database designed for ease of development and scaling.
       type: DataStore
@@ -169,7 +173,8 @@ jetpacker:
       parameters:
         - { name: port, label: Port, value: 27017 }
 
-    - name: redis
+    redis:
+      name: redis
       label: Redis
       description: Redis is an open source (BSD licensed), in-memory data structure store, used as database, cache and message broker.
       type: DataStore
@@ -189,7 +194,8 @@ jetpacker:
         - { name: port, label: Port, value: 6379 }
 
     # message brokers
-    - name: rabbitmq
+    rabbitmq:
+      name: rabbitmq
       label: RabbitMQ
       suffix: -management
       description: RabbitMQ is a lightweight, reliable, scalable and portable message broker.
@@ -219,7 +225,8 @@ jetpacker:
         - { name: management_port, label: Management Port, value: 15672 }
 
     # search engines
-    - name: elasticsearch
+    elasticsearch:
+      name: elasticsearch
       label: ElasticSearch
       description: Elasticsearch is a distributed, open source search and analytics engine, designed for horizontal scalability, reliability, and easy management.
       type: SearchEngine
@@ -227,7 +234,8 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install ElasticSearch, value: false }
 
-    - name: solr
+    solr:
+      name: solr
       label: Solr
       description: Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene.
       type: SearchEngine
