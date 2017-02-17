@@ -31,7 +31,6 @@ class GeneratorService {
     @PostConstruct
     void setUp() {
         try {
-            Machine machine = jetpackerProperties.machine
             Kits kits = jetpackerProperties.kits
 
             List<Kit> nonJavaKits = [ kits.node,
@@ -39,17 +38,6 @@ class GeneratorService {
                                       kits.node.extensions,
                                       kits.guard,
                                       kits.guard.dependency ].flatten()
-
-            List<Container> containers = jetpackerProperties.containers
-
-            // TODO: TimeZone can be refactored for better testability
-            log.info "Loading timezones"
-            machine.timezone.ids = TimeZone.availableIDs.collect { String id ->
-                if (!id.startsWith("SystemV"))
-                    return id
-            }
-
-            machine.timezone.ids.removeAll([ null ])
 
             log.info "Loading candidates from SDKMAN!"
             kits.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
@@ -59,7 +47,7 @@ class GeneratorService {
                 repositoryService.updateReleases(kit)
             }
 
-            containers.each { Container container ->
+            jetpackerProperties.containers.values().each { Container container ->
                 log.info "Updating releases for ${container.label}"
                 repositoryService.updateReleases(container)
             }
