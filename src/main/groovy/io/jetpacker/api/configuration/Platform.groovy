@@ -1,20 +1,17 @@
 package io.jetpacker.api.configuration
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.CompileStatic
 
 /**
  * Created by donny on 24/10/2016.
  */
 @CompileStatic
-@JsonIgnoreProperties(ignoreUnknown = true)
-class Platform {
-    String name
-    String namespace
-
-    String label
+class Platform extends Metadata {
     @JsonIgnore
-    String suffix
-    String description
+    Repository repository = Repository.None
+
+    Parameter install
+
+    Version version
 }

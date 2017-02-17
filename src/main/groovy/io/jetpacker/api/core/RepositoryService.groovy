@@ -27,15 +27,15 @@ class RepositoryService {
         this.asyncRestTemplate = asyncRestTemplate
     }
 
-    void updateReleases(Software software) {
-        Repository repository = software.repository
-        Platform platform = (Platform) software
+    void updateReleases(Platform platform) {
+        Repository repository = platform.repository
+        Metadata metadata = (Metadata) platform
 
         if (repository == Repository.GitHub)
-            software.version.releases = loadReleasesFromGitHub(repository, platform)
+            platform.version.releases = loadReleasesFromGitHub(repository, metadata)
 
         if (repository == Repository.DockerHub)
-            software.version.releases = loadReleasesFromDockerHub(repository, platform)
+            platform.version.releases = loadReleasesFromDockerHub(repository, metadata)
     }
 
     List<Version> filterReleases(List<String> releases, String suffix) {
@@ -54,51 +54,50 @@ class RepositoryService {
         releases
     }
 
-    String loadUrlFromRepository(Repository repository, Platform platform) {
+    String loadUrlFromRepository(Repository repository, Metadata metadata) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(repository.url)
         Map<String, String> parameters = [:]
 
         if (repository != Repository.SdkMan) {
-            if (platform.name)
-                parameters['name'] = platform.name
+            if (metadata.name)
+                parameters['name'] = metadata.name
 
-            if (platform.namespace)
-                parameters['namespace'] = platform.namespace
+            if (metadata.namespace)
+                parameters['namespace'] = metadata.namespace
         }
 
         builder.buildAndExpand(parameters).toUriString()
     }
 
-    List<String> loadReleasesFromGitHub(Repository repository, Platform platform) {
-        String url = loadUrlFromRepository(repository, platform)
+    List<String> loadReleasesFromGitHub(Repository repository, Metadata metadata) {
+        String url = loadUrlFromRepository(repository, metadata)
 
-        ResponseEntity<List<Platform>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Platform>>() {}).get()
+        ResponseEntity<List<Metadata>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Metadata>>() {}).get()
 
-        List<Platform> platforms = response.body
-        List<String> releases = filterReleases(platforms*.name, platform.suffix)
+        List<String> releases = filterReleases(response.body*.name, metadata.suffix)
 
         releases
     }
 
-    List<String> loadReleasesFromDockerHub(Repository repository, Platform platform) {
-        String url = loadUrlFromRepository(repository, platform)
+    List<String> loadReleasesFromDockerHub(Repository repository, Metadata metadata) {
+        String url = loadUrlFromRepository(repository, metadata)
 
         ResponseEntity<DockerHub> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
                 new ParameterizedTypeReference<DockerHub>() {}).get()
 
         DockerHub dockerHub = response.body
-        List<Platform> platforms = dockerHub.results
+        List<Metadata> results = dockerHub.results
 
         while (dockerHub.next) {
             response =  asyncRestTemplate.exchange(dockerHub.next, HttpMethod.GET, null,
                     new ParameterizedTypeReference<DockerHub>() {}).get()
 
             dockerHub = response.body
-            platforms += dockerHub.results
+            results += dockerHub.results
         }
 
-        List<String> releases = filterReleases(platforms*.name, platform.suffix)
+        List<String> releases = filterReleases(results*.name, metadata.suffix)
 
         releases
     }
