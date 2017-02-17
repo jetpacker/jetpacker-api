@@ -104,7 +104,7 @@ jetpacker:
         MYSQL_DATABASE: '{{ mysql.database }}'
       parameters:
         - { name: root_password, label: Root Password, value: root }
-        - { name: database, label: Database }
+        - { name: database, label: Database, value: my_db }
         - { name: port, label: Port, value: 3306 }
 
     mariadb:
