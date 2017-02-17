@@ -1,6 +1,5 @@
 package io.jetpacker.api.configuration
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.CompileStatic
 
@@ -14,7 +13,5 @@ class Metadata {
     String namespace
 
     String label
-    @JsonIgnore
-    String suffix
     String description
 }

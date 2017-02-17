@@ -38,10 +38,10 @@ class RepositoryService {
             platform.version.releases = loadReleasesFromDockerHub(repository, metadata)
     }
 
-    List<Version> filterReleases(List<String> releases, String suffix) {
+    List<Version> filterReleases(List<String> releases) {
         if (releases) {
             releases = releases.collect { String release ->
-                String pattern = "^v?[0-9]+([\\._][0-9]+)*(${suffix})?\$"
+                String pattern = "^v?[0-9]+([\\._][0-9]+)*\$"
 
                 if (release =~ pattern)
                     release
@@ -75,7 +75,7 @@ class RepositoryService {
         ResponseEntity<List<Metadata>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Metadata>>() {}).get()
 
-        List<String> releases = filterReleases(response.body*.name, metadata.suffix)
+        List<String> releases = filterReleases(response.body*.name)
 
         releases
     }
@@ -97,7 +97,7 @@ class RepositoryService {
             results += dockerHub.results
         }
 
-        List<String> releases = filterReleases(results*.name, metadata.suffix)
+        List<String> releases = filterReleases(results*.name)
 
         releases
     }

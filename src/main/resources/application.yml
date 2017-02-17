@@ -197,7 +197,6 @@ jetpacker:
     rabbitmq:
       name: rabbitmq
       label: RabbitMQ
-      suffix: -management
       description: RabbitMQ is a lightweight, reliable, scalable and portable message broker.
       type: MessageBroker
       repository: DockerHub
@@ -209,20 +208,17 @@ jetpacker:
       publishedPorts:
         - host: '{{ rabbitmq.port }}'
           container: 5672
-        - host: '{{ rabbitmq.management_port }}'
-          container: 15672
       environmentVariables:
         RABBITMQ_DEFAULT_USER: '{{ rabbitmq.user }}'
         RABBITMQ_DEFAULT_PASS: '{{ rabbitmq.password }}'
         RABBITMQ_NODE_NAME: '{{ rabbitmq.node_name }}'
-        RABBITMQ_ERLANG_COOKIE: '{{ rabbitmq.cookie }}'
+        RABBITMQ_ERLANG_COOKIE: '{{ rabbitmq.erlang_cookie }}'
       parameters:
         - { name: user, label: User, value: rabbitmq }
         - { name: password, label: Password, value: rabbitmq }
         - { name: node_name, label: Node Name, value: node@rabbitmq }
         - { name: erlang_cookie, label: Erlang Cookie, value: rabbitmq_erlang_cookie }
         - { name: port, label: Port, value: 5672 }
-        - { name: management_port, label: Management Port, value: 15672 }
 
     # search engines
     elasticsearch:
