@@ -45,27 +45,32 @@ jetpacker:
         - name: angular-cli
           namespace: angular
           label: Angular CLI
+          description: Angular is a development platform for building mobile and desktop web applications using Typescript/JavaScript (JS) and other languages.
           repository: GitHub
           version: { name: version, label: Version }
         - name: cli
           namespace: aurelia
           label: Aurelia CLI
           alias: aurelia-cli
+          description: Aurelia is a JavaScript client framework for mobile, desktop and web leveraging simple conventions and empowering creativity.
           repository: GitHub
           version: { name: version, label: Version }
         - name: ember-cli
           namespace: ember-cli
           label: Ember.js CLI
+          description: Ember.js is a Javascript framework that greatly reduces the time, effort and resources needed to build any web application.
           repository: GitHub
           version: { name: version, label: Version }
         - name: create-react-app
           namespace: facebookincubator
           label: React CLI
+          description: React is a declarative, efficient, and flexible JavaScript library for building user interfaces.
           repository: GitHub
           version: { name: version, label: Version }
         - name: vue-cli
           namespace: vuejs
           label: Vue.js CLI
+          description: Vue.js is a library for building interactive web interfaces. It provides data-reactive components with a simple and flexible API.
           repository: GitHub
           version: { name: version, label: Version }
 
