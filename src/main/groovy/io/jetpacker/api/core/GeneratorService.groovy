@@ -1,11 +1,10 @@
 package io.jetpacker.api.core
 
 import groovy.util.logging.Slf4j
-import io.jetpacker.api.configuration.*
+import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.configuration.container.Container
-import io.jetpacker.api.configuration.kit.Kits
 import io.jetpacker.api.configuration.kit.Kit
-import io.jetpacker.api.configuration.machine.Machine
+import io.jetpacker.api.configuration.kit.Kits
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
