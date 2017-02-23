@@ -44,28 +44,28 @@ jetpacker:
       extensions:
         - name: angular-cli
           namespace: angular
-          label: Angular (CLI)
+          label: Angular CLI
           repository: GitHub
           version: { name: version, label: Version }
         - name: cli
           namespace: aurelia
-          label: Aurelia (CLI)
+          label: Aurelia CLI
           alias: aurelia-cli
           repository: GitHub
           version: { name: version, label: Version }
         - name: ember-cli
           namespace: ember-cli
-          label: Ember.js (CLI)
+          label: Ember.js CLI
           repository: GitHub
           version: { name: version, label: Version }
         - name: create-react-app
           namespace: facebookincubator
-          label: React (CLI)
+          label: React CLI
           repository: GitHub
           version: { name: version, label: Version }
         - name: vue-cli
           namespace: vuejs
-          label: Vue.js (CLI)
+          label: Vue.js CLI
           repository: GitHub
           version: { name: version, label: Version }
 
