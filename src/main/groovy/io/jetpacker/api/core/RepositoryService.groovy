@@ -38,13 +38,16 @@ class RepositoryService {
             platform.version.releases = loadReleasesFromDockerHub(repository, metadata)
     }
 
-    List<Version> filterReleases(List<String> releases) {
+    List<String> filterReleases(List<String> releases) {
         if (releases) {
             releases = releases.collect { String release ->
                 String pattern = "^v?[0-9]+([\\._][0-9]+)*\$"
 
-                if (release =~ pattern)
+                if (release =~ pattern) {
+                    release = release.replaceFirst("v","")
+                                     .replace("_", ".");
                     release
+                }
             }
 
             releases.removeAll([ null ])
