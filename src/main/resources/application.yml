@@ -190,7 +190,7 @@ jetpacker:
       volumes:
         - host: '{{ redis.configuration }}'
           container: /usr/local/etc/redis
-        - host: '{{ redis.data }}/redis'
+        - host: '{{ redis.data }}'
           container: /data
       publishedPorts:
         - host: '{{ redis.port }}'
