@@ -62,8 +62,7 @@ class RepositoryService {
         Map<String, String> parameters = [:]
 
         if (repository != Repository.SdkMan) {
-            if (metadata.name)
-                parameters['name'] = metadata.name
+            parameters['name'] = metadata.alias?: metadata.name
 
             if (metadata.namespace)
                 parameters['namespace'] = metadata.namespace

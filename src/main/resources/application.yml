@@ -48,10 +48,10 @@ jetpacker:
           description: Angular is a development platform for building mobile and desktop web applications using Typescript/JavaScript (JS) and other languages.
           repository: GitHub
           version: { name: version, label: Version }
-        - name: cli
+        - name: aurelia-cli
+          alias: cli
           namespace: aurelia
           label: Aurelia CLI
-          alias: aurelia-cli
           description: Aurelia is a JavaScript client framework for mobile, desktop and web leveraging simple conventions and empowering creativity.
           repository: GitHub
           version: { name: version, label: Version }
