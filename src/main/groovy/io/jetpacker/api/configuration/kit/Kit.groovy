@@ -9,8 +9,6 @@ import io.jetpacker.api.configuration.Platform
  */
 @CompileStatic
 class Kit extends Platform {
-    String alias
-
     List<Kit> extensions
 
     @JsonIgnore

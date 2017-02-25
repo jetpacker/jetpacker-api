@@ -10,6 +10,7 @@ import groovy.transform.CompileStatic
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Metadata {
     String name
+    String alias
     String namespace
 
     String label
