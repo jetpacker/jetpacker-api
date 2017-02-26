@@ -9,7 +9,7 @@ import io.jetpacker.api.configuration.Metadata
  */
 @CompileStatic
 class Machine extends Metadata {
-    Box box
+    Parameter box
     Parameter memory
     Timezone timezone
 }

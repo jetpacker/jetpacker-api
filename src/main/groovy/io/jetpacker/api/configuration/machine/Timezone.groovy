@@ -10,16 +10,14 @@ import io.jetpacker.api.configuration.Parameter
 @Slf4j
 @CompileStatic
 class Timezone extends Parameter {
-    final List<String> ids
-
     Timezone() {
-        // TODO: TimeZone can be refactored for better testability
         log.info "Loading timezones"
-        ids = TimeZone.availableIDs.collect { String id ->
-            if (!id.startsWith("SystemV"))
-                return id
-        }
 
-        ids.removeAll([ null ])
+        options = [:]
+
+        TimeZone.availableIDs.each { String id ->
+            if (!id.startsWith("SystemV"))
+                options.put(id, id)
+        }
     }
 }

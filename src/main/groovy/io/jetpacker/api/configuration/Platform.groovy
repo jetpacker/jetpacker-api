@@ -10,8 +10,6 @@ import groovy.transform.CompileStatic
 class Platform extends Metadata {
     @JsonIgnore
     Repository repository = Repository.None
-
     Parameter install
-
-    Version version
+    Parameter version
 }

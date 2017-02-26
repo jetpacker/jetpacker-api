@@ -9,7 +9,7 @@ jetpacker:
     box:
       name: box
       label: Box
-      releases:
+      options:
         ubuntu/trusty64: Ubuntu Trusty Tahr 64
         ubuntu/trusty32: Ubuntu Trusty Tahr 32
     memory: { name: memory, label: Memory (MB), value: 4096 }
@@ -24,7 +24,9 @@ jetpacker:
       version:
         name: version
         label: Version
-        releases: [ 8, 7 ]
+        options:
+          openjdk-8-jdk: 8
+          openjdk-7-jdk: 7
       install: { name: install, label: Install OpenJDK, value: true }
 
     node:

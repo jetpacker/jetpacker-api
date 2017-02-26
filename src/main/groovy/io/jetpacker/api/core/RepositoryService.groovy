@@ -32,21 +32,21 @@ class RepositoryService {
         Metadata metadata = (Metadata) platform
 
         if (repository == Repository.GitHub)
-            platform.version.releases = loadReleasesFromGitHub(repository, metadata)
+            platform.version.options = loadReleasesFromGitHub(repository, metadata)
 
         if (repository == Repository.DockerHub)
-            platform.version.releases = loadReleasesFromDockerHub(repository, metadata)
+            platform.version.options = loadReleasesFromDockerHub(repository, metadata)
     }
 
-    List<String> filterReleases(List<String> releases) {
+    Map<String, String> filterReleases(List<String> releases) {
         if (releases) {
+
             releases = releases.collect { String release ->
                 String pattern = "^v?[0-9]+([\\._][0-9]+)*\$"
 
                 if (release =~ pattern) {
-                    release = release.replaceFirst("v","")
-                                     .replace("_", ".");
-                    release
+                    release.replaceFirst("v","")
+                           .replace("_", ".")
                 }
             }
 
@@ -54,7 +54,9 @@ class RepositoryService {
             releases.sort versionComparator
         }
 
-        releases
+        releases.collectEntries { release ->
+            [ (release): release ]
+        }
     }
 
     String loadUrlFromRepository(Repository repository, Metadata metadata) {
@@ -71,18 +73,16 @@ class RepositoryService {
         builder.buildAndExpand(parameters).toUriString()
     }
 
-    List<String> loadReleasesFromGitHub(Repository repository, Metadata metadata) {
+    Map<String, String> loadReleasesFromGitHub(Repository repository, Metadata metadata) {
         String url = loadUrlFromRepository(repository, metadata)
 
         ResponseEntity<List<Metadata>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Metadata>>() {}).get()
 
-        List<String> releases = filterReleases(response.body*.name)
-
-        releases
+        filterReleases(response.body*.name)
     }
 
-    List<String> loadReleasesFromDockerHub(Repository repository, Metadata metadata) {
+    Map<String, String> loadReleasesFromDockerHub(Repository repository, Metadata metadata) {
         String url = loadUrlFromRepository(repository, metadata)
 
         ResponseEntity<DockerHub> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
@@ -99,9 +99,7 @@ class RepositoryService {
             results += dockerHub.results
         }
 
-        List<String> releases = filterReleases(results*.name)
-
-        releases
+        filterReleases(results*.name)
     }
 
     List<Kit> loadCandidatesFromSdkMan() throws ExecutionException, InterruptedException {
@@ -139,8 +137,10 @@ class RepositoryService {
             new Kit(name: candidate,
                     label: candidates[candidate]['label'],
                     description: candidates[candidate]['description'],
-                    version: new Version(
-                            releases: releases,
+                    version: new Parameter(
+                            options: releases.collectEntries { release ->
+                                [ (release): release ]
+                            },
                             name: "version",
                             label: "Version"
                     )
