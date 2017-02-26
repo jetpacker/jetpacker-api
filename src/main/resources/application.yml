@@ -99,20 +99,16 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install MySQL }
       volumes:
-        - host: '{{ mysql.configuration }}'
+        - host: /home/vagrant/configuration/mysql
           container: /etc/mysql/conf.d
-        - host: '{{ mysql.data }}'
+        - host: /home/vagrant/data/mysql
           container: /var/lib/mysql
       publishedPorts:
-        - host: '{{ mysql.port }}'
+        - host: 3306
           container: 3306
-      environmentVariables:
-        MYSQL_ROOT_PASSWORD: '{{ mysql.root_password }}'
-        MYSQL_DATABASE: '{{ mysql.database }}'
       parameters:
-        - { name: root_password, label: Root Password, value: root }
-        - { name: database, label: Database, value: my_db }
-        - { name: port, label: Port, value: 3306 }
+        - { name: MYSQL_ROOT_PASSWORD, label: Root Password, value: root }
+        - { name: MYSQL_DATABASE, label: Database, value: my_database }
 
     mariadb:
       name: mariadb
@@ -123,20 +119,16 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install MariaDB }
       volumes:
-        - host: '{{ mariadb.configuration }}'
+        - host: /home/vagrant/configuration/mariadb
           container: /etc/mysql/conf.d
-        - host: '{{ mariadb.data }}'
+        - host: /home/vagrant/data/mariadb
           container: /var/lib/mariadb
       publishedPorts:
-        - host: '{{ mariadb.port }}'
+        - host: 3306
           container: 3306
-      environmentVariables:
-        MYSQL_ROOT_PASSWORD: '{{ mariadb.root_password }}'
-        MYSQL_DATABASE: '{{ mariadb.database }}'
       parameters:
-        - { name: root_password, label: Root Password, value: root }
-        - { name: database, label: Database, value: my_db }
-        - { name: port, label: Port, value: 3306 }
+        - { name: MYSQL_ROOT_PASSWORD, label: Root Password, value: root }
+        - { name: MYSQL_DATABASE, label: Database, value: my_database }
 
     postgres:
       name: postgres
@@ -147,21 +139,17 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install PostgreSQL }
       volumes:
-        - host: '{{ postgres.data }}'
+        - host: /home/vagrant/configuration/postgres
           container: /var/lib/postgresql/data/pgdata
       publishedPorts:
-        - host: '{{ postgres.port }}'
+        - host: 5432
           container: 5432
       environmentVariables:
-        POSTGRES_USER: '{{ postgres.user }}'
-        POSTGRES_PASSWORD: '{{ postgres.password }}'
-        POSTGRES_DB: '{{ postgres.database }}'
         PGDATA : /var/lib/postgresql/data/pgdata
       parameters:
-        - { name: user, label: User, value: root }
-        - { name: password, label: Password, value: root }
-        - { name: database, label: Database, value: my_db }
-        - { name: port, label: Port, value: 5432 }
+        - { name: POSTGRES_USER, label: User, value: root }
+        - { name: POSTGRES_PASSWORD, label: Password, value: root }
+        - { name: POSTGRES_DB, label: Database, value: my_database }
 
     mongo:
       name: mongo
@@ -172,13 +160,11 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install MongoDB }
       volumes:
-        - host: '{{ mongo.data }}'
+        - host: /home/vagrant/data/mongo
           container: /data/db
       publishedPorts:
-        - host: '{{ mongo.port }}'
+        - host: 27017
           container: 27017
-      parameters:
-        - { name: port, label: Port, value: 27017 }
 
     redis:
       name: redis
@@ -190,15 +176,13 @@ jetpacker:
       install: { name: install, label: Install Redis }
       command: redis-server --appendonly yes
       volumes:
-        - host: '{{ redis.configuration }}'
+        - host: /home/vagrant/configuration/redis
           container: /usr/local/etc/redis
-        - host: '{{ redis.data }}'
+        - host: /home/vagrant/data/redis
           container: /data
       publishedPorts:
-        - host: '{{ redis.port }}'
+        - host: 6379
           container: 6379
-      parameters:
-        - { name: port, label: Port, value: 6379 }
 
     # message brokers
     rabbitmq:
@@ -210,22 +194,16 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install RabbitMQ }
       volumes:
-        - host: '{{ rabbitmq.data }}'
+        - host: /home/vagrant/data/rabbitmq
           container: /var/lib/rabbitmq
       publishedPorts:
-        - host: '{{ rabbitmq.port }}'
+        - host: 5672
           container: 5672
-      environmentVariables:
-        RABBITMQ_DEFAULT_USER: '{{ rabbitmq.user }}'
-        RABBITMQ_DEFAULT_PASS: '{{ rabbitmq.password }}'
-        RABBITMQ_NODE_NAME: '{{ rabbitmq.node_name }}'
-        RABBITMQ_ERLANG_COOKIE: '{{ rabbitmq.erlang_cookie }}'
       parameters:
-        - { name: user, label: User, value: rabbitmq }
-        - { name: password, label: Password, value: rabbitmq }
-        - { name: node_name, label: Node Name, value: node@rabbitmq }
-        - { name: erlang_cookie, label: Erlang Cookie, value: rabbitmq_erlang_cookie }
-        - { name: port, label: Port, value: 5672 }
+        - { name: RABBITMQ_DEFAULT_USER, label: User, value: rabbitmq }
+        - { name: RABBITMQ_DEFAULT_PASS, label: Password, value: rabbitmq }
+        - { name: RABBITMQ_NODE_NAME, label: Node Name, value: node@rabbitmq }
+        - { name: RABBITMQ_ERLANG_COOKIE, label: Erlang Cookie, value: rabbitmq_erlang_cookie }
 
     # search engines
     elasticsearch:
