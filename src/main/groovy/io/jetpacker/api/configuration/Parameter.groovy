@@ -10,4 +10,6 @@ class Parameter {
     String name
     String label
     String value
+
+    Map<String, String> options;
 }
