@@ -38,9 +38,10 @@ class RepositoryService {
             platform.version.options = loadReleasesFromDockerHub(repository, metadata)
     }
 
-    Map<String, String> filterReleases(List<String> releases) {
-        if (releases) {
+    List<Option> formatReleases(List<String> releases) {
+        List<Option> options = null
 
+        if (releases) {
             releases = releases.collect { String release ->
                 String pattern = "^v?[0-9]+([\\._][0-9]+)*\$"
 
@@ -52,11 +53,13 @@ class RepositoryService {
 
             releases.removeAll([ null ])
             releases.sort versionComparator
+
+            options = releases.collect { release ->
+                new Option(value: release)
+            }
         }
 
-        releases.collectEntries { release ->
-            [ (release): release ]
-        }
+        options
     }
 
     String loadUrlFromRepository(Repository repository, Metadata metadata) {
@@ -73,16 +76,16 @@ class RepositoryService {
         builder.buildAndExpand(parameters).toUriString()
     }
 
-    Map<String, String> loadReleasesFromGitHub(Repository repository, Metadata metadata) {
+    List<Option> loadReleasesFromGitHub(Repository repository, Metadata metadata) {
         String url = loadUrlFromRepository(repository, metadata)
 
         ResponseEntity<List<Metadata>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Metadata>>() {}).get()
 
-        filterReleases(response.body*.name)
+        formatReleases(response.body*.name)
     }
 
-    Map<String, String> loadReleasesFromDockerHub(Repository repository, Metadata metadata) {
+    List<Option> loadReleasesFromDockerHub(Repository repository, Metadata metadata) {
         String url = loadUrlFromRepository(repository, metadata)
 
         ResponseEntity<DockerHub> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
@@ -99,7 +102,7 @@ class RepositoryService {
             results += dockerHub.results
         }
 
-        filterReleases(results*.name)
+        formatReleases(results*.name)
     }
 
     List<Kit> loadCandidatesFromSdkMan() throws ExecutionException, InterruptedException {
@@ -138,8 +141,8 @@ class RepositoryService {
                     label: candidates[candidate]['label'],
                     description: candidates[candidate]['description'],
                     version: new Parameter(
-                            options: releases.collectEntries { release ->
-                                [ (release): release ]
+                            options: releases.collect { release ->
+                                new Option(value: release)
                             },
                             name: "version",
                             label: "Version"

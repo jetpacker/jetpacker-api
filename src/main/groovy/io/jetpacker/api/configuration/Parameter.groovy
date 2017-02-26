@@ -11,5 +11,5 @@ class Parameter {
     String label
     String value
 
-    Map<String, String> options;
+    List<Option> options
 }

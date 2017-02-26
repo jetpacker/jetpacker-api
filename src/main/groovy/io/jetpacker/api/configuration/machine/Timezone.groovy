@@ -2,6 +2,7 @@ package io.jetpacker.api.configuration.machine
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import io.jetpacker.api.configuration.Option
 import io.jetpacker.api.configuration.Parameter
 
 /**
@@ -13,11 +14,11 @@ class Timezone extends Parameter {
     Timezone() {
         log.info "Loading timezones"
 
-        options = [:]
+        options = new ArrayList<>()
 
         TimeZone.availableIDs.each { String id ->
             if (!id.startsWith("SystemV"))
-                options.put(id, id)
+                options << new Option(value: id)
         }
     }
 }

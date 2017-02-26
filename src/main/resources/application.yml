@@ -10,8 +10,8 @@ jetpacker:
       name: box
       label: Box
       options:
-        ubuntu/trusty64: Ubuntu Trusty Tahr 64
-        ubuntu/trusty32: Ubuntu Trusty Tahr 32
+        - { label: Ubuntu Trusty Tahr 64, value: ubuntu/trusty64 }
+        - { label: Ubuntu Trusty Tahr 32, value: ubuntu/trusty32 }
     memory: { name: memory, label: Memory (MB), value: 4096 }
     timezone: { name: timezone, label: Timezone }
 
@@ -25,8 +25,8 @@ jetpacker:
         name: version
         label: Version
         options:
-          openjdk-8-jdk: 8
-          openjdk-7-jdk: 7
+        - { label: 8, value: openjdk-8-jdk }
+        - { label: 7, value: openjdk-7-jdk }
       install: { name: install, label: Install OpenJDK, value: true }
 
     node:
