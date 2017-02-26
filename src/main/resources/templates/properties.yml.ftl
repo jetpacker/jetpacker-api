@@ -20,70 +20,75 @@ openjdk:
 ### node ###
 node:
   version: v6.7.0
-  nvm: v0.32.0
+  dependency: v0.32.0
 
 ### guard ###
 guard:
-  ruby: 2.3.1
-
-### container ###
-container:
-  configuration: /home/vagrant/configuration
-  data: /home/vagrant/data
+  dependency: 2.3.1
 
 ### postgresql ###
 postgres:
   version: 9.6
-  user: root
-  password: root
-  database: my_database
+  env:
+    POSTGRES_USER: root
+    POSTGRES_PASSWORD: root
+    POSTGRES_DB: my_database
+    PGDATA: /var/lib/postgresql/data/pgdata
   ports:
     - 5432:5432
-  data: "{{ container.data }}/postgresql"
+  volumes:
+  - /home/vagrant/configuration/postgres:/var/lib/postgresql/data/pgdata
 
 ### mysql ###
 mysql:
   version: 5.6
-  root_password: root
-  database: my_database
+  env:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: my_database
   ports:
     - 3306:3306
-  configuration: "{{ container.configuration }}/mysql"
-  data: "{{ container.data }}/mysql"
+  volumes:
+    - /home/vagrant/configuration/mysql:/etc/mysql/conf.d
+    - /home/vagrant/data/mysql:/var/lib/mysql
 
 ### mariadb ###
 mariadb:
   version: 10.1.18
-  root_password: root
-  database: my_database
+  env:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: my_database
   ports:
     - 3306:3306
-  configuration: "{{ container.configuration }}/mariadb"
-  data: "{{ container.data }}/mariadb"
+  volumes:
+    - /home/vagrant/docker/configuration/mariadb:/etc/mysql/conf.d
+    - /home/vagrant/docker/data/mariadb:/var/lib/mysql
 
 ### mongodb ###
 mongodb:
   version: 3.3
   ports:
     - 27017:27017
-  data: "{{ container.data }}/mongodb"
+  volumes:
+    - /home/vagrant/docker/data/mongo:/data/db
 
 ### redis ###
 redis:
   version: 3.2.4
   ports:
     - 6379:6379
-  configuration: "{{ container.configuration }}/redis"
-  data: "{{ container.data }}/redis"
+  volumes:
+    - /home/vagrant/docker/configuration/redis:/usr/local/etc/redis
+    - /home/vagrant/docker/data/redis:/data
 
 ### rabbitmq ###
 rabbitmq:
   version: 3
-  user: root
-  password: root
-  node_name:  my_node@rabbit
-  erlang_cookie:  my_rabbit_cookie
+  env:
+    RABBITMQ_DEFAULT_USER: root
+    RABBITMQ_DEFAULT_PASS: root
+    RABBITMQ_NODE_NAME: my_node@rabbit
+    RABBITMQ_ERLANG_COOKIE: my_rabbit_cookie
   ports:
     - 5672:5672
-    - 15672:15672
-  data: "{{ container.data }}/rabbitmq"
+  volumes:
+    - /home/vagrant/docker/data/rabbitmq:/var/lib/rabbitmq

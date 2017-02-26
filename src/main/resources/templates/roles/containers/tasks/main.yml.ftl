@@ -9,37 +9,28 @@
     name: alpine
     image: alpine:latest
     volumes:
-      - "{{ postgres.data }}:/var/lib/postgresql/data/pgdata"
+      - /home/vagrant/configuration/postgres:/var/lib/postgresql/data/pgdata
+      - /home/vagrant/configuration/mysql:/etc/mysql/conf.d
+      - /home/vagrant/data/mysql:/var/lib/mysql
+      - /home/vagrant/configuration/mariadb:/etc/mysql/conf.d
+      - /home/vagrant/data/mariadb:/var/lib/mysql
+      - /home/vagrant/data/mongo:/data/db
+      - /home/vagrant/configuration/redis:/usr/local/etc/redis
+      - /home/vagrant/data/redis:/data
+      - /home/vagrant/data/rabbitmq:/var/lib/rabbitmq
+    command: true
 
-      - "{{ mysql.configuration }}:/etc/mysql/conf.d"
-      - "{{ mysql.data }}:/var/lib/mysql"
-
-      - "{{ mariadb.configuration }}:/etc/mysql/conf.d"
-      - "{{ mariadb.data }}:/var/lib/mysql"
-
-      - "{{ mongodb.data }}:/data/db"
-
-      - "{{ redis.configuration }}:/usr/local/etc/redis"
-      - "{{ redis.data }}:/data"
-
-      - "{{ rabbitmq.data }}:/var/lib/rabbitmq"
-    command: "true"
-
-### postgresql ###
+### postgres ###
 - name: run postgres:{{ postgres.version }}
   docker_container:
-    name: postgresql
+    name: postgres
     image: postgres:{{ postgres.version }}
     interactive: true
     published_ports: "{{ postgres.ports }}"
     volumes_from: alpine
     state: started
     recreate: true
-    env:
-      POSTGRES_USER: "{{ postgres.user }}"
-      POSTGRES_PASSWORD: "{{ postgres.password }}"
-      POSTGRES_DB: "{{ postgres.database }}"
-      PGDATA : /var/lib/postgresql/data/pgdata
+    env: "{{ postgres.env }}"
 
 ### mysql ###
 - name: run mysql:{{ mysql.version }}
@@ -51,9 +42,7 @@
     volumes_from: alpine
     state: started
     recreate: true
-    env:
-      MYSQL_ROOT_PASSWORD: "{{ mysql.root_password }}"
-      MYSQL_DATABASE: "{{ mysql.database }}"
+    env: "{{ mysql.env }}"
 
 ### mariadb ###
 - name: run mariadb:{{ mariadb.version }}
@@ -65,17 +54,15 @@
     volumes_from: alpine
     state: started
     recreate: true
-    env:
-      MYSQL_ROOT_PASSWORD: "{{ mariadb.root_password }}"
-      MYSQL_DATABASE: "{{ mariadb.database }}"
+    env: "{{ mariadb.env }}"
 
-### mongodb ###
-- name: run mongodb:{{ mongodb.version }}
+### mongo ###
+- name: run mongo:{{ mongo.version }}
   docker_container:
-    name: mongodb
-    image: mongo:{{ mongodb.version }}
+    name: mongo
+    image: mongo:{{ mongo.version }}
     interactive: true
-    published_ports: "{{ mongodb.ports }}"
+    published_ports: "{{ mongo.ports }}"
     volumes_from: alpine
     state: started
     recreate: true
@@ -102,8 +89,4 @@
     volumes_from: alpine
     state: started
     recreate: true
-    env:
-      RABBITMQ_DEFAULT_USER: "{{ rabbitmq.user }}"
-      RABBITMQ_DEFAULT_PASS: "{{ rabbitmq.password }}"
-      RABBITMQ_NODE_NAME: "{{ rabbitmq.node_name }}"
-      RABBITMQ_ERLANG_COOKIE: "{{ rabbitmq.erlang_cookie }}"
+    env: "{{rabbitmq.env}}
