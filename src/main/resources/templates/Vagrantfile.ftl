@@ -2,10 +2,10 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = '${box}'
+  config.vm.box = '${machine.box}'
 
   config.vm.provider "virtualbox" do |virtualbox|
-    virtualbox.memory = ${memory}
+    virtualbox.memory = ${machine.memory}
   end
 
   # forwarded ports

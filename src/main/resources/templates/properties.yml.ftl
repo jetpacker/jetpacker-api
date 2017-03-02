@@ -1,30 +1,30 @@
 ### main ###
-timezone: Asia/Singapore
-
-### workspace ###
-workspace:
-  root: /vagrant/workspace
-  home: /home/vagrant/workspace
-
-### sdk ###
-sdk: /vagrant/.sdk
+timezone: ${machine.timezone}
 
 ### openjdk ###
 openjdk:
-  version: 8
+  version: ${kits.openjdk.version}
   extensions:
-    activator: 1.3.10
-    gradle: 3.1
-    grails: 2.2.2
+<#list kits.openjdk.extensions as name, version>
+    ${name}: ${version}
+    ${name}: ${version}
+    ${name}: ${version}
+</#list>
 
 ### node ###
 node:
-  version: v6.7.0
-  dependency: v0.32.0
+  version: ${kits.node.version}
+  dependency: ${kits.node.dependency.version}
+  extensions:
+<#list kits.node.extensions as name, version>
+    ${name}: ${version}
+    ${name}: ${version}
+    ${name}: ${version}
+</#list>
 
 ### guard ###
 guard:
-  dependency: 2.3.1
+  dependency: ${kits.guard.dependency.version}
 
 ### postgresql ###
 postgres:
