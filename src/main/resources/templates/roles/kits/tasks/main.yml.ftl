@@ -63,6 +63,6 @@
     - rvm install {{ guard.dependency }}
     - rvm --default use {{ guard.dependency }}
     - gem install bundler
-    - cd {{ workspace.root }} && bundle install
+    - cd /vagrant/workspace && bundle install
   when:
     - not path.stat.exists

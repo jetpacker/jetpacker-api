@@ -9,4 +9,4 @@
   when: system_timezone != timezone
 
 ### symbolic links ###
-- file: src={{ workspace.root }} dest={{ workspace.home }} state=link
+- file: src=/vagrant/workspace dest=/home/vagrant/workspace state=link
