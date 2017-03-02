@@ -4,23 +4,27 @@ timezone: ${machine.timezone}
 ### openjdk ###
 openjdk:
   version: ${kits.openjdk.version}
+<#if kits.openjdk.extensions??>
   extensions:
-<#list kits.openjdk.extensions as name, version>
+  <#list kits.openjdk.extensions as name, version>
     ${name}: ${version}
     ${name}: ${version}
     ${name}: ${version}
-</#list>
+  </#list>
+</#if>
 
 ### node ###
 node:
   version: ${kits.node.version}
   dependency: ${kits.node.dependency.version}
+<#if kits.node.extensions??>
   extensions:
-<#list kits.node.extensions as name, version>
+  <#list kits.node.extensions as name, version>
     ${name}: ${version}
     ${name}: ${version}
     ${name}: ${version}
-</#list>
+  </#list>
+</#if>
 
 ### guard ###
 guard:
