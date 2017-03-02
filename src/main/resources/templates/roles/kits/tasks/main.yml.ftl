@@ -28,7 +28,7 @@
   when: path.stat.exists
 
 - include: sdkman_candidate.yml
-  with_dict: "{{ openjdk.extensions }}"
+  with_dict: "{{ openjdk.extensions || default({}) }}"
   loop_control:
     loop_var: extension
 
