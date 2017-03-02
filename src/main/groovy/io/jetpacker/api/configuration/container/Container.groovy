@@ -19,10 +19,10 @@ class Container extends Platform {
     List<Volume> volumes
 
     @JsonIgnore
-    List<Port> publishedPorts
+    List<Port> ports
 
     @JsonIgnore
-    Map<String, String> environmentVariables
+    Map<String, String> env
 
     List<Parameter> parameters
 }

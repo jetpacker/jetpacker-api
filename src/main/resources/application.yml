@@ -103,7 +103,7 @@ jetpacker:
           container: /etc/mysql/conf.d
         - host: /home/vagrant/data/mysql
           container: /var/lib/mysql
-      publishedPorts:
+      ports:
         - host: 3306
           container: 3306
       parameters:
@@ -123,7 +123,7 @@ jetpacker:
           container: /etc/mysql/conf.d
         - host: /home/vagrant/data/mariadb
           container: /var/lib/mariadb
-      publishedPorts:
+      ports:
         - host: 3306
           container: 3306
       parameters:
@@ -141,10 +141,10 @@ jetpacker:
       volumes:
         - host: /home/vagrant/configuration/postgres
           container: /var/lib/postgresql/data/pgdata
-      publishedPorts:
+      ports:
         - host: 5432
           container: 5432
-      environmentVariables:
+      env:
         PGDATA : /var/lib/postgresql/data/pgdata
       parameters:
         - { name: POSTGRES_USER, label: User, value: root }
@@ -162,7 +162,7 @@ jetpacker:
       volumes:
         - host: /home/vagrant/data/mongo
           container: /data/db
-      publishedPorts:
+      ports:
         - host: 27017
           container: 27017
 
@@ -180,7 +180,7 @@ jetpacker:
           container: /usr/local/etc/redis
         - host: /home/vagrant/data/redis
           container: /data
-      publishedPorts:
+      ports:
         - host: 6379
           container: 6379
 
@@ -196,7 +196,7 @@ jetpacker:
       volumes:
         - host: /home/vagrant/data/rabbitmq
           container: /var/lib/rabbitmq
-      publishedPorts:
+      ports:
         - host: 5672
           container: 5672
       parameters:
@@ -214,6 +214,9 @@ jetpacker:
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install ElasticSearch }
+      ports:
+        - host: 9200
+          container: 9200
 
     solr:
       name: solr
@@ -223,3 +226,6 @@ jetpacker:
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install Solr }
+      ports:
+        - host: 8983
+          container: 8983
