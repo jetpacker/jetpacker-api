@@ -9,8 +9,8 @@
   command: bash -lc "{{ item }}"
   with_items:
     - sdk install {{ candidate_name }} {{ candidate_version }}
-    - mkdir -p {{ sdk }}/{{ candidate_name }}
-    - cp -R ~/.sdkman/candidates/{{ candidate_name }}/{{ candidate_version }} {{ sdk }}/{{ candidate_name }}/{{ candidate_version }}
+    - mkdir -p /vagrant/.sdk/{{ candidate_name }}
+    - cp -R ~/.sdkman/candidates/{{ candidate_name }}/{{ candidate_version }} /vagrant/.sdk/{{ candidate_name }}/{{ candidate_version }}
   when: not path.stat.exists
 
 - name: default to {{ candidate_name }}:{{ candidate_version }}
