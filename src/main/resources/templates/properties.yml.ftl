@@ -1,35 +1,39 @@
-### main ###
 timezone: ${machine.timezone}
+<#if kits.openjdk??>
 
-### openjdk ###
 openjdk:
   version: ${kits.openjdk.version}
-<#if kits.openjdk.extensions??>
+  <#if kits.openjdk.extensions??>
   extensions:
-  <#list kits.openjdk.extensions as name, version>
+    <#list kits.openjdk.extensions as name, version>
     ${name}: ${version}
     ${name}: ${version}
     ${name}: ${version}
-  </#list>
+    </#list>
+  </#if>
 </#if>
+<#if kits.node??>
 
-### node ###
 node:
   version: ${kits.node.version}
   dependency: ${kits.node.dependency.version}
-<#if kits.node.extensions??>
+  <#if kits.node.extensions??>
   extensions:
-  <#list kits.node.extensions as name, version>
+    <#list kits.node.extensions as name, version>
     ${name}: ${version}
     ${name}: ${version}
     ${name}: ${version}
-  </#list>
+    </#list>
+  </#if>
 </#if>
+<#if kits.guard??>
 
-### guard ###
 guard:
   dependency: ${kits.guard.dependency.version}
-
+</#if>
+<#if containers??>
+  <#list containers as container>
+  </#list>
 ### postgresql ###
 postgres:
   version: 9.6
@@ -96,3 +100,4 @@ rabbitmq:
     - 5672:5672
   volumes:
     - /home/vagrant/docker/data/rabbitmq:/var/lib/rabbitmq
+</#if>
