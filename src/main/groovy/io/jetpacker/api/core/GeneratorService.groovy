@@ -6,6 +6,7 @@ import io.jetpacker.api.configuration.container.Container
 import io.jetpacker.api.configuration.kit.Kit
 import io.jetpacker.api.configuration.kit.Kits
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
 
 import javax.annotation.PostConstruct
@@ -19,12 +20,15 @@ import java.util.concurrent.ExecutionException
 class GeneratorService {
     private final JetpackerProperties jetpackerProperties
     private final RepositoryService repositoryService
+    private final Resource[] resources
 
     @Autowired
     GeneratorService(RepositoryService repositoryService,
-                     JetpackerProperties jetpackerProperties) {
+                     JetpackerProperties jetpackerProperties,
+                     Resource[] resources) {
         this.repositoryService = repositoryService
         this.jetpackerProperties = jetpackerProperties
+        this.resources = resources
     }
 
     @PostConstruct
