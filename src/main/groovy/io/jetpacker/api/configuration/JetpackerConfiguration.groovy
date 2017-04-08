@@ -21,15 +21,4 @@ class JetpackerConfiguration {
     AsyncRestTemplate asyncRestTemplate() {
         new AsyncRestTemplate()
     }
-
-    @Bean
-    TemplateEngine templateEngine() {
-        new StreamingTemplateEngine()
-    }
-
-    @Bean
-    Resource[] resources() {
-        new PathMatchingResourcePatternResolver()
-                .getResources("classpath*:/templates/**/*.ftl")
-    }
 }
