@@ -45,12 +45,11 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-devtools'
 	compile 'org.springframework.boot:spring-boot-starter-validation'
 	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile 'org.springframework.boot:spring-boot-starter-freemarker'
 
     compile 'io.projectreactor:reactor-core:3.0.3.RELEASE'
 
 	compile 'org.apache.maven:maven-artifact:3.3.9'
-
-	compile 'org.freemarker:freemarker:2.3.23'
 
 	compile 'io.springfox:springfox-swagger2:2.6.1'
 	compile 'io.springfox:springfox-swagger-ui:2.6.1'
