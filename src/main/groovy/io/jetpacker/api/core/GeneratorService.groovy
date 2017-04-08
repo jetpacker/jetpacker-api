@@ -24,7 +24,8 @@ class GeneratorService {
     private final JetpackerProperties jetpackerProperties
     private final Configuration configuration
 
-    private final Resource[] resources
+    private final String pattern = /^(\/.*\/+templates\/)(.*\.ftl)$/
+    private final List<String> templates = new ArrayList<>()
 
     @Autowired
     GeneratorService(RepositoryService repositoryService,
@@ -34,8 +35,12 @@ class GeneratorService {
         this.jetpackerProperties = jetpackerProperties
         this.configuration = configuration
 
-        this.resources = new PathMatchingResourcePatternResolver()
-                                .getResources("classpath*:/templates/**/*.ftl")
+        for (Resource resource: new PathMatchingResourcePatternResolver()
+                                .getResources("classpath*:/templates/**/*.ftl")) {
+
+            def m = resource.file.absolutePath =~ pattern
+            templates.add(m[0][2])
+        }
     }
 
     @PostConstruct
@@ -84,12 +89,6 @@ class GeneratorService {
 //        ]
 //
 //        String output = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-//
-//        println "resources: ${resources[0].file.absolutePath}"
-//
-//        TODO: resources: /Users/wolf/Workspace/jetpacker/jetpacker-api/build/resources/main/templates/Vagrantfile.ftl
-        // use regex groups to filter out the templates (get $3):
-        // (dir/and/their/sub/dir/)(templates/)(([a-zA-Z0-9]+/)+[a-zA-Z0-9]+(.yml)?.ftl)
 
 //        println "configuration: ${configuration}"
 //        println "output: ${output}"
