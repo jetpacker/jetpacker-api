@@ -36,7 +36,7 @@
 - stat: path=~/.nvm
   register: path
 
-- name: install nvm:{{ node.dependency }}
+- name: install nvm:{{ node.nvm_version }}
   command: bash -lc "curl -o- https://raw.githubusercontent.com/creationix/nvm/{{ node.dependency }}/install.sh | bash"
   when: not path.stat.exists
 
@@ -60,8 +60,8 @@
   with_items:
     - gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
     - curl -sSL https://get.rvm.io | bash -s stable
-    - rvm install {{ guard.dependency }}
-    - rvm --default use {{ guard.dependency }}
+    - rvm install {{ guard.ruby_version }}
+    - rvm --default use {{ guard.ruby_version }}
     - gem install bundler
     - cd /vagrant/workspace && bundle install
   when:

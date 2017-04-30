@@ -3,12 +3,11 @@ timezone: ${machine.timezone}
 
 openjdk:
   version: ${kits.openjdk.version}
-  <#if kits.openjdk.extensions??>
+  <#assign extensions = kits.openjdk.extensions>
+  <#if extensions??>
   extensions:
-    <#list kits.openjdk.extensions as name, version>
-    ${name}: ${version}
-    ${name}: ${version}
-    ${name}: ${version}
+    <#list extensions?keys as name>
+    ${name}: ${extensions[name]}
     </#list>
   </#if>
 </#if>
@@ -16,24 +15,52 @@ openjdk:
 
 node:
   version: ${kits.node.version}
-  dependency: ${kits.node.dependency.version}
-  <#if kits.node.extensions??>
+  nvm_version: ${kits.node.dependencyVersion}
+  <#assign extensions = kits.node.extensions>
+  <#if extensions??>
   extensions:
-    <#list kits.node.extensions as name, version>
-    ${name}: ${version}
-    ${name}: ${version}
-    ${name}: ${version}
+    <#list extensions?keys as name>
+    ${name}: ${extensions[name]}
     </#list>
   </#if>
 </#if>
 <#if kits.guard??>
 
 guard:
-  dependency: ${kits.guard.dependency.version}
+  ruby_version: ${kits.guard.dependencyVersion}
 </#if>
 <#if containers??>
-  <#list containers as container>
+
+  <#list containers?keys as name>
+  ### ${name} ###
+  ${name}:
+    <#assign container = containers[name]>
+  version: ${container.version}
+    <if container.command??>
+  command: ${container.command}
+    </if>
+    <#if container.env??>
+  env:
+      <#list container.env?keys as key>
+    ${key}: ${container.env[key]}
+      </#list>
+    </#if>
+    <#if container.ports??>
+  ports:
+      <#list container.ports?keys as key>
+    ${key}: ${container.ports[key]}
+      </#list>
+    </#if>
+    <#if container.volumes??>
+  volumes:
+      <#list container.volumes?keys as key>
+    ${key}: ${container.volumes[key]}
+      </#list>
+    </#if>
+
   </#list>
+
+####### it ends here ######
 ### postgresql ###
 postgres:
   version: 9.6

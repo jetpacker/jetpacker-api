@@ -145,7 +145,7 @@ jetpacker:
         - host: 5432
           container: 5432
       env:
-        PGDATA : /var/lib/postgresql/data/pgdata
+        PGDATA: /var/lib/postgresql/data/pgdata
       parameters:
         - { name: POSTGRES_USER, label: User, value: root }
         - { name: POSTGRES_PASSWORD, label: Password, value: root }
