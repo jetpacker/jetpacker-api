@@ -3,7 +3,7 @@ package io.jetpacker.api.web.command
 /**
  * Created by donny on 30/11/16.
  */
-class MachineData {
+class Machine {
     String box
     Integer memory
     String timezone

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.core.GeneratorService
+import io.jetpacker.api.web.command.JetpackerCommand
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -29,9 +30,7 @@ class GeneratorController {
     }
 
     @PostMapping
-    void generate(@RequestBody Map<Object, Object> body) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-        log.info "body: ${mapper.writeValueAsString(body)}";
+    void generate(@RequestBody JetpackerCommand command) {
+        generatorService.generate(command)
     }
 }
