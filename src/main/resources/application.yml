@@ -1,6 +1,13 @@
 server:
   port: 5000
 
+spring:
+  devtools:
+    restart:
+      enabled: false
+  freemarker:
+    cache: false
+
 jetpacker:
   machine:
     name: ubuntu
@@ -99,9 +106,9 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install MySQL }
       volumes:
-        - host: /home/vagrant/configuration/mysql
+        - host: /home/vagrant/containers/mysql
           container: /etc/mysql/conf.d
-        - host: /home/vagrant/data/mysql
+        - host: /home/vagrant/containers/mysql/data
           container: /var/lib/mysql
       ports:
         - host: 3306
@@ -119,9 +126,9 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install MariaDB }
       volumes:
-        - host: /home/vagrant/configuration/mariadb
+        - host: /home/vagrant/containers/mariadb
           container: /etc/mysql/conf.d
-        - host: /home/vagrant/data/mariadb
+        - host: /home/vagrant/containers/mariadb/data
           container: /var/lib/mariadb
       ports:
         - host: 3306
@@ -139,7 +146,7 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install PostgreSQL }
       volumes:
-        - host: /home/vagrant/configuration/postgres
+        - host: /home/vagrant/containers/postgres/data
           container: /var/lib/postgresql/data/pgdata
       ports:
         - host: 5432
@@ -160,7 +167,7 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install MongoDB }
       volumes:
-        - host: /home/vagrant/data/mongo
+        - host: /home/vagrant/containers/mongo/data
           container: /data/db
       ports:
         - host: 27017
@@ -176,9 +183,9 @@ jetpacker:
       install: { name: install, label: Install Redis }
       command: redis-server --appendonly yes
       volumes:
-        - host: /home/vagrant/configuration/redis
+        - host: /home/vagrant/containers/redis
           container: /usr/local/etc/redis
-        - host: /home/vagrant/data/redis
+        - host: /home/vagrant/containers/redis/data
           container: /data
       ports:
         - host: 6379
@@ -194,7 +201,9 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install RabbitMQ }
       volumes:
-        - host: /home/vagrant/data/rabbitmq
+        - host: /home/vagrant/containers/rabbitmq
+          container: /etc/rabbitmq
+        - host: /home/vagrant/containers/rabbitmq/data
           container: /var/lib/rabbitmq
       ports:
         - host: 5672
@@ -214,6 +223,11 @@ jetpacker:
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install ElasticSearch }
+      volumes:
+        - host: /home/vagrant/containers/elasticsearch
+          container: /usr/share/elasticsearch/config
+        - host: /home/vagrant/containers/elastisearch/data
+          container: /usr/share/elasticsearch/data
       ports:
         - host: 9200
           container: 9200
@@ -226,6 +240,13 @@ jetpacker:
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install Solr }
+      volumes:
+        - host: /home/vagrant/containers/solr
+          container: /opt/solr
       ports:
         - host: 8983
           container: 8983
+
+  dataContainer:
+    name: alpine
+    version: { value: latest }
