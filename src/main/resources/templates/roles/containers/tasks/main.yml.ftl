@@ -7,17 +7,8 @@
 - name: run alpine:latest
   docker_container:
     name: alpine
-    image: alpine:latest
-    volumes:
-      - /home/vagrant/configuration/postgres:/var/lib/postgresql/data/pgdata
-      - /home/vagrant/configuration/mysql:/etc/mysql/conf.d
-      - /home/vagrant/data/mysql:/var/lib/mysql
-      - /home/vagrant/configuration/mariadb:/etc/mysql/conf.d
-      - /home/vagrant/data/mariadb:/var/lib/mysql
-      - /home/vagrant/data/mongo:/data/db
-      - /home/vagrant/configuration/redis:/usr/local/etc/redis
-      - /home/vagrant/data/redis:/data
-      - /home/vagrant/data/rabbitmq:/var/lib/rabbitmq
+    image: alpine:{{ alpine.version }}
+    volumes: {{ alpine.volumes }}
     command: true
 
 ### postgres ###
