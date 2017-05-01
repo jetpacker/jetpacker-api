@@ -51,6 +51,10 @@ dependencies {
 
 	compile 'org.apache.maven:maven-artifact:3.3.9'
 
+	compile('org.apache.ant:ant:1.10.1') {
+		exclude group: 'org.apache.ant', module: 'ant-launcher'
+	}
+
 	compile 'io.springfox:springfox-swagger2:2.6.1'
 	compile 'io.springfox:springfox-swagger-ui:2.6.1'
 
