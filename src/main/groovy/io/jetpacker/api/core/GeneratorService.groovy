@@ -12,11 +12,16 @@ import io.jetpacker.api.configuration.kit.Kit
 import io.jetpacker.api.configuration.kit.Kits
 import io.jetpacker.api.web.command.DataContainer
 import io.jetpacker.api.web.command.JetpackerCommand
+import org.apache.tools.ant.Project
+import org.apache.tools.ant.taskdefs.Zip
+import org.apache.tools.ant.types.ZipFileSet
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Service
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils
+import org.springframework.util.StreamUtils
 
 import javax.annotation.PostConstruct
 import java.util.concurrent.ExecutionException
@@ -34,13 +39,17 @@ class GeneratorService {
     private final String pattern = /^(\/.*\/+templates\/)(.*\.ftl)$/
     private final List<String> templates = new ArrayList<>()
 
+    private final String tmpDirectory
+
     @Autowired
     GeneratorService(RepositoryService repositoryService,
                      JetpackerProperties jetpackerProperties,
-                     Configuration configuration) {
+                     Configuration configuration,
+                     @Value("#{systemProperties['java.io.tmpdir']}/jetpacker") String tmpDirectory) {
         this.repositoryService = repositoryService
         this.jetpackerProperties = jetpackerProperties
         this.configuration = configuration
+        this.tmpDirectory = tmpDirectory
     }
 
     @PostConstruct
@@ -81,7 +90,7 @@ class GeneratorService {
         jetpackerProperties
     }
 
-    void generate(JetpackerCommand command) {
+    byte[] generate(JetpackerCommand command) {
         ObjectMapper mapper = new ObjectMapper()
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
 
@@ -147,13 +156,54 @@ class GeneratorService {
 
         log.info "after body:\n {}", mapper.writeValueAsString(command)
 
+        String generateDir = "${tmpDirectory}/${System.currentTimeMillis()}"
+        log.info "Create temporary directory: {}", generateDir
+        File dir = new File(generateDir)
+        dir.mkdirs()
+
+        List<File> files = new ArrayList<>()
+
         for (String template: templates) {
             String output = FreeMarkerTemplateUtils.processTemplateIntoString(
                     this.configuration.getTemplate(template),
                     command
             )
+
             log.info "template: {}",  template
             println "output: ${output}"
+
+            String generateFile = "${generateDir}/${template.replaceFirst(/.ftl$/, '')}"
+            log.info "Create temporary file: {}", generateFile
+            File file = new File(generateFile)
+            file.parentFile.mkdirs()
+            file << output
+            files << file
         }
+
+        log.info "dir: {}", dir.name
+
+        Zip zip = new Zip()
+        zip.project = new Project()
+        zip.defaultexcludes = false
+
+        ZipFileSet set = new ZipFileSet()
+        set.dir = dir
+        set.fileMode = "755"
+        set.defaultexcludes = false
+
+        zip.addFileset(set)
+
+        log.info "dir file: {}", dir
+
+        zip.destFile = new File(dir.absolutePath + "/jetpack.zip")
+        zip.execute()
+
+        log.info "zip file: {}", zip.destFile.absolutePath
+
+        byte[] bytes = StreamUtils.copyToByteArray(new FileInputStream(zip.destFile))
+
+        dir.deleteDir()
+
+        bytes
     }
 }

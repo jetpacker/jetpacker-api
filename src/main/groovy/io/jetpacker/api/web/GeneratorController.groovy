@@ -1,7 +1,5 @@
 package io.jetpacker.api.web
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.core.GeneratorService
@@ -29,8 +27,8 @@ class GeneratorController {
         generatorService.load()
     }
 
-    @PostMapping
-    void generate(@RequestBody JetpackerCommand command) {
+    @PostMapping(produces = "application/zip")
+    byte[] generate(@RequestBody JetpackerCommand command) {
         generatorService.generate(command)
     }
 }
