@@ -42,10 +42,10 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.7'
 
     compile 'org.springframework.boot:spring-boot-starter-aop'
-	compile 'org.springframework.boot:spring-boot-devtools'
 	compile 'org.springframework.boot:spring-boot-starter-validation'
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.springframework.boot:spring-boot-starter-freemarker'
+	compile 'org.springframework.boot:spring-boot-devtools'
 
     compile 'io.projectreactor:reactor-core:3.0.3.RELEASE'
 
