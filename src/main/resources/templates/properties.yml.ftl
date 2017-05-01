@@ -4,7 +4,7 @@ timezone: ${machine.timezone}
 openjdk:
   version: ${kits.openjdk.version}
   <#assign extensions = kits.openjdk.extensions>
-  <#if extensions??>
+  <#if extensions?? && extensions?size gt 0>
   extensions:
     <#list extensions?keys as name>
     ${name}: ${extensions[name]}
@@ -17,7 +17,7 @@ node:
   version: ${kits.node.version}
   nvm_version: ${kits.node.dependencyVersion}
   <#assign extensions = kits.node.extensions>
-  <#if extensions??>
+  <#if extensions?? && extensions?size gt 0>
   extensions:
     <#list extensions?keys as name>
     ${name}: ${extensions[name]}
