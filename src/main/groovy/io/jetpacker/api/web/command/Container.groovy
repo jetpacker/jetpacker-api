@@ -3,10 +3,9 @@ package io.jetpacker.api.web.command
 /**
  * Created by donny on 30/11/16.
  */
-class Container {
-    String version
+class Container extends Platform {
     String command
-    Map<String, String> volumes
+    String volumesFrom
     Map<String, String> ports
     Map<String, String> env
 }

@@ -7,4 +7,5 @@ class JetpackerCommand {
     Machine machine
     Kits kits
     Map<String, Container> containers
+    DataContainer dataContainer
 }

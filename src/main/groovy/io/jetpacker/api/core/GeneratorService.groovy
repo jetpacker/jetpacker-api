@@ -3,7 +3,6 @@ package io.jetpacker.api.core
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import freemarker.template.Configuration
-import freemarker.template.Template
 import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.configuration.container.Container
@@ -11,6 +10,7 @@ import io.jetpacker.api.configuration.container.Port
 import io.jetpacker.api.configuration.container.Volume
 import io.jetpacker.api.configuration.kit.Kit
 import io.jetpacker.api.configuration.kit.Kits
+import io.jetpacker.api.web.command.DataContainer
 import io.jetpacker.api.web.command.JetpackerCommand
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.Resource
@@ -32,7 +32,7 @@ class GeneratorService {
     private final Configuration configuration
 
     private final String pattern = /^(\/.*\/+templates\/)(.*\.ftl)$/
-    private final List<Template> templates = new ArrayList<>()
+    private final List<String> templates = new ArrayList<>()
 
     @Autowired
     GeneratorService(RepositoryService repositoryService,
@@ -48,8 +48,7 @@ class GeneratorService {
         for (Resource resource: new PathMatchingResourcePatternResolver()
                 .getResources("classpath*:/templates/**/*.ftl")) {
             def m = resource.file.absolutePath =~ pattern
-            Template template = this.configuration.getTemplate(m[0][2])
-            templates.add(template)
+            templates.add(m[0][2])
         }
 
         try {
@@ -104,35 +103,56 @@ class GeneratorService {
                 Map<String, Container> containers = jetpackerProperties.containers
                 command.containers[name].command = containers[name].command
 
-                if (containers[name].env) {
+                Map<String, String> env = containers[name].env
+
+                if (env) {
                     if (!command.containers[name].env)
-                        command.containers[name].env = new HashMap<>()
+                        command.containers[name].env = new LinkedHashMap<>()
 
-                    command.containers[name].env.putAll(containers[name].env)
+                    command.containers[name].env.putAll(env)
                 }
 
-                containers[name].ports.each { Port port ->
-                    if (!command.containers[name].ports)
-                        command.containers[name].ports = new HashMap<>()
+                List<Port> ports = containers[name].ports
 
-                    command.containers[name].ports[port.host] = port.container
+                if (ports && ports.size() > 0) {
+                    ports.each { Port port ->
+                        if (!command.containers[name].ports)
+                            command.containers[name].ports = new LinkedHashMap<>()
+
+                        command.containers[name].ports[port.host] = port.container
+                    }
                 }
 
-                containers[name].volumes.each { Volume volume ->
-                    if (!command.containers[name].volumes)
-                        command.containers[name].volumes = new HashMap<>()
+                List<Volume> volumes = containers[name].volumes
 
-                    command.containers[name].volumes[volume.host] = volume.container
+                if (volumes && volumes.size() > 0) {
+                    if (!command.dataContainer) {
+                        command.dataContainer = new DataContainer(
+                                name: jetpackerProperties.dataContainer.name,
+                                version: jetpackerProperties.dataContainer.version.value
+                        )
+                    }
+
+                    command.containers[name].volumesFrom = command.dataContainer.name
+
+                    volumes.each { Volume volume ->
+                        if (!command.dataContainer.volumes)
+                            command.dataContainer.volumes = new LinkedHashMap<>()
+
+                        command.dataContainer.volumes[volume.host] = volume.container
+                    }
                 }
             }
         }
 
         log.info "after body:\n {}", mapper.writeValueAsString(command)
 
-
-        for (Template template: templates) {
-            String output = FreeMarkerTemplateUtils.processTemplateIntoString(template, command)
-            log.info "configuration: {}",  configuration
+        for (String template: templates) {
+            String output = FreeMarkerTemplateUtils.processTemplateIntoString(
+                    this.configuration.getTemplate(template),
+                    command
+            )
+            log.info "template: {}",  template
             println "output: ${output}"
         }
     }
