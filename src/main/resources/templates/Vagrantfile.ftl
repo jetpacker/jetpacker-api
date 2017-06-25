@@ -5,7 +5,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = '${machine.box}'
 
   config.vm.provider "virtualbox" do |virtualbox|
-    virtualbox.memory = ${machine.memory}
+    virtualbox.memory = ${machine.memory?c}
   end
 
   # forwarded ports
