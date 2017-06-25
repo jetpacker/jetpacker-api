@@ -30,28 +30,29 @@ guard:
   ruby_version: ${kits.guard.dependencyVersion}
 </#if>
 <#if containers??>
-  <#list containers?keys as name>
 
-### ${name} ###
-${name}:
+containers:
+  <#list containers?keys as name>
+  ### ${name} ###
+  - name: ${name}
     <#assign container = containers[name]>
-  version: ${container.version}
+    version: ${container.version}
     <#if container.command??>
-  command: ${container.command}
+    command: ${container.command}
     </#if>
     <#if container.volumesFrom??>
-  volumes_from: ${container.volumesFrom}
+    volumes_from: ${container.volumesFrom}
     </#if>
     <#if container.ports??>
-  ports:
+    ports:
       <#list container.ports?keys as key>
-    ${key}:${container.ports[key]}
+      - ${key}:${container.ports[key]}
       </#list>
     </#if>
     <#if container.env??>
-  env:
+    env:
       <#list container.env?keys as key>
-    ${key}: ${container.env[key]}
+      ${key}: ${container.env[key]}
       </#list>
     </#if>
   </#list>

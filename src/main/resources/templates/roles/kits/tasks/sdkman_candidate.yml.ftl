@@ -1,17 +1,18 @@
 - set_fact:
-    candidate_name: "{{ extension.key }}"
-    candidate_version: "{{ extension.value }}"
+    candidate:
+      name: "{{ extension.key }}"
+      version: "{{ extension.value }}"
 
-- stat: path=~/.sdkman/candidates/{{ candidate_name }}/{{ candidate_version }}
+- stat: path=~/.sdkman/candidates/{{ candidate.name }}/{{ candidate.version }}
   register: path
 
-- name: install {{ candidate_name }}:{{ candidate_version }}
+- name: install {{ candidate.name }}:{{ candidate.version }}
   command: bash -lc "{{ item }}"
   with_items:
-    - sdk install {{ candidate_name }} {{ candidate_version }}
-    - mkdir -p /vagrant/.sdk/{{ candidate_name }}
-    - cp -R ~/.sdkman/candidates/{{ candidate_name }}/{{ candidate_version }} /vagrant/.sdk/{{ candidate_name }}/{{ candidate_version }}
+    - sdk install {{ candidate.name }} {{ candidate.version }}
+    - mkdir -p /vagrant/.sdk/{{ candidate.name }}
+    - cp -R ~/.sdkman/candidates/{{ candidate.name }}/{{ candidate.version }} /vagrant/.sdk/{{ candidate.name }}/{{ candidate.version }}
   when: not path.stat.exists
 
-- name: default to {{ candidate_name }}:{{ candidate_version }}
-  command: bash -lc "sdk default {{ candidate_name }} {{ candidate_version }}"
+- name: default to {{ candidate.name }}:{{ candidate.version }}
+  command: bash -lc "sdk default {{ candidate.name }} {{ candidate.version }}"
