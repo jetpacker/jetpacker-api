@@ -1,5 +1,6 @@
 package io.jetpacker.api.core
 
+import groovy.util.logging.Slf4j
 import io.jetpacker.api.common.VersionComparator
 import io.jetpacker.api.configuration.*
 import io.jetpacker.api.configuration.kit.Kit
@@ -16,6 +17,7 @@ import java.util.concurrent.ExecutionException
 /**
  * Created by donny on 22/11/16.
  */
+@Slf4j
 @Service
 class RepositoryService {
     private final VersionComparator versionComparator = new VersionComparator()
@@ -109,11 +111,11 @@ class RepositoryService {
         Map<String, String> candidates = [:]
 
         String candidatesUrl = "${Repository.SdkMan.url}/list"
-        String rawCandidates = asyncRestTemplate.getForEntity(candidatesUrl, String.class).get().body
+        String sdkLabels = asyncRestTemplate.getForEntity(candidatesUrl, String.class).get().body
 
-        rawCandidates.split(/(?m)^(-)+$/).eachWithIndex{ String rawCandidate, int i ->
-            if (i > 0 && i < rawCandidate.size() - 1) {
-                String[] tokens = rawCandidate.split(/(?m)^\s*$/)
+        sdkLabels.split(/(?m)^(-)+$/).eachWithIndex{ String sdkLabel, int i ->
+            if (i > 0 && i < sdkLabel.size() - 1) {
+                String[] tokens = sdkLabel.split(/(?m)^\s*$/)
 
                 String name = tokens[2].replace('$ sdk install ', "").trim()
                 String label = tokens[0].replaceFirst(/\s+\(.+\)/, "")
@@ -129,17 +131,23 @@ class RepositoryService {
             }
         }
 
-        rawCandidates = asyncRestTemplate.getForEntity(Repository.SdkMan.url, String.class).get().body
+        def sdkCandidates = asyncRestTemplate.getForEntity(Repository.SdkMan.url, String.class).get().body
 
-        rawCandidates.split(",").collect { String candidate ->
-            String candidateUrl = "${Repository.SdkMan.url}/${candidate}"
+        sdkCandidates.split(",").collect { String sdkCandidate ->
+            String candidateUrl = "${Repository.SdkMan.url}/${sdkCandidate}"
             String rawReleases = asyncRestTemplate.getForEntity(candidateUrl, String.class).get().body
             List<String> releases = Arrays.asList(rawReleases.split(","))
             releases.sort versionComparator
 
-            new Kit(name: candidate,
-                    label: candidates[candidate]['label'],
-                    description: candidates[candidate]['description'],
+            log.info "Adding candidate {}", sdkCandidate
+
+            def candidate = candidates[sdkCandidate]
+            String label = candidate? candidate['label'] : sdkCandidate
+            String description = candidate? candidate['description'] : sdkCandidate
+
+            new Kit(name: sdkCandidate,
+                    label: label,
+                    description: description,
                     version: new Parameter(
                             options: releases.collect { release ->
                                 new Option(value: release)
