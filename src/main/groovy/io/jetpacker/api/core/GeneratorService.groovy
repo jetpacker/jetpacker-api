@@ -94,8 +94,6 @@ class GeneratorService {
         ObjectMapper mapper = new ObjectMapper()
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
 
-        log.info "before body:\n {}", mapper.writeValueAsString(command)
-
         // TODO: Add logic for generation
         if (command.kits.node) {
             Kit node = jetpackerProperties.kits.node
@@ -154,8 +152,6 @@ class GeneratorService {
             }
         }
 
-        log.info "after body:\n {}", mapper.writeValueAsString(command)
-
         String generateDir = "${tmpDirectory}/${System.currentTimeMillis()}"
         log.info "Create temporary directory: {}", generateDir
         File dir = new File(generateDir)
@@ -169,9 +165,6 @@ class GeneratorService {
                     command
             )
 
-            log.info "template: {}",  template
-            println "output: ${output}"
-
             String generateFile = "${generateDir}/${template.replaceFirst(/.ftl$/, '')}"
             log.info "Create temporary file: {}", generateFile
             File file = new File(generateFile)
@@ -179,8 +172,6 @@ class GeneratorService {
             file << output
             files << file
         }
-
-        log.info "dir: {}", dir.name
 
         Zip zip = new Zip()
         zip.project = new Project()
@@ -193,12 +184,10 @@ class GeneratorService {
 
         zip.addFileset(set)
 
-        log.info "dir file: {}", dir
-
         zip.destFile = new File(dir.absolutePath + "/jetpack.zip")
         zip.execute()
 
-        log.info "zip file: {}", zip.destFile.absolutePath
+        log.info "Created a temporary zip file: {}", zip.destFile.absolutePath
 
         byte[] bytes = StreamUtils.copyToByteArray(new FileInputStream(zip.destFile))
 
