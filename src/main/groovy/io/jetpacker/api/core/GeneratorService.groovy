@@ -36,7 +36,7 @@ class GeneratorService {
     private final JetpackerProperties jetpackerProperties
     private final Configuration configuration
 
-    private final String pattern = /^(\/.*\/+templates\/)(.*\.ftl)$/
+    private final String pattern = /(\/.*\/+templates\/)(.*\.ftl)$/
     private final List<String> templates = new ArrayList<>()
 
     private final String tmpDirectory
@@ -56,9 +56,11 @@ class GeneratorService {
     void setUp() {
         for (Resource resource: new PathMatchingResourcePatternResolver()
                 .getResources("classpath*:/templates/**/*.ftl")) {
-            def m = resource.file.absolutePath =~ pattern
+            String path = resource.file.absolutePath.replaceAll("\\\\", "/")
+            def m = path =~ pattern
             templates.add(m[0][2])
         }
+        println templates
 
         try {
             Kits kits = jetpackerProperties.kits
