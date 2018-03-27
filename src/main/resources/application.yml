@@ -220,6 +220,9 @@ jetpacker:
       label: ElasticSearch
       description: Elasticsearch is a distributed, open source search and analytics engine, designed for horizontal scalability, reliability, and easy management.
       type: SearchEngine
+      # To be switched to https://api.github.com/repos/elastic/elasticsearch-docker/branches
+      # docker_url = docker.elastic.co/elasticsearch
+      # consider using repository { type: DockerHub, url: http://docker.com/etc }
       repository: DockerHub
       version: { name: version, label: Version }
       install: { name: install, label: Install ElasticSearch }
