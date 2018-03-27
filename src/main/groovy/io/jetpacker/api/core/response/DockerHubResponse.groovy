@@ -1,4 +1,4 @@
-package io.jetpacker.api.core
+package io.jetpacker.api.core.response
 
 import io.jetpacker.api.configuration.Metadata
 
