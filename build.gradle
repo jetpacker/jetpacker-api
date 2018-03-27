@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.4.1.RELEASE'
+		springBootVersion = '1.5.10.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -9,14 +9,15 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-		classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+		classpath 'io.spring.gradle:propdeps-plugin:0.0.9.RELEASE'
 	}
 }
 
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 configure(allprojects) {
     apply plugin: 'propdeps'
@@ -45,7 +46,7 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-validation'
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.springframework.boot:spring-boot-starter-freemarker'
-	compile 'org.springframework.boot:spring-boot-devtools'
+//	compile 'org.springframework.boot:spring-boot-devtools'
 
     compile 'io.projectreactor:reactor-core:3.0.3.RELEASE'
 
@@ -64,7 +65,5 @@ dependencies {
 	optional 'org.springframework.boot:spring-boot-configuration-processor'
 
 }
-
-
 
 compileJava.dependsOn(processResources)
