@@ -4,6 +4,8 @@ import groovy.util.logging.Slf4j
 import io.jetpacker.api.common.VersionComparator
 import io.jetpacker.api.configuration.*
 import io.jetpacker.api.configuration.kit.Kit
+import io.jetpacker.api.core.response.DockerHubResponse
+import io.jetpacker.api.core.response.GitHubResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
@@ -81,7 +83,7 @@ class RepositoryService {
     List<Option> loadReleasesFromGitHub(Repository repository, Metadata metadata) {
         String url = loadUrlFromRepository(repository, metadata)
 
-        ResponseEntity<List<Metadata>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
+        ResponseEntity<List<GitHubResponse>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Metadata>>() {}).get()
 
         formatReleases(response.body*.name)
@@ -90,18 +92,18 @@ class RepositoryService {
     List<Option> loadReleasesFromDockerHub(Repository repository, Metadata metadata) {
         String url = loadUrlFromRepository(repository, metadata)
 
-        ResponseEntity<DockerHub> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<DockerHub>() {}).get()
+        ResponseEntity<DockerHubResponse> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<DockerHubResponse>() {}).get()
 
-        DockerHub dockerHub = response.body
-        List<Metadata> results = dockerHub.results
+        DockerHubResponse dockerHubResponse = response.body
+        List<Metadata> results = dockerHubResponse.results
 
-        while (dockerHub.next) {
-            response =  asyncRestTemplate.exchange(dockerHub.next, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<DockerHub>() {}).get()
+        while (dockerHubResponse.next) {
+            response =  asyncRestTemplate.exchange(dockerHubResponse.next, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<DockerHubResponse>() {}).get()
 
-            dockerHub = response.body
-            results += dockerHub.results
+            dockerHubResponse = response.body
+            results += dockerHubResponse.results
         }
 
         formatReleases(results*.name)
