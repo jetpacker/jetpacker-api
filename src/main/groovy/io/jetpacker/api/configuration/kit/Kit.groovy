@@ -9,8 +9,8 @@ import io.jetpacker.api.configuration.Platform
  */
 @CompileStatic
 class Kit extends Platform {
-    List<Kit> extensions
+    List<Extension> extensions
 
     @JsonIgnore
-    Kit dependency
+    Dependency dependency
 }

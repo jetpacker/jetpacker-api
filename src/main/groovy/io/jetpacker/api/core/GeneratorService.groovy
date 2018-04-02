@@ -60,7 +60,6 @@ class GeneratorService {
             def m = path =~ pattern
             templates.add(m[0][2])
         }
-        println templates
 
         try {
             Kits kits = jetpackerProperties.kits
@@ -74,12 +73,13 @@ class GeneratorService {
             log.info "Loading candidates from SDKMAN!"
             kits.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
 
-            nonJavaKits.each { Kit kit ->
+
+            for (Kit kit: nonJavaKits) {
                 log.info "Updating releases for ${kit.label}"
                 repositoryService.updateReleases(kit)
             }
 
-            jetpackerProperties.containers.values().each { Container container ->
+            for (Container container: jetpackerProperties.containers.values()) {
                 log.info "Updating releases for ${container.label}"
                 repositoryService.updateReleases(container)
             }

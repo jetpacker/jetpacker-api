@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.10.RELEASE'
+		springBootVersion = '2.0.0.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -8,8 +8,7 @@ buildscript {
 		maven { url 'http://repo.spring.io/plugins-release' }
 	}
 	dependencies {
-		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-		classpath 'io.spring.gradle:propdeps-plugin:0.0.9.RELEASE'
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
 }
 
@@ -19,51 +18,37 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-configure(allprojects) {
-    apply plugin: 'propdeps'
-    apply plugin: 'propdeps-maven'
-    apply plugin: 'propdeps-idea'
-    apply plugin: 'propdeps-eclipse'
-}
+group = 'io.jetpacker'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
 
 jar {
 	baseName = 'jetpacker-api'
 	version = '0.0.1-SNAPSHOT'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 repositories {
 	mavenCentral()
-	jcenter()
 }
 
+
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.7'
-
-    compile 'org.springframework.boot:spring-boot-starter-aop'
-	compile 'org.springframework.boot:spring-boot-starter-validation'
-	compile 'org.springframework.boot:spring-boot-starter-web'
-	compile 'org.springframework.boot:spring-boot-starter-freemarker'
-//	compile 'org.springframework.boot:spring-boot-devtools'
-
-    compile 'io.projectreactor:reactor-core:3.0.3.RELEASE'
-
-	compile 'org.apache.maven:maven-artifact:3.3.9'
-
+	compile('org.springframework.boot:spring-boot-starter-aop')
+	compile('org.springframework.boot:spring-boot-starter-validation')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-freemarker')
+	compile('org.springframework.boot:spring-boot-starter-webflux')
+	compile('org.codehaus.groovy:groovy')
+	compile('org.apache.maven:maven-artifact:3.3.9')
 	compile('org.apache.ant:ant:1.10.1') {
 		exclude group: 'org.apache.ant', module: 'ant-launcher'
 	}
-
-	compile 'io.springfox:springfox-swagger2:2.6.1'
-	compile 'io.springfox:springfox-swagger-ui:2.6.1'
-
-	testCompile 'org.springframework.boot:spring-boot-starter-test'
-	testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
-
-	optional 'org.springframework.boot:spring-boot-configuration-processor'
-
+	compile('io.springfox:springfox-swagger2:2.6.1')
+	compile('io.springfox:springfox-swagger-ui:2.6.1')
+	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+	runtime("org.springframework.boot:spring-boot-properties-migrator")
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+	testCompile('io.projectreactor:reactor-test')
 }
-
-compileJava.dependsOn(processResources)
