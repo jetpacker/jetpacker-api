@@ -70,12 +70,10 @@ class RepositoryService {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(repository.url)
         Map<String, String> parameters = [:]
 
-        if (repository != Repository.SdkMan) {
-            parameters['name'] = metadata.alias?: metadata.name
+        parameters['name'] = metadata.alias?: metadata.name
 
-            if (metadata.namespace)
-                parameters['namespace'] = metadata.namespace
-        }
+        if (metadata.namespace)
+            parameters['namespace'] = metadata.namespace
 
         builder.buildAndExpand(parameters).toUriString()
     }
@@ -110,10 +108,12 @@ class RepositoryService {
     }
 
     List<Kit> loadCandidatesFromSdkMan() throws ExecutionException, InterruptedException {
+        final String CANDIDATES_URL = "http://api.sdkman.io/candidates"
+
         Map<String, String> candidates = [:]
 
-        String candidatesUrl = "${Repository.SdkMan.url}/list"
-        String sdkLabels = asyncRestTemplate.getForEntity(candidatesUrl, String.class).get().body
+        final String candidatesListUrl = "${CANDIDATES_URL}/list"
+        String sdkLabels = asyncRestTemplate.getForEntity(candidatesListUrl, String.class).get().body
 
         sdkLabels.split(/(?m)^(-)+$/).eachWithIndex{ String sdkLabel, int i ->
             if (i > 0 && i < sdkLabel.size() - 1) {
@@ -133,10 +133,10 @@ class RepositoryService {
             }
         }
 
-        def sdkCandidates = asyncRestTemplate.getForEntity(Repository.SdkMan.url, String.class).get().body
+        def sdkCandidates = asyncRestTemplate.getForEntity(CANDIDATES_URL, String.class).get().body
 
         sdkCandidates.split(",").collect { String sdkCandidate ->
-            String candidateUrl = "${Repository.SdkMan.url}/${sdkCandidate}"
+            String candidateUrl = "${CANDIDATES_URL}/${sdkCandidate}"
             String rawReleases = asyncRestTemplate.getForEntity(candidateUrl, String.class).get().body
             List<String> releases = Arrays.asList(rawReleases.split(","))
             releases.sort versionComparator
