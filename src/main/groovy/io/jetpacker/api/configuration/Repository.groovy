@@ -6,14 +6,13 @@ import groovy.transform.CompileStatic
  * Created by donny on 24/10/2016.
  */
 @CompileStatic
-enum Repository {
-    GitHub("https://api.github.com/repos/{namespace}/{name}/tags"),
-    DockerHub("https://registry.hub.docker.com/v2/repositories/library/{name}/tags"),
-    None("http://127.0.0.1")
-
-    String url
-
-    Repository(String url) {
-        this.url = url
+class Repository {
+    static enum Type {
+        GitHub,
+        DockerHub,
+        None
     }
+
+    Type type
+    String url
 }

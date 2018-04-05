@@ -40,46 +40,55 @@ jetpacker:
       namespace: nodejs
       label: Node.js
       description: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
-      repository: GitHub
+      repository:
+        type: GitHub
+        url: https://api.github.com/repos/nodejs/node/tags
       version: { name: version, label: Version }
       install: { name: install, label: Install Node.js }
       dependency:
         name: nvm
         namespace: creationix
         label: Node Version Manager
-        repository: GitHub
+        repository:
+          type: GitHub
+          url: https://api.github.com/repos/creationix/nvm/tags
         version: { name: version, label: Version }
       extensions:
         - name: angular-cli
           namespace: angular
           label: Angular CLI
           description: Angular is a development platform for building mobile and desktop web applications using Typescript/JavaScript (JS) and other languages.
-          repository: GitHub
+          repository:
+            type: GitHub
+            url: https://api.github.com/repos/angular/angular-cli/tags
           version: { name: version, label: Version }
         - name: aurelia-cli
-          alias: cli
-          namespace: aurelia
           label: Aurelia CLI
           description: Aurelia is a JavaScript client framework for mobile, desktop and web leveraging simple conventions and empowering creativity.
-          repository: GitHub
+          repository:
+            type: GitHub
+            url: https://api.github.com/repos/aurelia/cli/tags
           version: { name: version, label: Version }
         - name: ember-cli
-          namespace: ember-cli
           label: Ember.js CLI
           description: Ember.js is a Javascript framework that greatly reduces the time, effort and resources needed to build any web application.
-          repository: GitHub
+          repository:
+            type: GitHub
+            url: https://api.github.com/repos/ember-cli/ember-cli/tags
           version: { name: version, label: Version }
         - name: create-react-app
-          namespace: facebookincubator
           label: React CLI
           description: React is a declarative, efficient, and flexible JavaScript library for building user interfaces.
-          repository: GitHub
+          repository:
+            type: GitHub
+            url: https://api.github.com/repos/facebook/create-react-app/tags
           version: { name: version, label: Version }
         - name: vue-cli
-          namespace: vuejs
           label: Vue.js CLI
           description: Vue.js is a library for building interactive web interfaces. It provides data-reactive components with a simple and flexible API.
-          repository: GitHub
+          repository:
+            type: GitHub
+            url: https://api.github.com/repos/vuejs/vue-cli/tags
           version: { name: version, label: Version }
 
     guard:
@@ -91,7 +100,9 @@ jetpacker:
         name: ruby
         namespace: ruby
         label: Ruby
-        repository: GitHub
+        repository:
+          type: GitHub
+          url: https://api.github.com/repos/ruby/ruby/tags
         version: { name: version, label: Version }
 
   containers:
@@ -101,7 +112,9 @@ jetpacker:
       label: MySQL
       description: MySQL is the most popular Open Source SQL database management system.
       type: DataStore
-      repository: DockerHub
+      repository:
+        type: DockerHub
+        url: https://registry.hub.docker.com/v2/repositories/library/mysql/tags
       version: { name: version, label: Version }
       install: { name: install, label: Install MySQL }
       volumes:
@@ -121,7 +134,9 @@ jetpacker:
       label: MariaDB
       description: MariaDB is an enhanced, drop-in replacement for MySQL.
       type: DataStore
-      repository: DockerHub
+      repository:
+        type: DockerHub
+        url: https://registry.hub.docker.com/v2/repositories/library/mariadb/tags
       version: { name: version, label: Version }
       install: { name: install, label: Install MariaDB }
       volumes:
@@ -141,7 +156,9 @@ jetpacker:
       label: PostgreSQL
       description: PostgreSQL is a powerful, open source object-relational database system.
       type: DataStore
-      repository: DockerHub
+      repository:
+        type: DockerHub
+        url: https://registry.hub.docker.com/v2/repositories/library/postgres/tags
       version: { name: version, label: Version }
       install: { name: install, label: Install PostgreSQL }
       volumes:
@@ -162,7 +179,9 @@ jetpacker:
       label: MongoDB
       description: MongoDB is an open-source, document database designed for ease of development and scaling.
       type: DataStore
-      repository: DockerHub
+      repository:
+        type: DockerHub
+        url: https://registry.hub.docker.com/v2/repositories/library/mongo/tags
       version: { name: version, label: Version }
       install: { name: install, label: Install MongoDB }
       volumes:
@@ -177,7 +196,9 @@ jetpacker:
       label: Redis
       description: Redis is an open source (BSD licensed), in-memory data structure store, used as database, cache and message broker.
       type: DataStore
-      repository: DockerHub
+      repository:
+        type: DockerHub
+        url: https://registry.hub.docker.com/v2/repositories/library/redis/tags
       version: { name: version, label: Version }
       install: { name: install, label: Install Redis }
       command: redis-server --appendonly yes
@@ -196,7 +217,9 @@ jetpacker:
       label: RabbitMQ
       description: RabbitMQ is a lightweight, reliable, scalable and portable message broker.
       type: MessageBroker
-      repository: DockerHub
+      repository:
+        type: DockerHub
+        url: https://registry.hub.docker.com/v2/repositories/library/rabbitmq/tags
       version: { name: version, label: Version }
       install: { name: install, label: Install RabbitMQ }
       volumes:
@@ -213,6 +236,10 @@ jetpacker:
         - { name: RABBITMQ_NODE_NAME, label: Node Name, value: node@rabbitmq }
         - { name: RABBITMQ_ERLANG_COOKIE, label: Erlang Cookie, value: rabbitmq_erlang_cookie }
 
+#repository:
+#  type: GitHub
+#  url: http://api.github.com/
+
     # search engines
     elasticsearch:
       name: elasticsearch
@@ -222,7 +249,9 @@ jetpacker:
       # To be switched to https://api.github.com/repos/elastic/elasticsearch-docker/branches
       # docker_url = docker.elastic.co/elasticsearch
       # consider using repository { type: DockerHub, url: http://docker.com/etc }
-      repository: DockerHub
+      repository:
+        type: DockerHub
+        url: https://registry.hub.docker.com/v2/repositories/library/elasticsearch/tags
       version: { name: version, label: Version }
       install: { name: install, label: Install ElasticSearch }
       volumes:
@@ -239,7 +268,9 @@ jetpacker:
       label: Solr
       description: Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene.
       type: SearchEngine
-      repository: DockerHub
+      repository:
+        type: DockerHub
+        url: https://registry.hub.docker.com/v2/repositories/library/solr/tags
       version: { name: version, label: Version }
       install: { name: install, label: Install Solr }
       volumes:

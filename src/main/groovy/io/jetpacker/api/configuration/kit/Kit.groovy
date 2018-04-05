@@ -9,7 +9,7 @@ import io.jetpacker.api.configuration.Platform
  */
 @CompileStatic
 class Kit extends Platform {
-    List<Extension> extensions
+    List<Extension> extensions // Extension[] extensions. Using array so can be passed as elipsis?
 
     @JsonIgnore
     Dependency dependency

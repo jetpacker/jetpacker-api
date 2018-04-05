@@ -8,6 +8,7 @@ import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.configuration.container.Container
 import io.jetpacker.api.configuration.container.Port
 import io.jetpacker.api.configuration.container.Volume
+import io.jetpacker.api.configuration.kit.Extension
 import io.jetpacker.api.configuration.kit.Kit
 import io.jetpacker.api.configuration.kit.Kits
 import io.jetpacker.api.web.command.DataContainer
@@ -63,20 +64,25 @@ class GeneratorService {
 
         try {
             Kits kits = jetpackerProperties.kits
-
-            List<Kit> nonJavaKits = [kits.node,
-                                     kits.node.dependency,
-                                     kits.node.extensions,
-                                     kits.guard,
-                                     kits.guard.dependency ].flatten()
+            List<Kit> nonJavaKits = [ kits.node, kits.guard ]
 
             log.info "Loading candidates from SDKMAN!"
             kits.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
 
-
             for (Kit kit: nonJavaKits) {
                 log.info "Updating releases for ${kit.label}"
                 repositoryService.updateReleases(kit)
+
+                if (kit.dependency) {
+                    log.info "Updating releases for ${kit.dependency.label}"
+                    repositoryService.updateReleases(kit.dependency)
+                }
+
+                if (kit.extensions && kit.extensions.size() > 0)
+                    for (Extension extension: kit.extensions) {
+                        log.info "Updating releases for ${extension.label}"
+                        repositoryService.updateReleases(extension)
+                    }
             }
 
             for (Container container: jetpackerProperties.containers.values()) {

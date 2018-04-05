@@ -11,7 +11,7 @@ import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import org.springframework.web.client.AsyncRestTemplate
+import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
 import java.util.concurrent.ExecutionException
@@ -22,24 +22,26 @@ import java.util.concurrent.ExecutionException
 @Slf4j
 @Service
 class RepositoryService {
-    private final VersionComparator versionComparator = new VersionComparator()
+    private final static String SDKMAN_CANDIDATES_URL = "http://api.sdkman.io/candidates"
+    private final static VersionComparator versionComparator = new VersionComparator()
 
-    private final AsyncRestTemplate asyncRestTemplate
+    private final RestTemplate restTemplate
 
     @Autowired
-    RepositoryService(AsyncRestTemplate asyncRestTemplate) {
-        this.asyncRestTemplate = asyncRestTemplate
+    RepositoryService(RestTemplate asyncRestTemplate) {
+        this.restTemplate = asyncRestTemplate
     }
 
-    void updateReleases(Platform platform) {
+    void updateReleases(Platform platform) { // to Platform... platforms
         Repository repository = platform.repository
-        Metadata metadata = (Metadata) platform
 
-        if (repository == Repository.GitHub)
-            platform.version.options = loadReleasesFromGitHub(repository, metadata)
+        if (repository != null) {
+            if (repository.type == Repository.Type.GitHub)
+                platform.version.options = loadReleasesFromGitHub(repository)
 
-        if (repository == Repository.DockerHub)
-            platform.version.options = loadReleasesFromDockerHub(repository, metadata)
+            if (repository.type == Repository.Type.DockerHub)
+                platform.version.options = loadReleasesFromDockerHub(repository)
+        }
     }
 
     List<Option> formatReleases(List<String> releases) {
@@ -66,39 +68,23 @@ class RepositoryService {
         options
     }
 
-    String loadUrlFromRepository(Repository repository, Metadata metadata) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(repository.url)
-        Map<String, String> parameters = [:]
-
-        parameters['name'] = metadata.alias?: metadata.name
-
-        if (metadata.namespace)
-            parameters['namespace'] = metadata.namespace
-
-        builder.buildAndExpand(parameters).toUriString()
-    }
-
-    List<Option> loadReleasesFromGitHub(Repository repository, Metadata metadata) {
-        String url = loadUrlFromRepository(repository, metadata)
-
-        ResponseEntity<List<GitHubResponse>> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Metadata>>() {}).get()
+    List<Option> loadReleasesFromGitHub(Repository repository) {
+        ResponseEntity<List<GitHubResponse>> response =
+                restTemplate.exchange(repository.url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Metadata>>() {})
 
         formatReleases(response.body*.name)
     }
 
-    List<Option> loadReleasesFromDockerHub(Repository repository, Metadata metadata) {
-        String url = loadUrlFromRepository(repository, metadata)
-
-        ResponseEntity<DockerHubResponse> response = asyncRestTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<DockerHubResponse>() {}).get()
+    List<Option> loadReleasesFromDockerHub(Repository repository) {
+        ResponseEntity<DockerHubResponse> response =
+                restTemplate.exchange(repository.url, HttpMethod.GET, null, new ParameterizedTypeReference<DockerHubResponse>() {})
 
         DockerHubResponse dockerHubResponse = response.body
         List<Metadata> results = dockerHubResponse.results
 
         while (dockerHubResponse.next) {
-            response =  asyncRestTemplate.exchange(dockerHubResponse.next, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<DockerHubResponse>() {}).get()
+            response =  restTemplate.exchange(dockerHubResponse.next, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<DockerHubResponse>() {})
 
             dockerHubResponse = response.body
             results += dockerHubResponse.results
@@ -108,12 +94,10 @@ class RepositoryService {
     }
 
     List<Kit> loadCandidatesFromSdkMan() throws ExecutionException, InterruptedException {
-        final String CANDIDATES_URL = "http://api.sdkman.io/candidates"
-
         Map<String, String> candidates = [:]
 
-        final String candidatesListUrl = "${CANDIDATES_URL}/list"
-        String sdkLabels = asyncRestTemplate.getForEntity(candidatesListUrl, String.class).get().body
+        final String candidatesListUrl = "${SDKMAN_CANDIDATES_URL}/list"
+        String sdkLabels = restTemplate.getForEntity(candidatesListUrl, String.class).body
 
         sdkLabels.split(/(?m)^(-)+$/).eachWithIndex{ String sdkLabel, int i ->
             if (i > 0 && i < sdkLabel.size() - 1) {
@@ -133,11 +117,11 @@ class RepositoryService {
             }
         }
 
-        def sdkCandidates = asyncRestTemplate.getForEntity(CANDIDATES_URL, String.class).get().body
+        def sdkCandidates = restTemplate.getForEntity(SDKMAN_CANDIDATES_URL, String.class).body
 
         sdkCandidates.split(",").collect { String sdkCandidate ->
-            String candidateUrl = "${CANDIDATES_URL}/${sdkCandidate}"
-            String rawReleases = asyncRestTemplate.getForEntity(candidateUrl, String.class).get().body
+            String candidateUrl = "${SDKMAN_CANDIDATES_URL}/${sdkCandidate}"
+            String rawReleases = restTemplate.getForEntity(candidateUrl, String.class).body
             List<String> releases = Arrays.asList(rawReleases.split(","))
             releases.sort versionComparator
 

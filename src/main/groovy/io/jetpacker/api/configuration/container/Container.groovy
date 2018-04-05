@@ -10,6 +10,12 @@ import io.jetpacker.api.configuration.Platform
  */
 @CompileStatic
 class Container extends Platform {
+    static enum Type {
+        DataStore,
+        MessageBroker,
+        SearchEngine
+    }
+
     Type type
 
     @JsonIgnore
