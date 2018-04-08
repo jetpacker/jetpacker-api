@@ -80,8 +80,8 @@ jetpacker:
           label: React CLI
           description: React is a declarative, efficient, and flexible JavaScript library for building user interfaces.
           repository:
-            type: GitHub
-            url: https://api.github.com/repos/facebook/create-react-app/tags
+            type: NPMRegistry
+            url: https://registry.npmjs.com/create-react-app
           version: { name: version, label: Version }
         - name: vue-cli
           label: Vue.js CLI
