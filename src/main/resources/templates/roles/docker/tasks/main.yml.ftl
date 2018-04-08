@@ -2,7 +2,7 @@
 ### docker-py ###
 - apt: pkg=python-pip state=latest update_cache=yes cache_valid_time=3600
 - pip: name=docker-py version=1.9.0 umask=0022
-<#if dataContainer.volumes?keys?? && dataContainer.volumes?keys?size gt 0>
+<#if dataContainer.volumes?? && dataContainer.volumes?keys?size gt 0>
 
 ### alpine ###
 - name: run ${dataContainer.name}:latest
