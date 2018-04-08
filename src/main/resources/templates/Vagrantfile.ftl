@@ -14,8 +14,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "docker"
 
   config.vm.provision 'ansible', run: 'always', type: 'ansible_local' do |ansible|
-    ansible.sudo = true
-    ansible.verbose = true
+    ansible.become = true
+    ansible.verbose = '-vvv'
     ansible.playbook = './playbook.yml'
     ansible.extra_vars = './properties.yml'
   end

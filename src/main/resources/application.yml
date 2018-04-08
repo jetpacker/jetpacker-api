@@ -282,4 +282,3 @@ jetpacker:
 
   dataContainer:
     name: alpine
-    version: { value: latest }

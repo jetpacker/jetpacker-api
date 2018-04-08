@@ -113,7 +113,7 @@ class GeneratorService {
         }
 
         if (command.containers) {
-            command.containers.keySet().each { String name ->
+            for (String name : command.containers.keySet()) {
                 Map<String, Container> containers = jetpackerProperties.containers
                 command.containers[name].command = containers[name].command
 
@@ -121,7 +121,7 @@ class GeneratorService {
 
                 if (env) {
                     if (!command.containers[name].env)
-                        command.containers[name].env = new LinkedHashMap<>()
+                        command.containers[name].env = [:]
 
                     command.containers[name].env.putAll(env)
                 }
@@ -131,7 +131,7 @@ class GeneratorService {
                 if (ports && ports.size() > 0) {
                     ports.each { Port port ->
                         if (!command.containers[name].ports)
-                            command.containers[name].ports = new LinkedHashMap<>()
+                            command.containers[name].ports = [:]
 
                         command.containers[name].ports[port.host] = port.container
                     }
@@ -143,7 +143,6 @@ class GeneratorService {
                     if (!command.dataContainer) {
                         command.dataContainer = new DataContainer(
                                 name: jetpackerProperties.dataContainer.name,
-                                version: jetpackerProperties.dataContainer.version.value
                         )
                     }
 
@@ -151,7 +150,7 @@ class GeneratorService {
 
                     volumes.each { Volume volume ->
                         if (!command.dataContainer.volumes)
-                            command.dataContainer.volumes = new LinkedHashMap<>()
+                            command.dataContainer.volumes = [:]
 
                         command.dataContainer.volumes[volume.host] = volume.container
                     }
@@ -167,6 +166,7 @@ class GeneratorService {
         List<File> files = new ArrayList<>()
 
         for (String template: templates) {
+            log.info "Create temporary directory: {}", template
             String output = FreeMarkerTemplateUtils.processTemplateIntoString(
                     this.configuration.getTemplate(template),
                     command

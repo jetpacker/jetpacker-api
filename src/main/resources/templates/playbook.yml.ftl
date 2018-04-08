@@ -2,9 +2,9 @@
 - hosts: all
   roles:
     - commons
-    - containers
+    - docker
 
 - hosts: all
   become_user: vagrant
   roles:
-    - kits
+    -

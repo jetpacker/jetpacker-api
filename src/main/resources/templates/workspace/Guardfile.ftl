@@ -1,3 +1,5 @@
+# Run: guard -p -l 10
+
 guard :shell do
     log = Logger.new(STDOUT)
 

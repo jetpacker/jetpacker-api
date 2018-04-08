@@ -14,8 +14,8 @@ jdk:
 <#if kits.node??>
 
 node:
-  version: ${kits.node.version}
-  nvm_version: ${kits.node.dependencyVersion}
+  version: v${kits.node.version}
+  nvm_version: v${kits.node.dependencyVersion}
   <#assign extensions = kits.node.extensions>
   <#if extensions?? && extensions?size gt 0>
   extensions:
@@ -30,38 +30,36 @@ guard:
   ruby_version: ${kits.guard.dependencyVersion}
 </#if>
 <#if containers?? && containers?size gt 0>
-
-containers:
   <#list containers?keys as name>
-  ### ${name} ###
-  - name: ${name}
+
+### ${name} ###
+${name}:
     <#assign container = containers[name]>
-    version: ${container.version}
+  version: ${container.version}
     <#if container.command??>
-    command: ${container.command}
+  command: ${container.command}
     </#if>
     <#if container.volumesFrom??>
-    volumes_from: ${container.volumesFrom}
+  volumes_from: ${container.volumesFrom}
     </#if>
     <#if container.ports??>
-    ports:
+  ports:
       <#list container.ports?keys as key>
-      - ${key}:${container.ports[key]}
+    - ${key}:${container.ports[key]}
       </#list>
     </#if>
     <#if container.env??>
-    env:
+  env:
       <#list container.env?keys as key>
-      ${key}: ${container.env[key]}
+    ${key}: ${container.env[key]}
       </#list>
     </#if>
   </#list>
 </#if>
-<#if dataContainer??>
+<#if dataContainer.volumes?keys?? && dataContainer.volumes?keys?size gt 0>
 
 ### ${dataContainer.name} ###
 ${dataContainer.name}:
-  version: ${dataContainer.version}
   volumes:
   <#list dataContainer.volumes?keys as key>
     - ${key}:${dataContainer.volumes[key]}
