@@ -56,7 +56,7 @@ ${name}:
     </#if>
   </#list>
 </#if>
-<#if dataContainer.volumes?? && dataContainer.volumes?keys?? && dataContainer.volumes?keys?size gt 0>
+<#if dataContainer?? && dataContainer.volumes?? && dataContainer.volumes?keys?size gt 0>
 
 ### ${dataContainer.name} ###
 ${dataContainer.name}:
