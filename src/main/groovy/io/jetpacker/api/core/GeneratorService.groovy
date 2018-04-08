@@ -66,28 +66,27 @@ class GeneratorService {
             Kits kits = jetpackerProperties.kits
             List<Kit> nonJavaKits = [ kits.node, kits.guard ]
 
-            log.info "Loading candidates from SDKMAN!"
-            kits.openjdk.extensions = repositoryService.loadCandidatesFromSdkMan()
+            repositoryService.updateJDKReleases(kits.jdk)
 
             for (Kit kit: nonJavaKits) {
                 log.info "Updating releases for ${kit.label}"
-                repositoryService.updateReleases(kit)
+                repositoryService.updateNonJDKReleases(kit)
 
                 if (kit.dependency) {
                     log.info "Updating releases for ${kit.dependency.label}"
-                    repositoryService.updateReleases(kit.dependency)
+                    repositoryService.updateNonJDKReleases(kit.dependency)
                 }
 
                 if (kit.extensions && kit.extensions.size() > 0)
                     for (Extension extension: kit.extensions) {
                         log.info "Updating releases for ${extension.label}"
-                        repositoryService.updateReleases(extension)
+                        repositoryService.updateNonJDKReleases(extension)
                     }
             }
 
             for (Container container: jetpackerProperties.containers.values()) {
                 log.info "Updating releases for ${container.label}"
-                repositoryService.updateReleases(container)
+                repositoryService.updateNonJDKReleases(container)
             }
         } catch (InterruptedException|ExecutionException e) {
             e.printStackTrace()

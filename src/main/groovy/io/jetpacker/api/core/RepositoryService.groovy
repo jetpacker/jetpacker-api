@@ -22,7 +22,6 @@ import java.util.concurrent.ExecutionException
 @Slf4j
 @Service
 class RepositoryService {
-    private final static String SDKMAN_CANDIDATES_URL = "http://api.sdkman.io/candidates"
     private final static VersionComparator versionComparator = new VersionComparator()
 
     private final RestTemplate restTemplate
@@ -32,7 +31,7 @@ class RepositoryService {
         this.restTemplate = asyncRestTemplate
     }
 
-    void updateReleases(Platform platform) { // to Platform... platforms
+    void updateNonJDKReleases(Platform platform) { // to Platform... platforms
         Repository repository = platform.repository
 
         if (repository != null) {
@@ -93,10 +92,29 @@ class RepositoryService {
         formatReleases(results*.name)
     }
 
-    List<Kit> loadCandidatesFromSdkMan() throws ExecutionException, InterruptedException {
+    void updateJDKReleases(Kit jdk) {
+        log.info "Loading releases from SDKMAN!"
+
+        String repositoryUrl = jdk.repository.url
+        jdk.version.options = loadJDKOptions(repositoryUrl)
+        jdk.extensions = loadSDKMANCandidates(repositoryUrl)
+    }
+
+    List<Kit> loadJDKOptions(final String repositoryUrl) throws ExecutionException, InterruptedException {
+        String candidateUrl = "${repositoryUrl}/java/linux/versions/all"
+        String rawReleases = restTemplate.getForEntity(candidateUrl, String.class).body
+        List<String> releases = Arrays.asList(rawReleases.split(","))
+        releases.sort versionComparator
+
+        releases.collect { release ->
+            new Option(value: release)
+        }
+    }
+
+    List<Kit> loadSDKMANCandidates(final String repositoryUrl) throws ExecutionException, InterruptedException {
         Map<String, String> candidates = [:]
 
-        final String candidatesListUrl = "${SDKMAN_CANDIDATES_URL}/list"
+        final String candidatesListUrl = "${repositoryUrl}/list"
         String sdkLabels = restTemplate.getForEntity(candidatesListUrl, String.class).body
 
         sdkLabels.split(/(?m)^(-)+$/).eachWithIndex{ String sdkLabel, int i ->
@@ -117,31 +135,37 @@ class RepositoryService {
             }
         }
 
-        def sdkCandidates = restTemplate.getForEntity(SDKMAN_CANDIDATES_URL, String.class).body
+        def sdkCandidates = restTemplate.getForEntity(repositoryUrl + "/all", String.class).body
 
-        sdkCandidates.split(",").collect { String sdkCandidate ->
-            String candidateUrl = "${SDKMAN_CANDIDATES_URL}/${sdkCandidate}"
-            String rawReleases = restTemplate.getForEntity(candidateUrl, String.class).body
-            List<String> releases = Arrays.asList(rawReleases.split(","))
-            releases.sort versionComparator
+        List<Kit> kits = sdkCandidates.split(",").collect { String sdkCandidate ->
+            if (sdkCandidate != "java") {
+                String candidateUrl = "${repositoryUrl}/${sdkCandidate}/${sdkCandidate}/versions/all"
+                String rawReleases = restTemplate.getForEntity(candidateUrl, String.class).body
+                List<String> releases = Arrays.asList(rawReleases.split(","))
+                releases.sort versionComparator
 
-            log.info "Adding candidate {}", sdkCandidate
+                log.info "Adding candidate {}", sdkCandidate
 
-            def candidate = candidates[sdkCandidate]
-            String label = candidate? candidate['label'] : sdkCandidate
-            String description = candidate? candidate['description'] : sdkCandidate
+                def candidate = candidates[sdkCandidate]
+                String label = candidate ? candidate['label'] : sdkCandidate
+                String description = candidate ? candidate['description'] : sdkCandidate
 
-            new Kit(name: sdkCandidate,
-                    label: label,
-                    description: description,
-                    version: new Parameter(
-                            options: releases.collect { release ->
-                                new Option(value: release)
-                            },
-                            name: "version",
-                            label: "Version"
-                    )
-            )
+                new Kit(name: sdkCandidate,
+                        label: label,
+                        description: description,
+                        version: new Parameter(
+                                options: releases.collect { release ->
+                                    new Option(value: release)
+                                },
+                                name: "version",
+                                label: "Version"
+                        )
+                )
+            }
         }
+
+        kits.removeAll([null])
+
+        kits
     }
 }

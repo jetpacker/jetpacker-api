@@ -23,17 +23,17 @@ jetpacker:
     timezone: { name: timezone, label: Timezone }
 
   kits:
-    openjdk:
-      name: openjdk
-      label: OpenJDK
-      description: OpenJDK (Open Java Development Kit) is a free and open source implementation of the Java Platform, Standard Edition.
+    jdk:
+      name: jdk
+      label: JDK
+      description: JDK (Java Development Kit) is a popular platform for development and deployment of portable applications for desktop and server environments.
+      repository:
+        type: SDKMAN
+        url: https://api.sdkman.io/2/candidates
       version:
         name: version
         label: Version
-        options:
-        - { label: 8, value: openjdk-8-jdk }
-        - { label: 7, value: openjdk-7-jdk }
-      install: { name: install, label: Install OpenJDK, value: true }
+      install: { name: install, label: Install JDK, value: true }
 
     node:
       name: node

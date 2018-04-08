@@ -7,7 +7,7 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class Kits {
-    Kit openjdk
+    Kit jdk
     Kit node
     Kit guard
 }

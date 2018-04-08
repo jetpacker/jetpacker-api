@@ -1,9 +1,9 @@
 timezone: ${machine.timezone}
-<#if kits.openjdk??>
+<#if kits.jdk??>
 
-openjdk:
-  version: ${kits.openjdk.version}
-  <#assign extensions = kits.openjdk.extensions>
+jdk:
+  version: ${kits.jdk.version}
+  <#assign extensions = kits.jdk.extensions>
   <#if extensions?? && extensions?size gt 0>
   extensions:
     <#list extensions?keys as name>
@@ -29,7 +29,7 @@ node:
 guard:
   ruby_version: ${kits.guard.dependencyVersion}
 </#if>
-<#if containers??>
+<#if containers?? && containers?size gt 0>
 
 containers:
   <#list containers?keys as name>

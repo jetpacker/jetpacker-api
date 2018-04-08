@@ -8,6 +8,7 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class Repository {
     static enum Type {
+        SDKMAN,
         GitHub,
         DockerHub,
         None

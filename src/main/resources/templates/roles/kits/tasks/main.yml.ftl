@@ -1,9 +1,7 @@
 ---
-### openjdk ###
-- apt_repository: repo=ppa:openjdk-r/ppa update_cache=yes
 - apt: pkg="{{ item }}" state=latest update_cache=yes cache_valid_time=3600
   with_items:
-    - openjdk-{{ openjdk.version }}-jdk
+    - zip
     - unzip
 
 ### sdkman ###
@@ -27,8 +25,14 @@
     - sdk flush temp
   when: path.stat.exists
 
+### jdk ###
 - include: sdkman_candidate.yml
-  with_dict: "{{ openjdk.extensions || default({}) }}"
+  with_dict: "{'java':'{{ jdk.version }}'}"
+  loop_control:
+    loop_var: extension
+
+- include: sdkman_candidate.yml
+  with_dict: "{{ jdk.extensions || default({}) }}"
   loop_control:
     loop_var: extension
 
