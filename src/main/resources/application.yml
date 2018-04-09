@@ -55,7 +55,7 @@ jetpacker:
         version: { name: version, label: Version }
       extensions:
         - name: angular-cli
-          namespace: angular
+          alias: @angular/cli
           label: Angular CLI
           description: Angular is a development platform for building mobile and desktop web applications using Typescript/JavaScript (JS) and other languages.
           repository:
@@ -67,14 +67,14 @@ jetpacker:
           description: Aurelia is a JavaScript client framework for mobile, desktop and web leveraging simple conventions and empowering creativity.
           repository:
             type: GitHub
-            url: https://api.github.com/repos/aurelia/cli/tags
+            url: https://registry.npmjs.com/aurelia-cli # https://api.github.com/repos/aurelia/cli/tags
           version: { name: version, label: Version }
         - name: ember-cli
           label: Ember.js CLI
           description: Ember.js is a Javascript framework that greatly reduces the time, effort and resources needed to build any web application.
           repository:
             type: GitHub
-            url: https://api.github.com/repos/ember-cli/ember-cli/tags
+            url: https://registry.npmjs.com/ember-cli # https://api.github.com/repos/ember-cli/ember-cli/tags
           version: { name: version, label: Version }
         - name: create-react-app
           label: React CLI
@@ -87,8 +87,8 @@ jetpacker:
           label: Vue.js CLI
           description: Vue.js is a library for building interactive web interfaces. It provides data-reactive components with a simple and flexible API.
           repository:
-            type: GitHub
-            url: https://api.github.com/repos/vuejs/vue-cli/tags
+            type: NPMRegistry
+            url: https://registry.npmjs.com/vue-cli # https://api.github.com/repos/vuejs/vue-cli/tags
           version: { name: version, label: Version }
 
     guard:
@@ -118,7 +118,7 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install MySQL }
       volumes:
-        - host: /home/vagrant/containers/mysql
+        - host: /home/vagrant/containers/mysql/conf
           container: /etc/mysql/conf.d
         - host: /home/vagrant/containers/mysql/data
           container: /var/lib/mysql
@@ -140,7 +140,7 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install MariaDB }
       volumes:
-        - host: /home/vagrant/containers/mariadb
+        - host: /home/vagrant/containers/mariadb/conf
           container: /etc/mysql/conf.d
         - host: /home/vagrant/containers/mariadb/data
           container: /var/lib/mariadb
@@ -203,7 +203,7 @@ jetpacker:
       install: { name: install, label: Install Redis }
       command: redis-server --appendonly yes
       volumes:
-        - host: /home/vagrant/containers/redis
+        - host: /home/vagrant/containers/redis/conf
           container: /usr/local/etc/redis
         - host: /home/vagrant/containers/redis/data
           container: /data
@@ -223,7 +223,7 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install RabbitMQ }
       volumes:
-        - host: /home/vagrant/containers/rabbitmq
+        - host: /home/vagrant/containers/rabbitmq/conf
           container: /etc/rabbitmq
         - host: /home/vagrant/containers/rabbitmq/data
           container: /var/lib/rabbitmq
@@ -235,6 +235,29 @@ jetpacker:
         - { name: RABBITMQ_DEFAULT_PASS, label: Password, value: rabbitmq }
         - { name: RABBITMQ_NODE_NAME, label: Node Name, value: node@rabbitmq }
         - { name: RABBITMQ_ERLANG_COOKIE, label: Erlang Cookie, value: rabbitmq_erlang_cookie }
+
+    eclipse-mosquitto:
+      name: eclipse-mosquitto
+      label: Eclipse Mosquitto
+      description: Eclipse Mosquitto is an open source message broker which implements MQTT version 3.1 and 3.1.1
+      type: MessageBroker
+      repository:
+        type: DockerHub
+        url: https://registry.hub.docker.com/v2/repositories/library/eclipse-mosquitto/tags
+      version: { name: version, label: Version }
+      install: { name: install, label: Install RabbitMQ }
+      volumes:
+        - host: /home/vagrant/containers/rabbitmq/conf
+          container: /mosquitto/config
+        - host: /home/vagrant/containers/rabbitmq/data
+          container: /mosquitto/data
+        - host: /home/vagrant/containers/rabbitmq/log
+          container: /mosquitto/log
+      ports:
+        - host: 1883
+          container: 1883
+        - host: 9001
+          container: 9001
 
 #repository:
 #  type: GitHub
@@ -255,9 +278,9 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install ElasticSearch }
       volumes:
-        - host: /home/vagrant/containers/elasticsearch
+        - host: /home/vagrant/containers/elasticsearch/conf
           container: /usr/share/elasticsearch/config
-        - host: /home/vagrant/containers/elastisearch/data
+        - host: /home/vagrant/containers/elasticsearch/data
           container: /usr/share/elasticsearch/data
       ports:
         - host: 9200
@@ -274,8 +297,8 @@ jetpacker:
       version: { name: version, label: Version }
       install: { name: install, label: Install Solr }
       volumes:
-        - host: /home/vagrant/containers/solr
-          container: /opt/solr
+        - host: /home/vagrant/containers/solr/data
+          container: /opt/solr/server/solr/mycores
       ports:
         - host: 8983
           container: 8983
