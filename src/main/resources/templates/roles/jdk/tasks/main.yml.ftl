@@ -8,7 +8,7 @@
   when: not path.stat.exists
 
 - name: update sdkman
-  command: bash -lc "source ~/.sdkman/bin/sdkman-init.sh && {{ item }}"
+  command: bash -lc ". ~/.sdkman/bin/sdkman-init.sh && {{ item }}"
   with_items:
     - sdk selfupdate force
     - sdk flush candidates

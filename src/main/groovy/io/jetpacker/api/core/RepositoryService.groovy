@@ -5,7 +5,9 @@ import io.jetpacker.api.common.VersionComparator
 import io.jetpacker.api.configuration.*
 import io.jetpacker.api.configuration.kit.Kit
 import io.jetpacker.api.core.response.DockerHubResponse
+import io.jetpacker.api.core.response.DockerHubResult
 import io.jetpacker.api.core.response.GitHubResponse
+import io.jetpacker.api.core.response.NPMRegistryResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
+import java.lang.reflect.Array
 import java.util.concurrent.ExecutionException
 
 /**
@@ -31,10 +34,13 @@ class RepositoryService {
         this.restTemplate = asyncRestTemplate
     }
 
-    void updateNonJDKReleases(Platform platform) { // to Platform... platforms
+    void updateNonJDKReleases(Platform platform) {
         Repository repository = platform.repository
 
         if (repository != null) {
+            if (repository.type == Repository.Type.NPMRegistry)
+                platform.version.options = loadReleasesFromNPMRegistry(repository)
+
             if (repository.type == Repository.Type.GitHub)
                 platform.version.options = loadReleasesFromGitHub(repository)
 
@@ -56,7 +62,7 @@ class RepositoryService {
                 }
             }
 
-            releases.removeAll([ null ])
+            releases.removeAll([ null, 'modified', 'created' ])
             releases.sort versionComparator
 
             options = releases.collect { release ->
@@ -69,17 +75,27 @@ class RepositoryService {
 
     List<Option> loadReleasesFromGitHub(Repository repository) {
         ResponseEntity<List<GitHubResponse>> response =
-                restTemplate.exchange(repository.url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Metadata>>() {})
+                restTemplate.exchange(repository.url, HttpMethod.GET, null, new ParameterizedTypeReference<List<GitHubResponse>>() {})
 
         formatReleases(response.body*.name)
     }
+
+    List<Option> loadReleasesFromNPMRegistry(Repository repository) {
+        ResponseEntity<NPMRegistryResponse> response =
+                restTemplate.exchange(repository.url, HttpMethod.GET, null, new ParameterizedTypeReference<NPMRegistryResponse>() {})
+
+        List<String> results = response.body.time.keySet() as List<String>
+
+        formatReleases(results)
+    }
+
 
     List<Option> loadReleasesFromDockerHub(Repository repository) {
         ResponseEntity<DockerHubResponse> response =
                 restTemplate.exchange(repository.url, HttpMethod.GET, null, new ParameterizedTypeReference<DockerHubResponse>() {})
 
         DockerHubResponse dockerHubResponse = response.body
-        List<Metadata> results = dockerHubResponse.results
+        List<DockerHubResult> results = dockerHubResponse.results
 
         while (dockerHubResponse.next) {
             response =  restTemplate.exchange(dockerHubResponse.next, HttpMethod.GET, null,

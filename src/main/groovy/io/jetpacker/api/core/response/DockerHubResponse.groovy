@@ -7,5 +7,5 @@ import io.jetpacker.api.configuration.Metadata
  */
 class DockerHubResponse {
     String next
-    List<Metadata> results
+    List<DockerHubResult> results
 }

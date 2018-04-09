@@ -166,7 +166,7 @@ class GeneratorService {
         List<File> files = new ArrayList<>()
 
         for (String template: templates) {
-            log.info "Create temporary directory: {}", template
+            log.info "Create temporary file: {}", template
             String output = FreeMarkerTemplateUtils.processTemplateIntoString(
                     this.configuration.getTemplate(template),
                     command

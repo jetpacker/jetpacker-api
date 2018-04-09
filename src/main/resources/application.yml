@@ -37,7 +37,6 @@ jetpacker:
 
     node:
       name: node
-      namespace: nodejs
       label: Node.js
       description: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
       repository:
@@ -47,7 +46,6 @@ jetpacker:
       install: { name: install, label: Install Node.js }
       dependency:
         name: nvm
-        namespace: creationix
         label: Node Version Manager
         repository:
           type: GitHub
@@ -55,7 +53,7 @@ jetpacker:
         version: { name: version, label: Version }
       extensions:
         - name: angular-cli
-          alias: @angular/cli
+          alias: '@angular/cli'
           label: Angular CLI
           description: Angular is a development platform for building mobile and desktop web applications using Typescript/JavaScript (JS) and other languages.
           repository:
@@ -66,14 +64,14 @@ jetpacker:
           label: Aurelia CLI
           description: Aurelia is a JavaScript client framework for mobile, desktop and web leveraging simple conventions and empowering creativity.
           repository:
-            type: GitHub
+            type: NPMRegistry
             url: https://registry.npmjs.com/aurelia-cli # https://api.github.com/repos/aurelia/cli/tags
           version: { name: version, label: Version }
         - name: ember-cli
           label: Ember.js CLI
           description: Ember.js is a Javascript framework that greatly reduces the time, effort and resources needed to build any web application.
           repository:
-            type: GitHub
+            type: NPMRegistry
             url: https://registry.npmjs.com/ember-cli # https://api.github.com/repos/ember-cli/ember-cli/tags
           version: { name: version, label: Version }
         - name: create-react-app
@@ -98,7 +96,6 @@ jetpacker:
       install: { name: install, label: Install Guard }
       dependency:
         name: ruby
-        namespace: ruby
         label: Ruby
         repository:
           type: GitHub

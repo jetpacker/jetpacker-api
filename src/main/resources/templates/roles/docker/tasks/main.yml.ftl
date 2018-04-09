@@ -9,7 +9,7 @@
   docker_container:
     name: alpine
     image: ${dataContainer.name}:latest
-    volumes: {{ ${dataContainer.name}.volumes || default([]) }}
+    volumes: {{ ${dataContainer.name}.volumes }}
     recreate: true
 </#if>
 <#if containers?? && containers?size gt 0>
@@ -22,7 +22,7 @@
     interactive: true
     <#assign container = containers[name]>
     <#if container.ports??>
-    published_ports: "{{ ${name}.ports || default([]) }}"
+    published_ports: "{{ ${name}.ports }}"
     </#if>
     <#if container.volumesFrom??>
     volumes_from: "{{ ${name}.volumes_from }}"
