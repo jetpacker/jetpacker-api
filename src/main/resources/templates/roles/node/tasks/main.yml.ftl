@@ -10,15 +10,17 @@
 - stat: path="~/.nvm/versions/node/{{ node.version }}/bin/node"
   register: path
 
-- name: install node:{{ node.version }}
-  command: bash -lc ". ~/.nvm/nvm.sh && {{ item }}"
-  with_items:
-    - nvm install "{{ node.version }}"
-    - nvm alias default "{{ node.version }}"
+- name: "install node:{{ node.version }}"
+  command: bash -lc ". ~/.nvm/nvm.sh && nvm install {{ node.version }}"
   when:
     - not path.stat.exists
 
+- name: "default node:{{ node.version }}"
+  command: bash -lc ". ~/.nvm/nvm.sh && nvm alias default {{ node.version }}"
+  when:
+    - path.stat.exists
+
 - include: npm_module.yml
-  with_dict: "{{ node.extensions || default({}) }}"
+  with_dict: "{{ node.extensions | default({}) }}"
   loop_control:
     loop_var: extension
