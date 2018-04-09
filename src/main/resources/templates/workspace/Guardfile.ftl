@@ -1,4 +1,4 @@
-# Run: guard -p -l 10
+# Run: bundler exec guard -p -l 10
 
 guard :shell do
     log = Logger.new(STDOUT)
