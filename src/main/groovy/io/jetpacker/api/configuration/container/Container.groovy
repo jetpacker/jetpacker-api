@@ -22,13 +22,13 @@ class Container extends Platform {
     String command
 
     @JsonIgnore
-    List<Volume> volumes
+    Map<String, String> volumes
 
     @JsonIgnore
     List<Port> ports
 
     @JsonIgnore
-    Map<String, String> env
+    Map<String, String> environment
 
     List<Parameter> parameters
 }

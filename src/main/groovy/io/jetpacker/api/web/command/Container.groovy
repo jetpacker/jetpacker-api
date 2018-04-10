@@ -5,7 +5,7 @@ package io.jetpacker.api.web.command
  */
 class Container extends Platform {
     String command
-    String volumesFrom
     Map<String, String> ports
-    Map<String, String> env
+    Map<String, String> environment
+    List<String> volumes
 }
