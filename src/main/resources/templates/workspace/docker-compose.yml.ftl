@@ -28,7 +28,7 @@ services:
     <#if container.command??>
     command: ${container.command}
     </#if>
-  
+
   </#list>
 </#if>
 <#if volumes?? && volumes?size gt 0>
