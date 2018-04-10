@@ -7,19 +7,19 @@ services:
     <#assign container = containers[name]>
     container_name: ${name}
     image: ${name}:${container.version}
-    <#if container.ports??>
+    <#if container.ports?? && container.ports?size gt 0>
     ports:
       <#list container.ports?keys as key>
       - ${key}:${container.ports[key]}
       </#list>
     </#if>
-    <#if container.environment??>
+    <#if container.environment?? && container.environment?size gt 0>
     environment:
       <#list container.environment?keys as key>
       - ${key}=${container.environment[key]}
       </#list>
     </#if>
-    <#if container.volumes??>
+    <#if container.volumes?? && container.volumes?size gt 0>
     volumes:
       <#list container.volumes as volume>
       - ${volume}
@@ -31,9 +31,9 @@ services:
 
   </#list>
 </#if>
-<#if volumes?? && volumes?size gt 0>
+<#if namedVolumes?? && namedVolumes?size gt 0>
 volumes:
-  <#list volumes as volume>
-  ${volume}:
+  <#list namedVolumes as namedVolume>
+  ${namedVolume}:
   </#list>
 </#if>
