@@ -7,11 +7,9 @@ import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.JetpackerProperties
 import io.jetpacker.api.configuration.container.Container
 import io.jetpacker.api.configuration.container.Port
-import io.jetpacker.api.configuration.container.Volume
 import io.jetpacker.api.configuration.kit.Extension
 import io.jetpacker.api.configuration.kit.Kit
 import io.jetpacker.api.configuration.kit.Kits
-import io.jetpacker.api.web.command.DataContainer
 import io.jetpacker.api.web.command.JetpackerCommand
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.taskdefs.Zip
@@ -117,19 +115,19 @@ class GeneratorService {
                 Map<String, Container> containers = jetpackerProperties.containers
                 command.containers[name].command = containers[name].command
 
-                Map<String, String> env = containers[name].env
+                Map<String, String> environment = containers[name].environment
 
-                if (env) {
-                    if (!command.containers[name].env)
-                        command.containers[name].env = [:]
+                if (environment) {
+                    if (!command.containers[name].environment)
+                        command.containers[name].environment = [:]
 
-                    command.containers[name].env.putAll(env)
+                    command.containers[name].environment.putAll(environment)
                 }
 
                 List<Port> ports = containers[name].ports
 
                 if (ports && ports.size() > 0) {
-                    ports.each { Port port ->
+                    for (Port port: ports) {
                         if (!command.containers[name].ports)
                             command.containers[name].ports = [:]
 
@@ -137,22 +135,17 @@ class GeneratorService {
                     }
                 }
 
-                List<Volume> volumes = containers[name].volumes
-
+                Map<String, String> volumes = containers[name].volumes
                 if (volumes && volumes.size() > 0) {
-                    if (!command.dataContainer) {
-                        command.dataContainer = new DataContainer(
-                                name: jetpackerProperties.dataContainer.name,
-                        )
-                    }
+                    volumes.each { key, value ->
+                        if (!command.containers[name].volumes)
+                            command.containers[name].volumes = []
 
-                    command.containers[name].volumesFrom = command.dataContainer.name
+                        if (!command.namedVolumes)
+                            command.namedVolumes = []
 
-                    volumes.each { Volume volume ->
-                        if (!command.dataContainer.volumes)
-                            command.dataContainer.volumes = [:]
-
-                        command.dataContainer.volumes[volume.host] = volume.container
+                        command.containers[name].volumes << "${key}:${value}"
+                        command.namedVolumes << key
                     }
                 }
             }

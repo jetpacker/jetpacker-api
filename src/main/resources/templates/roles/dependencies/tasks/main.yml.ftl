@@ -5,3 +5,8 @@
     - zip
     - unzip
     - xz-utils
+    - python-pip
+
+- pip: name="{{ item }}" umask=0022
+  with_items:
+    - docker-compose

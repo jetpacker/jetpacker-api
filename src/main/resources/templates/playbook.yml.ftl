@@ -3,9 +3,8 @@
   become: yes
   become_method: sudo
   roles:
-    - apt
     - commons
-    - docker
+    - dependencies
 
 - hosts: all
   become: yes
@@ -14,3 +13,4 @@
     - jdk
     - node
     - guard
+    - docker
