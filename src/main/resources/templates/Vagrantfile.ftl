@@ -18,6 +18,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |virtualbox|
     virtualbox.memory = ${machine.memory?c}
+    virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
 
   # forwarded ports
