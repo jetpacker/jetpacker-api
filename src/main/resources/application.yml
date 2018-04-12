@@ -17,6 +17,8 @@ jetpacker:
       name: box
       label: Box
       options:
+        - { label: Ubuntu Xenial Xerus 64, value: ubuntu/xenial64 }
+        - { label: Ubuntu Xenial Xerus 32, value: ubuntu/xenial32 }
         - { label: Ubuntu Trusty Tahr 64, value: ubuntu/trusty64 }
         - { label: Ubuntu Trusty Tahr 32, value: ubuntu/trusty32 }
     memory: { name: memory, label: Memory (MB), value: 4096 }
