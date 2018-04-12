@@ -16,10 +16,10 @@ end
 Vagrant.configure("2") do |config|
   config.vm.box = '${machine.box}'
 
-  config.vm.provider "virtualbox" do |virtualbox|
-    virtualbox.memory = ${machine.memory?c}
-    virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  config.vm.provider "virtualbox" do |v|
+    v.memory = ${machine.memory?c}
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
 
   # forwarded ports
@@ -27,10 +27,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "docker"
 
-  config.vm.provision 'ansible', run: 'always', type: 'ansible_local' do |ansible|
-    ansible.become = true
-    ansible.verbose = '-vvv'
-    ansible.playbook = './playbook.yml'
-    ansible.extra_vars = './extra_vars.yml'
+  config.vm.provision 'ansible', run: 'always', type: 'ansible_local' do |a|
+    a.become = true
+    a.verbose = '-vvv'
+    a.playbook = './playbook.yml'
+    a.extra_vars = './extra_vars.yml'
   end
 end
