@@ -1,0 +1,8 @@
+---
+- name: restart lsyncd
+  service:
+    name: lsyncd
+    state: restarted
+  become: true
+  listen:
+    - restart_lsyncd
