@@ -1,4 +1,4 @@
-### guard ###
+---
 - stat: path=~/.rvm
   register: path
 

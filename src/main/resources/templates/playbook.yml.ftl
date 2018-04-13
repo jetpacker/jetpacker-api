@@ -1,16 +1,10 @@
 ---
 - hosts: all
-  become: yes
-  become_method: sudo
   roles:
+    - applications
     - commons
-    - dependencies
-
-- hosts: all
-  become: yes
-  become_user: vagrant
-  roles:
+    - lsyncd
+    - docker
+    - guard
     - jdk
     - node
-    - guard
-    - docker

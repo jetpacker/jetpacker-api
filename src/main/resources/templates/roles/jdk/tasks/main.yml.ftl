@@ -1,5 +1,11 @@
 ---
-### sdkman ###
+- apt: pkg="{{ item }}" state=latest update_cache=yes cache_valid_time=3600
+  with_items:
+    - zip
+    - unzip
+  become: true
+  become_method: sudo
+
 - stat: path=~/.sdkman/bin/sdkman-init.sh
   register: path
 
@@ -11,10 +17,10 @@
   command: bash -lc ". ~/.sdkman/bin/sdkman-init.sh && {{ item }}"
   with_items:
     - sdk selfupdate force
-    - sdk flush candidates
     - sdk flush broadcast
     - sdk flush archives
     - sdk flush temp
+    - sdk flush candidates
   when: path.stat.exists
 
 - include: sdkman_candidate.yml
