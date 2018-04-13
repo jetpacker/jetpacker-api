@@ -31,6 +31,6 @@ Vagrant.configure("2") do |config|
     a.become = true
     a.verbose = '-vvv'
     a.playbook = './playbook.yml'
-    a.extra_vars = './extra_vars.yml'
+    a.extra_vars = './workspace/workspace.yml'
   end
 end
