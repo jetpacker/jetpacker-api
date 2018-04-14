@@ -9,5 +9,6 @@
       docker_service:
         project_src: /vagrant/workspace
         recreate: always
+        remove_volumes: true
   become: true
   become_method: sudo
