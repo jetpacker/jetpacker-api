@@ -22,6 +22,19 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
 
+  # To enable rsync, use 'babun'.
+
+  rsync_excludes = [
+    ".git/",
+    "node_modules/",
+    "out/production",
+    "out/test",
+    "build/",
+  ]
+
+  config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: rsync_excludes
+
+  # TODO: loop all exposed ports of containers
   # forwarded ports
   # config.vm.network 'forwarded_port', guest: 8080, host: 8080, auto_correct: true
 
