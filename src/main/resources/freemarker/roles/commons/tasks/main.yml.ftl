@@ -7,3 +7,5 @@
   become_method: sudo
 
 - file: path=~/workspace state=directory owner=vagrant group=vagrant
+  become: true
+  become_user: vagrant
