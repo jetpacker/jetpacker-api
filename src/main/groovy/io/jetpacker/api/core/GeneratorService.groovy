@@ -35,7 +35,7 @@ class GeneratorService {
     private final JetpackerProperties jetpackerProperties
     private final Configuration configuration
 
-    private final String pattern = /(\/.*\/+templates\/)(.*\.ftl)$/
+    private final String pattern = /(\/.*\/+freemarker\/)(.*\.ftl)$/
     private final List<String> templates = new ArrayList<>()
 
     private final String tmpDirectory
@@ -54,7 +54,7 @@ class GeneratorService {
     @PostConstruct
     void setUp() {
         for (Resource resource: new PathMatchingResourcePatternResolver()
-                .getResources("classpath*:/templates/**/*.ftl")) {
+                .getResources("classpath*:/freemarker/**/*.ftl")) {
             String path = resource.file.absolutePath.replaceAll("\\\\", "/")
             def m = path =~ pattern
             templates.add(m[0][2])
@@ -95,7 +95,7 @@ class GeneratorService {
         jetpackerProperties
     }
 
-    byte[] generate(JetpackerCommand command) {
+    File generate(JetpackerCommand command) {
         ObjectMapper mapper = new ObjectMapper()
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
 
@@ -189,10 +189,6 @@ class GeneratorService {
 
         log.info "Created a temporary zip file: {}", zip.destFile.absolutePath
 
-        byte[] bytes = StreamUtils.copyToByteArray(new FileInputStream(zip.destFile))
-
-        dir.deleteDir()
-
-        bytes
+        zip.destFile
     }
 }
