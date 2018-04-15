@@ -23,20 +23,12 @@ node:
     ${name}: ${extensions[name]}
     </#list>
   </#if>
+# projects:
+#   - /home/workspace/hello-vue-project
+#   - /home/workspace/hello-express-project
 </#if>
 <#if kits.guard??>
 
 guard:
   ruby_version: ${kits.guard.dependencyVersion}
 </#if>
-
-lsyncd:
-  logDir: /tmp/lsyncd
-  logFile: lsyncd.log
-  statusFile: lsyncd.status
-  syncs:
-    - source: /vagrant/workspace
-      target: /home/vagrant/workspace
-      excludes:
-        - node_module
-        - target

@@ -1,9 +1,10 @@
-- block:
-    - set_fact:
-        module:
-          name: "{{ extension.key }}"
-          version: "{{ extension.value }}"
+---
+- set_fact:
+    module:
+      name: "{{ extension.key }}"
+      version: "{{ extension.value }}"
 
+- block:
     - stat: path=~/.nvm/versions/node/{{ node.version }}/lib/node_modules/{{ module.name }}
       register: path
 

@@ -1,7 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-required_plugins = %w(vagrant-vbguest)
+required_plugins = %w(
+  vagrant-vbguest
+  vagrant-gatling-rsync
+)
 
 plugins_to_install = required_plugins.select { |plugin| not Vagrant.has_plugin? plugin }
 if not plugins_to_install.empty?
@@ -22,17 +25,11 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
 
-  # To enable rsync, use 'babun'.
+  config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: [ ".git/", ".idea/", "node_modules/" ]
 
-  rsync_excludes = [
-    ".git/",
-    "node_modules/",
-    "out/production",
-    "out/test",
-    "build/",
-  ]
-
-  config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: rsync_excludes
+  config.gatling.latency = 2.5
+  config.gatling.time_format = "%H:%M:%S"
+  config.gatling.rsync_on_startup = false
 
   # TODO: loop all exposed ports of containers
   # forwarded ports

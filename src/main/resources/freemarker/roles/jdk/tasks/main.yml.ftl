@@ -23,10 +23,10 @@
         - sdk flush temp
         - sdk flush candidates
       when: path.stat.exists
-
-    - include: sdkman_candidate.yml
-      with_dict: "{{ { 'java' : jdk.version } | combine(jdk.extensions | default({})) }}"
-      loop_control:
-        loop_var: extension
   become: true
   become_user: vagrant
+
+- include: sdkman_candidate.yml
+  with_dict: "{{ { 'java' : jdk.version } | combine(jdk.extensions | default({})) }}"
+  loop_control:
+    loop_var: extension

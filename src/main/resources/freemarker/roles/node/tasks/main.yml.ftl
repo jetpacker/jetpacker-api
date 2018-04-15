@@ -25,10 +25,15 @@
       command: bash -lc ". ~/.nvm/nvm.sh && nvm alias default {{ node.version }}"
       when:
         - path.stat.exists
-
-    - include: npm_module.yml
-      with_dict: "{{ node.extensions | default({}) }}"
-      loop_control:
-        loop_var: extension
   become: true
   become_user: vagrant
+
+- include: npm_module.yml
+  with_dict: "{{ node.extensions | default({}) }}"
+  loop_control:
+    loop_var: extension
+
+- include: bind_node_modules.yml
+  with_items: "{{ node.projects | default([]) }}"
+  loop_control:
+    loop_var: project

@@ -6,6 +6,6 @@
   become: true
   become_method: sudo
 
-- file: path=~/workspace state=directory owner=vagrant group=vagrant
+- file: src=/vagrant/workspace dest=~/workspace state=link
   become: true
   become_user: vagrant

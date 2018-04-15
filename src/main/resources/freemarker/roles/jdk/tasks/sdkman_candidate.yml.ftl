@@ -1,9 +1,10 @@
-- block:
-    - set_fact:
-        candidate:
-          name: "{{ extension.key }}"
-          version: "{{ extension.value }}"
+---
+- set_fact:
+    candidate:
+      name: "{{ extension.key }}"
+      version: "{{ extension.value }}"
 
+- block:
     - stat: path=~/.sdkman/candidates/{{ candidate.name }}/{{ candidate.version }}
       register: path
 
