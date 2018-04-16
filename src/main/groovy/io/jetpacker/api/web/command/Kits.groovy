@@ -6,5 +6,4 @@ package io.jetpacker.api.web.command
 class Kits {
     Kit jdk
     Kit node
-    Kit guard
 }

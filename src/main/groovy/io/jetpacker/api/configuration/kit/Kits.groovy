@@ -9,5 +9,4 @@ import groovy.transform.CompileStatic
 class Kits {
     Kit jdk
     Kit node
-    Kit guard
 }

@@ -14,7 +14,7 @@ class Timezone extends Parameter {
     Timezone() {
         log.info "Loading timezones"
 
-        options = new ArrayList<>()
+        options = []
 
         TimeZone.availableIDs.each { String id ->
             if (!id.startsWith("SystemV"))

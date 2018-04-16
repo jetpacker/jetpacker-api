@@ -1,7 +1,5 @@
 package io.jetpacker.api.core
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import freemarker.template.Configuration
 import groovy.util.logging.Slf4j
 import io.jetpacker.api.configuration.JetpackerProperties
@@ -10,17 +8,15 @@ import io.jetpacker.api.configuration.container.Port
 import io.jetpacker.api.configuration.kit.Extension
 import io.jetpacker.api.configuration.kit.Kit
 import io.jetpacker.api.configuration.kit.Kits
+import io.jetpacker.api.configuration.machine.Machine
 import io.jetpacker.api.web.command.JetpackerCommand
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.taskdefs.Zip
 import org.apache.tools.ant.types.ZipFileSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.Resource
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Service
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils
-import org.springframework.util.StreamUtils
 
 import javax.annotation.PostConstruct
 import java.util.concurrent.ExecutionException
@@ -35,8 +31,8 @@ class GeneratorService {
     private final JetpackerProperties jetpackerProperties
     private final Configuration configuration
 
-    private final String pattern = /(\/.*\/+freemarker\/)(.*\.ftl)$/
-    private final List<String> templates = new ArrayList<>()
+//    private final String pattern = /(\/.*\/+freemarker\/)(.*\.ftl)$/
+//    private final List<String> templates = new ArrayList<>()
 
     private final String tmpDirectory
 
@@ -53,16 +49,17 @@ class GeneratorService {
 
     @PostConstruct
     void setUp() {
-        for (Resource resource: new PathMatchingResourcePatternResolver()
-                .getResources("classpath*:/freemarker/**/*.ftl")) {
-            String path = resource.file.absolutePath.replaceAll("\\\\", "/")
-            def m = path =~ pattern
-            templates.add(m[0][2])
-        }
+//        for (Resource resource: new PathMatchingResourcePatternResolver()
+//                .getResources("classpath*:/freemarker/**/*.ftl")) {
+//            String path = resource.file.absolutePath.replaceAll("\\\\", "/")
+//            def m = path =~ pattern
+//            templates.add(m[0][2])
+//        }
 
         try {
+            Machine machine = jetpackerProperties.machine
             Kits kits = jetpackerProperties.kits
-            List<Kit> nonJavaKits = [ kits.node, kits.guard ]
+            List<Kit> nonJavaKits = [ kits.node, machine.guard ]
 
             repositoryService.updateJDKReleases(kits.jdk)
 
@@ -96,21 +93,27 @@ class GeneratorService {
     }
 
     File generate(JetpackerCommand command) {
-        ObjectMapper mapper = new ObjectMapper()
-        mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
+        List<String> templates = []
+        templates << jetpackerProperties.templates.basic.files
 
         // TODO: Add logic for generation
+        if (command.kits.jdk)
+            templates << jetpackerProperties.templates.jdk.files
+
         if (command.kits.node) {
             Kit node = jetpackerProperties.kits.node
             command.kits.node.dependencyVersion = node.dependency.version.options[0].value
+            templates << jetpackerProperties.templates.node.files
         }
 
-        if (command.kits.guard) {
-            Kit guard = jetpackerProperties.kits.guard
-            command.kits.guard.dependencyVersion = guard.dependency.version.options[0].value
+        if (command.machine.synchronization.trim().equalsIgnoreCase("guard")) {
+            Kit guard = jetpackerProperties.machine.guard
+            command.machine.guard = new Kit()
+            command.machine.guard.dependencyVersion = guard.dependency.version.options[0].value
+            templates << jetpackerProperties.templates.guard.files
         }
 
-        if (command.containers) {
+        if (command.containers && command.containers.size() > 0) {
             for (String name : command.containers.keySet()) {
                 Map<String, Container> containers = jetpackerProperties.containers
                 command.containers[name].command = containers[name].command
@@ -149,6 +152,7 @@ class GeneratorService {
                     }
                 }
             }
+            templates << jetpackerProperties.templates.docker.files
         }
 
         String generateDir = "${tmpDirectory}/${System.currentTimeMillis()}"
@@ -156,7 +160,7 @@ class GeneratorService {
         File dir = new File(generateDir)
         dir.mkdirs()
 
-        List<File> files = new ArrayList<>()
+        List<File> files = []
 
         for (String template: templates) {
             log.info "Create temporary file: {}", template

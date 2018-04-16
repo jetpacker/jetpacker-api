@@ -6,6 +6,8 @@ package io.jetpacker.api.web.command
 class Machine {
     String box
     Integer memory
+    String synchronization
     String timezone
-    String application
+
+    Kit guard
 }

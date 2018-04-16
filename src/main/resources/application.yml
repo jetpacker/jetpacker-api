@@ -24,6 +24,24 @@ jetpacker:
         - { label: Ubuntu Trusty Tahr 32, value: ubuntu/trusty32 }
     memory: { name: memory, label: Memory (MB), value: 4096 }
     timezone: { name: timezone, label: Timezone }
+    synchronization:
+      name: synchronization
+      label: Synchronization
+      options:
+        - { label: Guard, value: guard }
+        - { label: Rsync, value: rsync }
+    guard:
+      name: guard
+      label: Guard
+      description: Guard is a command line tool to easily handle events on file system modifications.
+      install: { name: install, label: Install Guard }
+      dependency:
+        name: ruby
+        label: Ruby
+        repository:
+          type: GitHub
+          url: https://api.github.com/repos/ruby/ruby/tags
+        version: { name: version, label: Version }
 
   kits:
     jdk:
@@ -91,19 +109,6 @@ jetpacker:
             type: NPMRegistry
             url: https://registry.npmjs.com/vue-cli # https://api.github.com/repos/vuejs/vue-cli/tags
           version: { name: version, label: Version }
-
-    guard:
-      name: guard
-      label: Guard
-      description: Guard is a command line tool to easily handle events on file system modifications.
-      install: { name: install, label: Install Guard }
-      dependency:
-        name: ruby
-        label: Ruby
-        repository:
-          type: GitHub
-          url: https://api.github.com/repos/ruby/ruby/tags
-        version: { name: version, label: Version }
 
   containers:
     # data stores
@@ -290,3 +295,32 @@ jetpacker:
       ports:
         - host: 8983
           container: 8983
+
+  templates:
+    basic:
+      files:
+        - /roles/applications/tasks/main.yml.ftl
+        - /roles/commons/handlers/main.yml.ftl
+        - /roles/commons/tasks/main.yml.ftl
+        - /roles/commons/vars/main.yml.ftl
+        - /workspace/workspace.yml
+        - /Vagrantfile.ftl
+        - /playbook.yml.ftl
+    docker:
+      files:
+        - /roles/docker/tasks/main.yml.ftl
+        - /workspace/docker-compose.yml.ftl
+    guard:
+      files:
+        - /roles/guard/tasks/main.yml.ftl
+        - /workspace/Gemfile.ftl
+        - /workspace/Guardfile.ftl
+    jdk:
+      files:
+        - /roles/jdk/tasks/main.yml.ftl
+        - /roles/jdk/tasks/sdkman_candidate.yml.ftl
+    node:
+      files:
+        - /roles/node/tasks/main.yml.ftl
+        - /roles/node/tasks/npm_module.yml.ftl
+        - /roles/node/tasks/bind_node_modules.yml.ftl
