@@ -27,7 +27,7 @@ node:
 #   - /home/workspace/hello-vue-project
 #   - /home/workspace/hello-express-project
 </#if>
-<#if kits.guard??>
+<#if machine.synchronization?lower_case == "guard">
 
 guard:
   ruby_version: ${kits.guard.dependencyVersion}

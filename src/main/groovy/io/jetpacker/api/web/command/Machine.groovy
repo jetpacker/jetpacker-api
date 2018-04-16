@@ -9,5 +9,5 @@ class Machine {
     String synchronization
     String timezone
 
-    Kit guard
+    Kit guard = new Kit()
 }
