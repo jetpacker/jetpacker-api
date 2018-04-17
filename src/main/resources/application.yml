@@ -9,7 +9,7 @@ spring:
     cache: false
     template-loader-path: classpath:/freemarker
 
-jetpacker:
+jetpackr:
   machine:
     name: ubuntu
     label: Ubuntu
@@ -323,4 +323,4 @@ jetpacker:
       files:
         - /roles/node/tasks/main.yml.ftl
         - /roles/node/tasks/npm_module.yml.ftl
-        - /roles/node/tasks/bind_node_modules.yml.ftl
+        - /roles/node/tasks/bind_mount_node_modules.yml.ftl
