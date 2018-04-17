@@ -30,5 +30,5 @@ node:
 <#if machine.synchronization?lower_case == "guard">
 
 guard:
-  ruby_version: ${kits.guard.dependencyVersion}
+  ruby_version: ${machine.guard.dependencyVersion}
 </#if>

@@ -12,6 +12,6 @@
 <#if kits.node??>
     - node
 </#if>
-<#if machine.synchronization?lower_case == "guard   ">
+<#if machine.synchronization?lower_case == "guard">
     - guard
 </#if>
