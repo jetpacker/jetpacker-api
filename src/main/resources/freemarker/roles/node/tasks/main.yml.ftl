@@ -33,7 +33,7 @@
   loop_control:
     loop_var: extension
 
-- include: bind_node_modules.yml
+- include: bind_mount_node_modules.yml
   with_items: "{{ node.projects | default([]) }}"
   loop_control:
     loop_var: project
