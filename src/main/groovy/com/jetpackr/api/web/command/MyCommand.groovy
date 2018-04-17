@@ -3,7 +3,7 @@ package com.jetpackr.api.web.command
 /**
  * Created by donny on 30/11/16.
  */
-class JetpackerCommand {
+class MyCommand {
     Machine machine
     Kits kits
     Map<String, Container> containers
