@@ -7,7 +7,7 @@ jdk:
   <#if extensions?? && extensions?size gt 0>
   extensions:
     <#list extensions?keys as name>
-    ${name}: ${extensions[name]}
+    ${name}: ${extensions[name].version}
     </#list>
   </#if>
 </#if>
@@ -20,7 +20,7 @@ node:
   <#if extensions?? && extensions?size gt 0>
   extensions:
     <#list extensions?keys as name>
-    ${name}: ${extensions[name]}
+    <#if extensions[name].alias??>'${extensions[name].alias}'<#else>${name}</#if>: ${extensions[name].version}
     </#list>
   </#if>
 # projects:

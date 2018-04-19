@@ -5,5 +5,5 @@ package com.jetpackr.api.web.command
  */
 class Kit extends Platform {
     String dependencyVersion
-    Map<String, String> extensions
+    Map<String, Kit> extensions
 }
