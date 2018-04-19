@@ -1,6 +1,5 @@
 package com.jetpackr.api.configuration
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.CompileStatic
 
@@ -11,8 +10,6 @@ import groovy.transform.CompileStatic
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Metadata {
     String name
-
-
     String alias
 
     String label
