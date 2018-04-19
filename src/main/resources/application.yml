@@ -107,7 +107,14 @@ jetpackr:
           description: Vue.js is a library for building interactive web interfaces. It provides data-reactive components with a simple and flexible API.
           repository:
             type: NPMRegistry
-            url: https://registry.npmjs.com/vue-cli # https://api.github.com/repos/vuejs/vue-cli/tags
+            url: https://registry.npmjs.com/vue-cli
+          version: { name: version, label: Version }
+        - name: yo
+          label: Yeoman
+          description: Yeoman helps you to kickstart new projects, prescribing best practices and tools to help you stay productive.
+          repository:
+            type: NPMRegistry
+            url: https://registry.npmjs.com/yo
           version: { name: version, label: Version }
 
   containers:
