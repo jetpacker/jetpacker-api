@@ -75,35 +75,56 @@ jetpackr:
       extensions:
         - name: angular-cli
           alias: '@angular/cli'
-          label: Angular CLI
+          label: Angular
           description: Angular is a development platform for building mobile and desktop web applications using Typescript/JavaScript (JS) and other languages.
           repository:
             type: GitHub
             url: https://api.github.com/repos/angular/angular-cli/tags
           version: { name: version, label: Version }
         - name: aurelia-cli
-          label: Aurelia CLI
+          label: Aurelia
           description: Aurelia is a JavaScript client framework for mobile, desktop and web leveraging simple conventions and empowering creativity.
           repository:
             type: NPMRegistry
-            url: https://registry.npmjs.com/aurelia-cli # https://api.github.com/repos/aurelia/cli/tags
+            url: https://registry.npmjs.com/aurelia-cli
           version: { name: version, label: Version }
         - name: ember-cli
-          label: Ember.js CLI
+          label: Ember.js
           description: Ember.js is a Javascript framework that greatly reduces the time, effort and resources needed to build any web application.
           repository:
             type: NPMRegistry
-            url: https://registry.npmjs.com/ember-cli # https://api.github.com/repos/ember-cli/ember-cli/tags
+            url: https://registry.npmjs.com/ember-cli
+          version: { name: version, label: Version }
+        - name: loopback-cli
+          label: Loopback
+          description: LoopBack makes it easy to build modern applications that require complex integrations.
+          repository:
+            type: NPMRegistry
+            url: https://registry.npmjs.com/loopback-cli
+          version: { name: version, label: Version }
+        - name: preact-cli
+          label: Preact
+          description: Fast 3kB React alternative with the same modern API. Components & Virtual DOM
+          repository:
+            type: NPMRegistry
+            url: https://registry.npmjs.com/preact-cli
           version: { name: version, label: Version }
         - name: create-react-app
-          label: React CLI
+          label: React
           description: React is a declarative, efficient, and flexible JavaScript library for building user interfaces.
           repository:
             type: NPMRegistry
             url: https://registry.npmjs.com/create-react-app
           version: { name: version, label: Version }
+        - name: sails
+          label: Sails
+          description: Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps.
+          repository:
+            type: NPMRegistry
+            url: https://registry.npmjs.com/sails
+          version: { name: version, label: Version }
         - name: vue-cli
-          label: Vue.js CLI
+          label: Vue.js
           description: Vue.js is a library for building interactive web interfaces. It provides data-reactive components with a simple and flexible API.
           repository:
             type: NPMRegistry
