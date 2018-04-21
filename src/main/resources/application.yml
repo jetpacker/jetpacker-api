@@ -157,10 +157,10 @@ jetpackr:
         - host: 3306
           container: 3306
       parameters:
-        - { name: MYSQL_ROOT_PASSWORD, label: Root Password, value: root }
+        - { name: MYSQL_ROOT_PASSWORD, label: Root Password, value: my_root_password }
         - { name: MYSQL_DATABASE, label: Database, value: my_database }
-        - { name: MYSQL_USER, label: Database User, value: user }
-        - { name: MYSQL_PASSWORD, label: Database Password, value: password }
+        - { name: MYSQL_USER, label: User, value: my_user }
+        - { name: MYSQL_PASSWORD, label: Password, value: my_password }
 
     mariadb:
       name: mariadb
@@ -179,10 +179,10 @@ jetpackr:
         - host: 3306
           container: 3306
       parameters:
-        - { name: MYSQL_ROOT_PASSWORD, label: Root Password, value: root }
+        - { name: MYSQL_ROOT_PASSWORD, label: Root Password, value: my_root_password }
         - { name: MYSQL_DATABASE, label: Database, value: my_database }
-        - { name: MYSQL_USER, label: Database User, value: user }
-        - { name: MYSQL_PASSWORD, label: Database Password, value: password }
+        - { name: MYSQL_USER, label: User, value: my_user }
+        - { name: MYSQL_PASSWORD, label: Password, value: my_password }
 
     postgres:
       name: postgres
@@ -202,9 +202,9 @@ jetpackr:
       environment:
         PGDATA: /var/lib/postgresql/data/pgdata
       parameters:
-        - { name: POSTGRES_USER, label: User, value: root }
-        - { name: POSTGRES_PASSWORD, label: Password, value: root }
         - { name: POSTGRES_DB, label: Database, value: my_database }
+        - { name: POSTGRES_USER, label: User, value: my_user }
+        - { name: POSTGRES_PASSWORD, label: Password, value: my_password }
 
     mongo:
       name: mongo
@@ -258,10 +258,10 @@ jetpackr:
         - host: 5672
           container: 5672
       parameters:
-        - { name: RABBITMQ_DEFAULT_USER, label: User, value: rabbitmq }
-        - { name: RABBITMQ_DEFAULT_PASS, label: Password, value: rabbitmq }
-        - { name: RABBITMQ_NODE_NAME, label: Node Name, value: node@rabbitmq }
-        - { name: RABBITMQ_ERLANG_COOKIE, label: Erlang Cookie, value: rabbitmq_erlang_cookie }
+        - { name: RABBITMQ_DEFAULT_USER, label: User, value: my_user }
+        - { name: RABBITMQ_DEFAULT_PASS, label: Password, value: my_password }
+        - { name: RABBITMQ_NODE_NAME, label: Node Name, value: my_node@rabbitmq }
+        - { name: RABBITMQ_ERLANG_COOKIE, label: Erlang Cookie, value: my_erlang_cookie }
 
     eclipse-mosquitto:
       name: eclipse-mosquitto
