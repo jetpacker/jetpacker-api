@@ -1,9 +1,11 @@
 package com.jetpackr.api.web
 
+import com.jetpackr.api.core.Downloadable
 import groovy.util.logging.Slf4j
 import com.jetpackr.api.configuration.MyProperties
 import com.jetpackr.api.core.GeneratorService
 import com.jetpackr.api.web.command.MyCommand
+import org.apache.tools.ant.taskdefs.Zip
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.FileCopyUtils
 import org.springframework.web.bind.annotation.*
@@ -32,7 +34,8 @@ class GeneratorController {
 
     @PostMapping
     void generate(@RequestBody MyCommand command, HttpServletResponse response) {
-        File file = generatorService.generate(command)
+        Downloadable downloadable = generatorService.generate(command)
+        File file = downloadable.file
         response.contentType = "application/zip"
         response.setHeader("Content-disposition", "attachment; filename=jetpack.zip")
         response.setHeader("Content-Length", String.valueOf(file.length()))
@@ -44,5 +47,6 @@ class GeneratorController {
         )
 
         response.flushBuffer()
+        downloadable.delete()
     }
 }

@@ -82,7 +82,7 @@ class GeneratorService {
         myProperties
     }
 
-    File generate(MyCommand command) {
+    Downloadable generate(MyCommand command) {
         List<String> templates = []
         templates << myProperties.templates.basic.files
 
@@ -145,25 +145,27 @@ class GeneratorService {
         }
 
         String generateDir = "${tmpDirectory}/${System.currentTimeMillis()}"
-        log.info "Create temporary directory: {}", generateDir
+
         File dir = new File(generateDir)
         dir.mkdirs()
+
+        log.info "Created a temporary directory: {}", generateDir
 
         List<File> files = []
 
         for (String template: templates.flatten()) {
-            log.info "Create temporary file: {}", template
             String output = FreeMarkerTemplateUtils.processTemplateIntoString(
                     this.configuration.getTemplate(template),
                     command
             )
 
             String generateFile = "${generateDir}/${template.replaceFirst(/.ftl$/, '')}"
-            log.info "Create temporary file: {}", generateFile
             File file = new File(generateFile)
             file.parentFile.mkdirs()
             file << output
             files << file
+
+            log.info "Created a temporary file: {}", generateFile
         }
 
         Zip zip = new Zip()
@@ -182,6 +184,13 @@ class GeneratorService {
 
         log.info "Created a temporary zip file: {}", zip.destFile.absolutePath
 
-        zip.destFile
+        Downloadable downloadable = new Downloadable(
+                dir: dir,
+                file: zip.destFile
+        )
+
+        zip.reset()
+
+        downloadable
     }
 }
