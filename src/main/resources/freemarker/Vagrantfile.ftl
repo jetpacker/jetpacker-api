@@ -35,9 +35,17 @@ Vagrant.configure("2") do |config|
   config.gatling.rsync_on_startup = false
 </#if>
 
-  # TODO: loop all exposed ports of containers
-  # forwarded ports
-  # config.vm.network 'forwarded_port', guest: 8080, host: 8080, auto_correct: true
+  ### http/https ###
+  # config.vm.network 'forwarded_port', guest: 8080, host: 8080, auto_correct: false
+  # config.vm.network 'forwarded_port', guest: 8443, host: 8443, auto_correct: false
+<#list containers?keys as name>
+  <#assign container = containers[name]>
+
+  ### ${name} ###
+  <#list container.ports?keys as key>
+  # config.vm.network 'forwarded_port', guest: ${container.ports[key]}, host: ${key}, auto_correct: false
+  </#list>
+</#list>
 
   config.vm.provision "docker"
 
