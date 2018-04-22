@@ -11,6 +11,7 @@ import org.springframework.util.FileCopyUtils
 import org.springframework.web.bind.annotation.*
 
 import javax.servlet.http.HttpServletResponse
+import javax.validation.Valid
 
 /**
  * Created by donny on 30/10/16.
@@ -33,7 +34,7 @@ class GeneratorController {
     }
 
     @PostMapping
-    void generate(@RequestBody MyCommand command, HttpServletResponse response) {
+    void generate(@Valid @RequestBody MyCommand command, HttpServletResponse response) {
         Downloadable downloadable = generatorService.generate(command)
         File file = downloadable.file
         response.contentType = "application/zip"

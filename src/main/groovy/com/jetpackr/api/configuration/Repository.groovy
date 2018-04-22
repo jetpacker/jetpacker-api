@@ -2,6 +2,9 @@ package com.jetpackr.api.configuration
 
 import groovy.transform.CompileStatic
 
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
+
 /**
  * Created by donny on 24/10/2016.
  */
@@ -15,6 +18,9 @@ class Repository {
         None
     }
 
+    @NotNull
     Type type
+
+    @NotBlank
     String url
 }

@@ -10,6 +10,10 @@ import com.jetpackr.api.configuration.template.Templates
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.validation.annotation.Validated
 
+import javax.validation.Valid
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
+
 /**
  * Created by donny on 24/10/2016.
  */
@@ -17,10 +21,18 @@ import org.springframework.validation.annotation.Validated
 @ConfigurationProperties(prefix = "jetpackr")
 @Validated
 class MyProperties {
+    @NotNull
     Machine machine
+
+    @NotNull
     Kits kits
+
+    @Valid
+    @NotNull
+    @Size(min = 1)
     Map<String, Container> containers
 
     @JsonIgnore
+    @NotNull
     Templates templates
 }
