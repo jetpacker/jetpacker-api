@@ -9,7 +9,7 @@ class Downloadable {
     File file
 
     void delete() {
-        log.info "Delete tmp directory: {}", dir
+        log.info "Delete a temporary directory: {}", dir
         FileSystemUtils.deleteRecursively(dir)
     }
 }
