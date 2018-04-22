@@ -38,17 +38,19 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-validation')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-freemarker')
-	compile('org.springframework.boot:spring-boot-starter-webflux')
 	compile('org.codehaus.groovy:groovy')
 	compile('org.apache.maven:maven-artifact:3.3.9')
 	compile('org.apache.ant:ant:1.10.1') {
 		exclude group: 'org.apache.ant', module: 'ant-launcher'
 	}
-	compile('io.springfox:springfox-swagger2:2.6.1')
-	compile('io.springfox:springfox-swagger-ui:2.6.1')
+
+	compile("io.springfox:springfox-swagger2:2.8.0")
+	compile("io.springfox:springfox-swagger-ui:2.8.0")
+	compile('javax.xml.bind:jaxb-api:2.3.0')
+
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 	runtime("org.springframework.boot:spring-boot-properties-migrator")
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
-	testCompile('io.projectreactor:reactor-test')
 }
