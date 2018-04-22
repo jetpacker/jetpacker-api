@@ -1,5 +1,5 @@
 timezone: ${machine.timezone}
-<#if kits.jdk??>
+<#if kits?? && kits.jdk??>
 
 jdk:
   version: ${kits.jdk.version}
@@ -11,7 +11,7 @@ jdk:
     </#list>
   </#if>
 </#if>
-<#if kits.node??>
+<#if kits?? && kits.node??>
 
 node:
   version: v${kits.node.version}

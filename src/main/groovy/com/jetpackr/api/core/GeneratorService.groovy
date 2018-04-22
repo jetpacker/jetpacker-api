@@ -87,10 +87,10 @@ class GeneratorService {
         templates << myProperties.templates.basic.files
 
         // TODO: Add logic for generation
-        if (command.kits.jdk)
+        if (command.kits?.jdk)
             templates << myProperties.templates.jdk.files
 
-        if (command.kits.node) {
+        if (command.kits?.node) {
             Kit node = myProperties.kits.node
             command.kits.node.dependencyVersion = node.dependency.version.options[0].value
             templates << myProperties.templates.node.files
@@ -102,7 +102,7 @@ class GeneratorService {
             templates << myProperties.templates.guard.files
         }
 
-        if (command.containers && command.containers.size() > 0) {
+        if (command.containers?.size() > 0) {
             for (String name : command.containers.keySet()) {
                 Map<String, Container> containers = myProperties.containers
                 command.containers[name].command = containers[name].command

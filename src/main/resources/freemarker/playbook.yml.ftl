@@ -6,11 +6,13 @@
 <#if containers?? && containers?size gt 0>
     - docker
 </#if>
-<#if kits.jdk??>
+<#if kits??>
+    <#if kits.jdk??>
     - jdk
-</#if>
-<#if kits.node??>
+    </#if>
+    <#if kits.node??>
     - node
+    </#if>
 </#if>
 <#if machine.synchronization?lower_case == "guard">
     - guard

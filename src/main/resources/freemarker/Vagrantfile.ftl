@@ -38,14 +38,16 @@ Vagrant.configure("2") do |config|
   ### http/https ###
   # config.vm.network 'forwarded_port', guest: 8080, host: 8080, auto_correct: false
   # config.vm.network 'forwarded_port', guest: 8443, host: 8443, auto_correct: false
-<#list containers?keys as name>
-  <#assign container = containers[name]>
+<#if containers??>
+  <#list containers?keys as name>
+    <#assign container = containers[name]>
 
   ### ${name} ###
-  <#list container.ports?keys as key>
+    <#list container.ports?keys as key>
   # config.vm.network 'forwarded_port', guest: ${container.ports[key]}, host: ${key}, auto_correct: false
+    </#list>
   </#list>
-</#list>
+</#if>
 
   config.vm.provision "docker"
 
