@@ -28,6 +28,7 @@ jetpackr:
       name: synchronization
       label: Synchronization
       options:
+        - { label: None, value: none }
         - { label: Guard, value: guard }
         - { label: Rsync, value: rsync }
     guard:
