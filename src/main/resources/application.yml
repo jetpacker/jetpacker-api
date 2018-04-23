@@ -82,6 +82,7 @@ jetpackr:
             type: GitHub
             url: https://api.github.com/repos/angular/angular-cli/tags
           version: { name: version, label: Version }
+          
         - name: aurelia-cli
           label: Aurelia
           description: Aurelia is a JavaScript client framework for mobile, desktop and web leveraging simple conventions and empowering creativity.
@@ -89,6 +90,7 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/aurelia-cli
           version: { name: version, label: Version }
+          
         - name: ember-cli
           label: Ember.js
           description: Ember.js is a Javascript framework that greatly reduces the time, effort and resources needed to build any web application.
@@ -96,6 +98,7 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/ember-cli
           version: { name: version, label: Version }
+          
         - name: loopback-cli
           label: Loopback
           description: LoopBack makes it easy to build modern applications that require complex integrations.
@@ -103,6 +106,7 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/loopback-cli
           version: { name: version, label: Version }
+          
         - name: create-next-app
           label: Next.js
           description: Next.js is a minimalistic framework for server-rendered React applications.
@@ -110,6 +114,7 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/create-next-app
           version: { name: version, label: Version }
+          
         - name: create-nuxt-app
           label: Nuxt.js
           description: Nuxt.js is a framework for creating Universal Vue.js Applications.
@@ -117,6 +122,7 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/create-nuxt-app
           version: { name: version, label: Version }
+          
         - name: preact-cli
           label: Preact
           description: Fast 3kB React alternative with the same modern API. Components & Virtual DOM
@@ -124,6 +130,7 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/preact-cli
           version: { name: version, label: Version }
+          
         - name: create-react-app
           label: React
           description: React is a declarative, efficient, and flexible JavaScript library for building user interfaces.
@@ -131,6 +138,7 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/create-react-app
           version: { name: version, label: Version }
+          
         - name: sails
           label: Sails
           description: Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps.
@@ -138,6 +146,7 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/sails
           version: { name: version, label: Version }
+          
         - name: vue-cli
           label: Vue.js
           description: Vue.js is a library for building interactive web interfaces. It provides data-reactive components with a simple and flexible API.
@@ -145,6 +154,7 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/vue-cli
           version: { name: version, label: Version }
+          
         - name: yo
           label: Yeoman
           description: Yeoman helps you to kickstart new projects, prescribing best practices and tools to help you stay productive.
@@ -297,10 +307,6 @@ jetpackr:
           container: 1883
         - host: 9001
           container: 9001
-
-#repository:
-#  type: GitHub
-#  url: http://api.github.com/
 
     # search engines
     elasticsearch:
