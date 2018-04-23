@@ -103,6 +103,20 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/loopback-cli
           version: { name: version, label: Version }
+        - name: create-next-app
+          label: Next.js
+          description: Next.js is a minimalistic framework for server-rendered React applications.
+          repository:
+            type: NPMRegistry
+            url: https://registry.npmjs.com/create-next-app
+          version: { name: version, label: Version }
+        - name: create-nuxt-app
+          label: Nuxt.js
+          description: Nuxt.js is a framework for creating Universal Vue.js Applications.
+          repository:
+            type: NPMRegistry
+            url: https://registry.npmjs.com/create-nuxt-app
+          version: { name: version, label: Version }
         - name: preact-cli
           label: Preact
           description: Fast 3kB React alternative with the same modern API. Components & Virtual DOM
