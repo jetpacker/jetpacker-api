@@ -29,9 +29,4 @@ class Machine extends Metadata {
     @Valid
     @NotNull
     Timezone timezone
-
-    @Valid
-    @JsonIgnore
-    @NotNull
-    Kit guard
 }

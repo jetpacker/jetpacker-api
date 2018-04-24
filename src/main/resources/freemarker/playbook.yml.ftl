@@ -15,5 +15,6 @@
     </#if>
 </#if>
 <#if machine.synchronization?lower_case == "guard">
+    - ruby
     - guard
 </#if>

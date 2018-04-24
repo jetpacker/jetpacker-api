@@ -47,9 +47,8 @@ class GeneratorService {
     @PostConstruct
     void setUp() {
         try {
-            Machine machine = myProperties.machine
             Kits kits = myProperties.kits
-            List<Kit> nonJavaKits = [kits.node, machine.guard ]
+            List<Kit> nonJavaKits = [ kits.node, kits.ruby ]
 
             repositoryService.updateJDKReleases(kits.jdk)
 
@@ -97,8 +96,9 @@ class GeneratorService {
         }
 
         if (command.machine.synchronization.trim().equalsIgnoreCase("guard")) {
-            Kit guard = myProperties.machine.guard
-            command.machine.guard.dependencyVersion = guard.dependency.version.options[0].value
+            Kit ruby = myProperties.kits.ruby
+            command.kits.ruby.version = ruby.version.options[0].value
+            templates << myProperties.templates.ruby.files
             templates << myProperties.templates.guard.files
         }
 

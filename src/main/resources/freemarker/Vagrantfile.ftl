@@ -47,9 +47,9 @@ Vagrant.configure("2") do |config|
   # config.vm.network 'forwarded_port', guest: ${container.ports[key]}, host: ${key}, auto_correct: false
     </#list>
   </#list>
-</#if>
 
   config.vm.provision "docker"
+</#if>
 
   config.vm.provision 'ansible', run: 'always', type: 'ansible_local' do |a|
     a.become = true

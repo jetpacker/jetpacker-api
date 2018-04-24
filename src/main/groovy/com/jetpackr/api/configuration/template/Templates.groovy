@@ -14,13 +14,17 @@ class Templates {
 
     @Valid
     @NotNull
-    Template guard
-
-    @Valid
-    @NotNull
     Template jdk
 
     @Valid
     @NotNull
     Template node
+
+    @Valid
+    @NotNull
+    Template ruby
+
+    @Valid
+    @NotNull
+    Template guard
 }

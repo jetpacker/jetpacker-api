@@ -31,18 +31,6 @@ jetpackr:
         - { label: None, value: none }
         - { label: Guard, value: guard }
         - { label: Rsync, value: rsync }
-    guard:
-      name: guard
-      label: Guard
-      description: Guard is a command line tool to easily handle events on file system modifications.
-      install: { name: install, label: Install Guard }
-      dependency:
-        name: ruby
-        label: Ruby
-        repository:
-          type: GitHub
-          url: https://api.github.com/repos/ruby/ruby/tags
-        version: { name: version, label: Version }
 
   kits:
     jdk:
@@ -52,9 +40,7 @@ jetpackr:
       repository:
         type: SDKMAN
         url: https://api.sdkman.io/2/candidates
-      version:
-        name: version
-        label: Version
+      version: { name: version, label: Version }
       install: { name: install, label: Install JDK, value: true }
 
     node:
@@ -162,6 +148,16 @@ jetpackr:
             type: NPMRegistry
             url: https://registry.npmjs.com/yo
           version: { name: version, label: Version }
+
+    ruby:
+      name: ruby
+      label: Ruby
+      description: Ruby is the interpreted scripting language for quick and easy object-oriented programming. It has many features to process text files and to do system management tasks (as in Perl). It is simple, straight-forward, and extensible.
+      repository:
+        type: GitHub
+        url: https://api.github.com/repos/ruby/ruby/tags
+      install: { name: install, label: Install Ruby }
+      version: { name: version, label: Version }
 
   containers:
     # data stores
@@ -355,21 +351,29 @@ jetpackr:
         - /workspace/workspace.yml.ftl
         - /Vagrantfile.ftl
         - /playbook.yml.ftl
+
     docker:
       files:
         - /roles/docker/tasks/main.yml.ftl
         - /workspace/docker-compose.yml.ftl
-    guard:
-      files:
-        - /roles/guard/tasks/main.yml.ftl
-        - /workspace/Gemfile.ftl
-        - /workspace/Guardfile.ftl
+
     jdk:
       files:
         - /roles/jdk/tasks/main.yml.ftl
         - /roles/jdk/tasks/sdkman_candidate.yml.ftl
+
     node:
       files:
         - /roles/node/tasks/main.yml.ftl
         - /roles/node/tasks/npm_module.yml.ftl
         - /roles/node/tasks/bind_mount_node_modules.yml.ftl
+
+    ruby:
+      files:
+        - /roles/ruby/tasks/main.yml.ftl
+
+    guard:
+      files:
+        - /roles/guard/tasks/main.yml.ftl
+        - /workspace/Gemfile.ftl
+        - /workspace/Guardfile.ftl

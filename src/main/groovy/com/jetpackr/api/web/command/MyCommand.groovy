@@ -15,7 +15,7 @@ class MyCommand {
     Machine machine
 
     @Valid
-    Kits kits
+    Kits kits = new Kits()
 
     @Valid
     @Size(min = 1)
