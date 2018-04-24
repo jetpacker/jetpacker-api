@@ -20,7 +20,7 @@ class Kits {
     Kit node
 
     @Valid
-//    @JsonIgnore
+    @JsonIgnore
     @NotNull
     Kit ruby
 }
