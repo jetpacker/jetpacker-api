@@ -345,9 +345,7 @@ jetpackr:
     basic:
       files:
         - /roles/applications/tasks/main.yml.ftl
-        - /roles/commons/handlers/main.yml.ftl
         - /roles/commons/tasks/main.yml.ftl
-        - /roles/commons/vars/main.yml.ftl
         - /workspace/workspace.yml.ftl
         - /Vagrantfile.ftl
         - /playbook.yml.ftl
