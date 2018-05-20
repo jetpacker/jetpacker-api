@@ -18,13 +18,11 @@
 
     - name: "install node:{{ node.version }}"
       command: bash -lc ". ~/.nvm/nvm.sh && nvm install {{ node.version }}"
-      when:
-        - not path.stat.exists
+      when: not path.stat.exists
 
     - name: "default node:{{ node.version }}"
       command: bash -lc ". ~/.nvm/nvm.sh && nvm alias default {{ node.version }}"
-      when:
-        - path.stat.exists
+      when: path.stat.exists
   become: true
   become_user: vagrant
 
