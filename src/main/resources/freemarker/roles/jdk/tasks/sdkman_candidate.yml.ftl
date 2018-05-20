@@ -14,5 +14,6 @@
 
     - name: default to {{ candidate.name }}:{{ candidate.version }}
       command: bash -lc ". ~/.sdkman/bin/sdkman-init.sh && sdk default {{ candidate.name }} {{ candidate.version }}"
+      when: path.stat.exists
   become: true
   become_user: vagrant
