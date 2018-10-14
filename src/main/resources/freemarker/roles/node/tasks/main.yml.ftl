@@ -2,7 +2,7 @@
 - apt: pkg="{{ item }}" state=latest update_cache=yes cache_valid_time=3600
   with_items:
     - xz-utils
-  become: true
+  become: yes
   become_method: sudo
 
 - block:
@@ -23,7 +23,7 @@
     - name: "default node:{{ node.version }}"
       command: bash -lc ". ~/.nvm/nvm.sh && nvm alias default {{ node.version }}"
       when: path.stat.exists
-  become: true
+  become: yes
   become_user: vagrant
 
 - include: npm_module.yml
