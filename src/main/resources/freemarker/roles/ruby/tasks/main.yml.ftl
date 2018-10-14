@@ -13,5 +13,5 @@
         - gem install bundler
       when:
         - not path.stat.exists
-  become: true
+  become: yes
   become_user: vagrant

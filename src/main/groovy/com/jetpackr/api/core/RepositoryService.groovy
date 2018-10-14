@@ -52,7 +52,7 @@ class RepositoryService {
     }
 
     List<Option> formatReleases(List<String> releases) {
-        List<Option> options = null
+        List<Option> options = new ArrayList<>()
 
         if (releases) {
             releases = releases.collect { String release ->
@@ -67,8 +67,8 @@ class RepositoryService {
             releases.removeAll([ null, 'modified', 'created' ])
             releases.sort versionComparator
 
-            options = releases.collect { release ->
-                new Option(value: release)
+            for (String release: releases) {
+                options << new Option(value: release)
             }
         }
 
@@ -118,15 +118,19 @@ class RepositoryService {
         jdk.extensions = loadSDKMANCandidates(repositoryUrl)
     }
 
-    List<Kit> loadJDKOptions(final String repositoryUrl) throws ExecutionException, InterruptedException {
-        String candidateUrl = "${repositoryUrl}/java/linux/versions/all"
+    List<Option> loadJDKOptions(final String repositoryUrl) throws ExecutionException, InterruptedException {
+        List<Option> options = new ArrayList<>()
+
+        String candidateUrl = "${repositoryUrl}/java/Linux64/versions/all"
         String rawReleases = restTemplate.getForEntity(candidateUrl, String.class).body
         List<String> releases = Arrays.asList(rawReleases.split(","))
         releases.sort versionComparator
 
-        releases.collect { release ->
-            new Option(value: release)
+        for (String release: releases) {
+            options << new Option(value: release)
         }
+
+        options
     }
 
     List<Kit> loadSDKMANCandidates(final String repositoryUrl) throws ExecutionException, InterruptedException {
@@ -157,12 +161,12 @@ class RepositoryService {
 
         List<Kit> kits = sdkCandidates.split(",").collect { String sdkCandidate ->
             if (sdkCandidate != "java") {
-                String candidateUrl = "${repositoryUrl}/${sdkCandidate}/${sdkCandidate}/versions/all"
+                String candidateUrl = "${repositoryUrl}/${sdkCandidate}/Linux64/versions/all"
+                log.info "Adding candidate {} from ${candidateUrl}", sdkCandidate
+
                 String rawReleases = restTemplate.getForEntity(candidateUrl, String.class).body
                 List<String> releases = Arrays.asList(rawReleases.split(","))
                 releases.sort versionComparator
-
-                log.info "Adding candidate {}", sdkCandidate
 
                 def candidate = candidates[sdkCandidate]
                 String label = candidate ? candidate['label'] : sdkCandidate

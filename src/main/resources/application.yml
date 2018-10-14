@@ -65,8 +65,8 @@ jetpackr:
           label: Angular
           description: Angular is a development platform for building mobile and desktop web applications using Typescript/JavaScript (JS) and other languages.
           repository:
-            type: GitHub
-            url: https://api.github.com/repos/angular/angular-cli/tags
+            type: NPMRegistry
+            url: https://registry.npmjs.com/@vue/cli
           version: { name: version, label: Version }
           
         - name: aurelia-cli
@@ -134,11 +134,12 @@ jetpackr:
           version: { name: version, label: Version }
           
         - name: vue-cli
+          alias: '@vue/cli'
           label: Vue.js
           description: Vue.js is a library for building interactive web interfaces. It provides data-reactive components with a simple and flexible API.
           repository:
             type: NPMRegistry
-            url: https://registry.npmjs.com/vue-cli
+            url: https://registry.npmjs.com/@vue/cli
           version: { name: version, label: Version }
           
         - name: yo
@@ -344,8 +345,8 @@ jetpackr:
   templates:
     basic:
       files:
-        - /roles/applications/tasks/main.yml.ftl
-        - /roles/commons/tasks/main.yml.ftl
+        - /roles/apps/tasks/main.yml.ftl
+        - /roles/settings/tasks/main.yml.ftl
         - /workspace/workspace.yml.ftl
         - /Vagrantfile.ftl
         - /playbook.yml.ftl

@@ -10,5 +10,5 @@
         project_src: /vagrant/workspace
         recreate: always
         remove_volumes: true
-  become: true
+  become: yes
   become_method: sudo

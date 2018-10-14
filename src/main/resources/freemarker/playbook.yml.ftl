@@ -1,7 +1,7 @@
 ---
 - hosts: all
   roles:
-    - applications
+    - apps
     - commons
 <#if containers?? && containers?size gt 0>
     - docker
