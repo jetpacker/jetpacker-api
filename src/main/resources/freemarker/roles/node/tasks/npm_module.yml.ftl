@@ -13,5 +13,5 @@
       with_items:
         - npm install -g {{ module.name }}@{{ module.version }}
       when: not path.stat.exists
-  become: true
+  become: yes
   become_user: vagrant

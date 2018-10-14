@@ -2,9 +2,9 @@
 - name: set timezone to {{ timezone }}
   timezone:
     name: "{{ timezone }}"
-  become: true
+  become: yes
   become_method: sudo
 
 - file: src=/vagrant/workspace dest=~/workspace state=link
-  become: true
+  become: yes
   become_user: vagrant

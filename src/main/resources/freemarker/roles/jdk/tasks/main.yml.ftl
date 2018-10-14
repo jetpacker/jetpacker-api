@@ -3,7 +3,7 @@
   with_items:
     - zip
     - unzip
-  become: true
+  become: yes
   become_method: sudo
 
 - block:
@@ -23,7 +23,7 @@
         - sdk flush temp
         - sdk flush candidates
       when: path.stat.exists
-  become: true
+  become: yes
   become_user: vagrant
 
 - include: sdkman_candidate.yml
